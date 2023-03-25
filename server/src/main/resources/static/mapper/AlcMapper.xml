@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sul.server.mapper.AlcMapper">
+
+	<select id="selectTotalAlcList" resultType="map">
+		SELECT A.ALC_NO alcNo, A.ALC_NM alcNm, A.CATE_NO cateNo, D.CATE_NM cateNm, A.FILE_NO fileNo, C.FILE_NM fileNm, C.FILE_EXT fileExt, B.AVG_GRADE avgGrade
+	      FROM information A
+	      LEFT JOIN grade B
+	        ON A.ALC_NO = B.ALC_NO
+	      LEFT JOIN alc_file C
+	        ON A.FILE_NO = C.FILE_NO
+	         , category D
+	     WHERE A.CATE_NO = D.CATE_NO
+	       AND A.EXP_YN = 'N'
+	</select>
+
+</mapper>
