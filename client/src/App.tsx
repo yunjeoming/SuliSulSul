@@ -10,17 +10,21 @@ import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/alcs" element={<AlcoholListPage />} />
-        <Route path="/alcs/:id" element={<AlcoholDetailPage />} />
-        <Route path="/admin" element={<AdminMainPage />} />
-        <Route path="/admin/alcs" element={<AdminAlcoholListPage />} />
-        <Route path="/admin/alcs/:id" element={<AdminAlcoholDetailPage />} />
-        <Route path="/*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <div className='h-screen bg-white flex justify-center items-stretch'>
+      <div className="bg-neutral-400 w-96">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/alcs" element={<AlcoholListPage />} />
+            <Route path="/alcs/:id" element={<AlcoholDetailPage />} />
+            <Route path="/admin" element={<AdminMainPage />} />
+            <Route path="/admin/alcs" element={<AdminAlcoholListPage />} />
+            <Route path="/admin/alcs/:id" element={<AdminAlcoholDetailPage />} />
+            <Route path="/*" element={<NotFoundPage />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </div>
   );
 }
 
