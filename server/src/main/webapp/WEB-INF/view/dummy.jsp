@@ -1,12 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<div><a href="${pageContext.request.contextPath}/selectAlcList.do" >test</a></div>
+	<div>
+		<form action="/selectAlcList.do" method="post" enctype="multipart/form-data">
+			술 이름 : <input type="text" name="alcNm" id="alcNm">
+			<input type="submit" value="test">
+		</form>
+		<form action="/selectAlcDetail.do" method="post" enctype="multipart/form-data">
+			술 넘버 : <input type="text" name="alcNo" id="alcNo">
+			<input type="submit" value="test">
+		</form>
+		<form action="/selectReviewList.do" method="post" enctype="multipart/form-data">
+			리뷰용 술 넘버 : <input type="text" name="alcNo" id="alcNo">
+			<input type="submit" value="test">
+		</form>
+		<form action="/selectReviewDetail.do" method="post" enctype="multipart/form-data">
+			리뷰하나만 술 넘버 : <input type="text" name="alcNo" id="alcNo">
+			리뷰하나만 리뷰 넘버 : <input type="text" name="reviewNo" id="reviewNo">
+			<input type="submit" value="test">
+		</form>
+	</div>
 </body>
 </html>

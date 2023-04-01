@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sul.server.mapper.ReviewMapper">
+	<select id="selectAlcReviewList" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
+	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.GRADE
+	      FROM INFORMATION A
+	      LEFT JOIN REVIEW B
+	        ON A.ALC_NO = B.ALC_NO
+	     WHERE A.ALC_NO = #{alcNo}
+	</select>
+	
+	<select id="selectAlcReviewDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
+	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.CONTENT, B.GRADE
+	         , B.REG_DT, B.MODI_DT, B.USER_NM, B.REVIEW_PWD
+	         , B.FILE_NO, C.FILE_NM, C.FILE_EXT
+	      FROM INFORMATION A
+	         , REVIEW B
+	      LEFT JOIN ALC_FILE C
+	        ON B.FILE_NO = C.FILE_NO
+	     WHERE A.ALC_NO = B.ALC_NO
+	       AND A.ALC_NO = #{alcNo}
+	       AND B.REVIEW_NO = #{reviewNo}
+	</select>
+</mapper>
