@@ -9,26 +9,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sul.server.mapper.AlcMapper;
+import com.sul.server.mapper.ReviewMapper;
 import com.sul.server.vo.AlcVo;
+import com.sul.server.vo.ReviewVo;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
-public class AlcService {
+public class ReviewService {
 	@Autowired
-	AlcMapper mapper;
+	ReviewMapper mapper;
 	
-	public List<AlcVo> selectTotalAlcList(AlcVo vo){
-		List<AlcVo> returnVo = new ArrayList<>(); 
-		returnVo = mapper.selectTotalAlcList(vo);
+	public List<ReviewVo> selectAlcReviewList(ReviewVo vo){
+		List<ReviewVo> returnVo = new ArrayList<>(); 
+		returnVo = mapper.selectAlcReviewList(vo);
 		
 		return returnVo;
 	}
 	
-	public AlcVo selectAlcDetail(AlcVo vo){
-		AlcVo returnVo = new AlcVo(); 
-		returnVo = mapper.selectAlcDetail(vo);
+	public ReviewVo selectAlcReviewDetail(ReviewVo vo){
+		ReviewVo returnVo = new ReviewVo(); 
+		returnVo = mapper.selectAlcReviewDetail(vo);
 		
 		return returnVo;
 	}

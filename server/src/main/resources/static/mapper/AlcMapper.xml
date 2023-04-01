@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sul.server.mapper.AlcMapper">
 
-	<select id="selectTotalAlcList" resultType="map">
-		SELECT A.ALC_NO alcNo, A.ALC_NM alcNm, A.CATE_NO cateNo, D.CATE_NM cateNm, A.FILE_NO fileNo, C.FILE_NM fileNm, C.FILE_EXT fileExt, B.AVG_GRADE avgGrade
+	<select id="selectTotalAlcList" parameterType="java.util.Map" resultType="com.sul.server.vo.AlcVo">
+	    SELECT A.ALC_NO, A.ALC_NM, A.CATE_NO, D.CATE_NM, A.FILE_NO, A.EXP_YN, C.FILE_NM, C.FILE_EXT, B.AVG_GRADE
 	      FROM information A
 	      LEFT JOIN grade B
 	        ON A.ALC_NO = B.ALC_NO
@@ -11,7 +11,30 @@
 	        ON A.FILE_NO = C.FILE_NO
 	         , category D
 	     WHERE A.CATE_NO = D.CATE_NO
-	       AND A.EXP_YN = 'N'
+	      <if test="expYn == 'Y'" >
+	            AND A.EXP_YN = 'Y'
+	      </if>
+	      <if test="expYn == null or expYn == '' or expYn == 'N'" >
+	            AND A.EXP_YN = 'N'
+	      </if>
+	      <if test="alcNm != null and alcNm != ''" >
+	            AND ALC_NM LIKE CONCAT('%', #{alcNm}, '%')
+	      </if>
+	      <if test="cateNo != null and cateNo != ''" >
+	            AND CATE_NO = #{cateNo}
+	      </if>
+	</select>
+	
+	<select id="selectAlcDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.AlcVo">
+	    SELECT A.ALC_NO, A.ALC_NM, A.VOL, A.PRODUCTOR, A.DETAIL, A.EXP_YN, D.CATE_NM, C.FILE_NM, C.FILE_EXT, B.AVG_GRADE
+	      FROM information A
+	      LEFT JOIN grade B
+	        ON A.ALC_NO = B.ALC_NO
+	      LEFT JOIN alc_file C
+	        ON A.FILE_NO = C.FILE_NO
+	         , category D
+	     WHERE A.CATE_NO = D.CATE_NO
+	       AND A.ALC_NO = #{alcNo}
 	</select>
 
 </mapper>
