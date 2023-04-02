@@ -7,11 +7,13 @@ import AlcoholDetailPage from './pages/AlcoholDetailPage';
 import AlcoholListPage from './pages/AlcoholListPage';
 import MainPage from './pages/MainPage';
 import NotFoundPage from './pages/NotFoundPage';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className='h-screen bg-white flex justify-center items-stretch'>
       <div className="bg-neutral-400 w-96">
+        <Header />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />} />
