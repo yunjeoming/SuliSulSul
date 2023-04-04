@@ -1,8 +1,43 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
+import { MockAlcoholsType } from '../../types/mockAlcohols';
+import AlcoholThumbnailList from '../../components/AlcoholThumbnailList';
 
 const MainPage = () => {
-  // 홈페이지 or 메인페이지
-  return <div className='text-blue-600/100'>MainPage</div>;
+  const [bestItemsByCategory, setBestItemsByCategory] = useState<MockAlcoholsType[]>([]);
+  const getBestItemsByCategory = useCallback(async () => {
+    axios
+      .get('/alcohols.json')
+      .then((res) => {
+        setBestItemsByCategory(res.data.alcohols);
+      })
+      .catch((err) => console.error(err.response));
+  }, []);
+
+  useEffect(() => {
+    let isMount = true;
+    (async () => {
+      if (isMount) {
+        await getBestItemsByCategory();
+      }
+    })();
+    return () => {
+      isMount = false;
+    };
+  }, [getBestItemsByCategory]);
+
+  return (
+    <div className="text-blue-600/100 pt-8 pb-8 pl-4 pr-4">
+      <section className="flex flex-col mb-12">
+        <span>카테고리별 인기 아이템</span>
+        <AlcoholThumbnailList alcohols={bestItemsByCategory} />
+      </section>
+      <section className="flex flex-col mb-12">
+        <span>추천 아이템</span>
+        <AlcoholThumbnailList alcohols={bestItemsByCategory} />
+      </section>
+    </div>
+  );
 };
 
 export default MainPage;

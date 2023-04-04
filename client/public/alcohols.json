@@ -1,0 +1,29 @@
+{
+  "alcohols": [
+    {
+      "no": 1,
+      "name": "1664블랑",
+      "categoryName": "beer" 
+    },
+    {
+      "no": 2,
+      "name": "처음처럼",
+      "categoryName": "soju" 
+    },
+    {
+      "no": 3,
+      "name": "조니워커",
+      "categoryName": "whiskey" 
+    },
+    {
+      "no": 4,
+      "name": "트로피칼 모스카토 망고",
+      "categoryName": "wine" 
+    },
+    {
+      "no": 5,
+      "name": "느린마을",
+      "categoryName": "makgeolli" 
+    }
+  ]
+}
