@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
-import Alcohol from '../../components/Alcohol';
+import AlcoholThumbnailList from '../../components/AlcoholThumbnailList';
 
 const MainPage = () => {
   const [bestItemsByCategory, setBestItemsByCategory] = useState<MockAlcoholsType[]>([]);
@@ -30,19 +30,11 @@ const MainPage = () => {
     <div className="text-blue-600/100 pt-8 pb-8 pl-4 pr-4">
       <section className="flex flex-col mb-12">
         <span>카테고리별 인기 아이템</span>
-        <div className='flex overflow-auto '>
-          {bestItemsByCategory.map((al) => (
-            <Alcohol key={al.no} {...al} />
-          ))}
-        </div>
+        <AlcoholThumbnailList alcohols={bestItemsByCategory} />
       </section>
       <section className="flex flex-col mb-12">
         <span>추천 아이템</span>
-        <div className='flex overflow-auto'>
-          {bestItemsByCategory.map((al) => (
-            <Alcohol key={al.no} {...al} />
-          ))}
-        </div>
+        <AlcoholThumbnailList alcohols={bestItemsByCategory} />
       </section>
     </div>
   );
