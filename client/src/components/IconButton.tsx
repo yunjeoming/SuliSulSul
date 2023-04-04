@@ -5,7 +5,10 @@ type Props = {
 };
 
 const IconButton = ({ children }: Props) => {
-  return <div className="p-3">{children}</div>;
+  const handleClick = () => {
+
+  }
+  return <div className="p-3 cursor-pointer" onClick={handleClick}>{children}</div>;
 };
 
 export default IconButton;
