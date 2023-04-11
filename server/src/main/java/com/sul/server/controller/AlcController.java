@@ -23,12 +23,14 @@ public class AlcController {
 	@Autowired
 	ReviewService rvService;
 	
+	// 술 목록
 	@ResponseBody
 	@RequestMapping("/selectAlcList.do")
 	public List<AlcVo> selectTotalAlcList(AlcVo vo, Model model){
 		return service.selectTotalAlcList(vo);
 	}
 	
+	// 술 상세
 	@ResponseBody
 	@RequestMapping("/selectAlcDetail.do")
 	public Map<String, Object> selectAlcDetail(AlcVo vo, ReviewVo rvVo, Model model){
@@ -37,4 +39,12 @@ public class AlcController {
 		resultMap.put("reviewData", rvService.selectAlcReviewList(rvVo));
 		return resultMap;
 	}
+	
+	// 술 등록
+	
+	// 술 삭제
+	
+	// 술 수정
+	
+	// 술 단종(단종 여부만 업데이트)
 }

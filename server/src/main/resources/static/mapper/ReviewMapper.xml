@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sul.server.mapper.ReviewMapper">
+	<!-- 조회 -->
 	<select id="selectAlcReviewList" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
+	    /* selectAlcReviewList - 특정 술의 전체 리뷰 조회 */
 	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.GRADE
 	      FROM INFORMATION A
 	      LEFT JOIN REVIEW B
@@ -10,6 +12,7 @@
 	</select>
 	
 	<select id="selectAlcReviewDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
+	    /* selectAlcReviewDetail - 리뷰 상세 조회 */
 	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.CONTENT, B.GRADE
 	         , B.REG_DT, B.MODI_DT, B.USER_NM, B.REVIEW_PWD
 	         , B.FILE_NO, C.FILE_NM, C.FILE_EXT
@@ -21,4 +24,57 @@
 	       AND A.ALC_NO = #{alcNo}
 	       AND B.REVIEW_NO = #{reviewNo}
 	</select>
+	
+	<select id="selectCheckPwd" parameterType="java.util.Map" resultType="int">
+	    /* selectCheckPwd - 리뷰 수정 삭제용 패스워드 매칭 */
+	    SELECT CASE WHEN PASSWORD(${password}) = REVIEW_PWD THEN 1 ELSE 0 END
+	      FROM REVIEW
+	     WHERE REVIEW_NO = ${reviewNo}
+	       AND USER_NM = ${userNm}
+	</select>
+	
+	<!-- 등록 수정 삭제 -->
+	<insert id="insertReviewFile" parameterType="java.util.Map">
+	    /* insertReviewFile - 리뷰 파일 등록 */
+	    INSERT INTO ALC_FILE
+	           (FILE_PATH, FILE_NM, FILE_EXT)
+	    VALUES (${filePath}, ${fileNm}, ${fileExt})
+	</insert>
+	
+	<insert id="insertAlcReview" parameterType="java.util.Map">
+	    /* insertAlcReview - 리뷰 등록 */
+	    INSERT INTO REVIEW 
+	           (ALC_NO, TITLE, GRADE, CONTENT, REG_DT, USER_NM, REVIEW_PWD, FILE_NO)
+	    VALUES (#{alcNo}, #{title}, #{grade}, #{content}, NOW(), #{userNm}, PASSWORD(#{reviewPwd}), #{fileNo})
+	</insert>
+	
+	<insert id="mergeAlcReviewGrade" parameterType="java.util.Map">
+	    /* mergeAlcReviewGrade - 술 평점 수정 또는 등록: 리뷰 등록 시마다 실행 */
+	    INSERT INTO GRADE
+	     SELECT ${alcNo}, ROUND((GRADE_SUM / ALC_COUNT), 1), NOW()
+	       FROM (SELECT SUM(GRADE) GRADE_SUM, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo} GROUP BY ALC_NO) A
+	          , (SELECT COUNT(*) ALC_COUNT, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo}) B
+	      WHERE A.ALC_NO = B.ALC_NO
+	      ON DUPLICATE KEY UPDATE
+	         AVG_GRADE = (SELECT ROUND((GRADE_SUM / ALC_COUNT), 1) GRADE
+	                        FROM (SELECT SUM(GRADE) GRADE_SUM, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo} GROUP BY ALC_NO) A
+	                           , (SELECT COUNT(*) ALC_COUNT, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo} ) B
+	                       WHERE A.ALC_NO = B.ALC_NO)
+	       , UPDT_DT = NOW()
+	</insert>
+	
+	<update id="updateAlcReview" parameterType="java.util.Map">
+	    /* updateAlcReview - 리뷰 수정 */
+	    UPDATE REVIEW
+	       SET TITLE = ${title}
+	         , GRADE = ${grade}
+	         , CONTENT = ${content}
+	         , MODI_DT = NOW()
+	</update>
+	
+	<delete id="deleteAlcReview" parameterType="java.util.Map">
+	    /* deleteAlcReview - 리뷰 삭제 */
+	    DELETE FROM REVIEW
+	     WHERE REVIEW_NO = ${reviewNo}
+	</delete>
 </mapper>

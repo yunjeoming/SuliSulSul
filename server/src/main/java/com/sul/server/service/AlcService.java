@@ -19,6 +19,7 @@ public class AlcService {
 	@Autowired
 	AlcMapper mapper;
 	
+	// 술 전체 목록
 	public List<AlcVo> selectTotalAlcList(AlcVo vo){
 		List<AlcVo> returnVo = new ArrayList<>(); 
 		returnVo = mapper.selectTotalAlcList(vo);
@@ -26,10 +27,19 @@ public class AlcService {
 		return returnVo;
 	}
 	
+	// 술 상세
 	public AlcVo selectAlcDetail(AlcVo vo){
 		AlcVo returnVo = new AlcVo(); 
 		returnVo = mapper.selectAlcDetail(vo);
 		
 		return returnVo;
 	}
+	
+	// 술 등록
+	
+	// 술 삭제
+	
+	// 술 수정
+	
+	// 술 단종(단종 여부만 업데이트)
 }
