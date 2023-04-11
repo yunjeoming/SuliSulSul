@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import IconButton from './IconButton';
-import CategorySidebar from './CategorySidebar';
-import SearchSidebar from './SearchSidebar';
+import Sidebar from './Sidebar';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState({
@@ -20,6 +19,12 @@ const Header = () => {
     setIsOpen((prev) => ({
       category: false,
       search: !prev.search,
+    }));
+  };
+  const closeCategorySidebar = () => {
+    setIsOpen((prev) => ({
+      ...prev,
+      category: false,
     }));
   };
   const closeSearchSidebar = () => {
@@ -40,8 +45,8 @@ const Header = () => {
           <GoSearch />
         </IconButton>
       </header>
-      {isOpen.category && <CategorySidebar />}
-      {isOpen.search && <SearchSidebar onClose={closeSearchSidebar} />}
+      {isOpen.category && <Sidebar type="category" onClose={closeCategorySidebar} />}
+      {isOpen.search && <Sidebar type="search" onClose={closeSearchSidebar} />}
     </>
   );
 };
