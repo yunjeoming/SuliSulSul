@@ -3,11 +3,30 @@ import { FaBars } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import IconButton from './IconButton';
 import CategorySidebar from './CategorySidebar';
+import SearchSidebar from './SearchSidebar';
 
 const Header = () => {
-  const [isOpenCategory, setIsOpenCategory] = useState(false);
+  const [isOpen, setIsOpen] = useState({
+    category: false,
+    search: false,
+  });
   const clickCategoryBtn = () => {
-    setIsOpenCategory((prev) => !prev);
+    setIsOpen((prev) => ({
+      category: !prev.category,
+      search: false,
+    }));
+  };
+  const clickSearchBtn = () => {
+    setIsOpen((prev) => ({
+      category: false,
+      search: !prev.search,
+    }));
+  };
+  const closeSearchSidebar = () => {
+    setIsOpen((prev) => ({
+      ...prev,
+      search: false,
+    }));
   };
 
   return (
@@ -17,11 +36,12 @@ const Header = () => {
           <FaBars />
         </IconButton>
         <h2>술이술술</h2>
-        <IconButton>
+        <IconButton onClick={clickSearchBtn}>
           <GoSearch />
         </IconButton>
       </header>
-      {isOpenCategory && <CategorySidebar />}
+      {isOpen.category && <CategorySidebar />}
+      {isOpen.search && <SearchSidebar onClose={closeSearchSidebar} />}
     </>
   );
 };
