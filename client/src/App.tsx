@@ -12,7 +12,7 @@ import Header from './components/Header';
 function App() {
   return (
     <div className='h-screen bg-white flex justify-center items-stretch'>
-      <div className="bg-neutral-400 w-96">
+      <div className="relative bg-neutral-400 w-96">
         <Header />
         <BrowserRouter>
           <Routes>

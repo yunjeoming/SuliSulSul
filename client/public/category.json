@@ -1,0 +1,24 @@
+{
+  "category": [
+    {
+      "no": 1,
+      "name": "beer"
+    },
+    {
+      "no": 2,
+      "name": "soju"
+    },
+    {
+      "no": 3,
+      "name": "whiskey"
+    },
+    {
+      "no": 4,
+      "name": "wine"
+    },
+    {
+      "no": 5,
+      "name": "makgeolli"
+    }
+  ]
+}
