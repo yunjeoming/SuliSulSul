@@ -8,25 +8,26 @@ import AlcoholListPage from './pages/AlcoholListPage';
 import MainPage from './pages/MainPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Header from './components/Header';
+import { Styles } from './constants/Styles';
 
 function App() {
   return (
-    <div className='h-screen bg-white flex justify-center items-stretch'>
-      <div className="relative bg-neutral-400 w-96">
-        <Header />
-        <BrowserRouter>
+    <BrowserRouter>
+      <div className="h-screen bg-gray-200 flex justify-center items-stretch">
+        <div className={`relative ${Styles.MAIN_BACKGROUND_COLOR} w-96 overflow-auto`}>
+          <Header />
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/alcs" element={<AlcoholListPage />} />
+            <Route path="/alcs/:category" element={<AlcoholListPage />} />
             <Route path="/alcs/:id" element={<AlcoholDetailPage />} />
             <Route path="/admin" element={<AdminMainPage />} />
             <Route path="/admin/alcs" element={<AdminAlcoholListPage />} />
             <Route path="/admin/alcs/:id" element={<AdminAlcoholDetailPage />} />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
-        </BrowserRouter>
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 

@@ -3,8 +3,11 @@ import { FaBars } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
 import IconButton from './IconButton';
 import Sidebar from './Sidebar';
+import { useNavigate } from 'react-router-dom';
+import { Styles } from '../constants/Styles';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState({
     category: false,
     search: false,
@@ -33,14 +36,17 @@ const Header = () => {
       search: false,
     }));
   };
+  const clickTitle = () => {
+    navigate(`/`);
+  }
 
   return (
     <>
-      <header className="flex justify-between items-center h-16 text-2xl">
+      <header className={`sticky top-0 ${Styles.MAIN_BACKGROUND_COLOR} flex justify-between items-center h-16 text-2xl border-b`}>
         <IconButton onClick={clickCategoryBtn}>
           <FaBars />
         </IconButton>
-        <h2>술이술술</h2>
+        <h2 className="cursor-pointer" onClick={clickTitle}>술이술술</h2>
         <IconButton onClick={clickSearchBtn}>
           <GoSearch />
         </IconButton>

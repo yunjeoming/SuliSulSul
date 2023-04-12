@@ -3,4 +3,6 @@ export type MockAlcoholsType = {
   name: string;
   categoryName: string;
   image?: string;
+  grade?: number;
+  description?: string;
 };
