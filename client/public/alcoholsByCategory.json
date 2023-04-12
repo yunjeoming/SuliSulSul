@@ -1,0 +1,65 @@
+{
+  "alcoholsByCategory": [
+    {
+      "no": 1,
+      "name": "1664블랑",
+      "categoryName": "beer",
+      "grade": 3.5,
+      "description": "과일맛, 과일향이 강한 맥주. 과일맛, 과일향이 강한 맥주. 과일맛, 과일향이 강한 맥주. 과일맛, 과일향이 강한 맥주. 과일맛, 과일향이 강한 맥주."
+    },
+    {
+      "no": 2,
+      "name": "카스",
+      "categoryName": "beer",
+      "grade": 4.2
+    },
+    {
+      "no": 3,
+      "name": "오비",
+      "categoryName": "beer",
+      "grade": 4.1
+    },
+    {
+      "no": 4,
+      "name": "타이거",
+      "categoryName": "beer",
+      "grade": 3.9
+    },
+    {
+      "no": 5,
+      "name": "하이네켄",
+      "categoryName": "beer",
+      "grade": 4.5
+    },
+    {
+      "no": 6,
+      "name": "칭따오",
+      "categoryName": "beer",
+      "grade": 4.2
+    },
+    {
+      "no": 7,
+      "name": "필스너",
+      "categoryName": "beer",
+      "grade": 4.0
+    },
+    {
+      "no": 8,
+      "name": "코젤",
+      "categoryName": "beer",
+      "grade": 3.9
+    },
+    {
+      "no": 9,
+      "name": "테라",
+      "categoryName": "beer",
+      "grade": 4.1
+    },
+    {
+      "no": 10,
+      "name": "기네스",
+      "categoryName": "beer",
+      "grade": 5
+    }
+  ]
+}

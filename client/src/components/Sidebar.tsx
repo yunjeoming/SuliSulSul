@@ -1,16 +1,18 @@
 import React from 'react';
 import CategorySidebar from './CategorySidebar';
 import SearchSidebar from './SearchSidebar';
+import { Styles } from '../constants/Styles';
 
 type Props = {
   type: 'category' | 'search';
   onClose?: () => void;
 };
+
 const Sidebar = ({ type, onClose }: Props) => {
-  const height = type === 'category' ? 'h-[calc(100vh-4rem)]' : 'h-60';
+  const height = type === 'category' ? Styles.MAIN_AREA_HEIGHT : 'h-60';
   return (
     <div className={`absolute flex flex-col justify-between w-full bg-slate-300 p-4 ${height}`}>
-      {type === 'category' ? <CategorySidebar /> : <SearchSidebar />}
+      {type === 'category' ? <CategorySidebar onClose={onClose} /> : <SearchSidebar />}
       <div className="flex justify-end">
         <button className="w-fit" onClick={onClose}>
           닫기
