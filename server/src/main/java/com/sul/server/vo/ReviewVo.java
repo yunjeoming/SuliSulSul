@@ -13,4 +13,5 @@ public class ReviewVo {
 	String fileNm;
 	String fileExt;
 	String content;
+	String userType;
 }

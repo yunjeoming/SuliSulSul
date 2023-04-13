@@ -11,7 +11,18 @@ import com.sul.server.vo.ReviewVo;
 @Repository
 @Mapper
 public interface ReviewMapper {
+	
 	public List<ReviewVo> selectAlcReviewList(ReviewVo vo);
 	
 	public ReviewVo selectAlcReviewDetail(ReviewVo vo);
+	
+	public int selectCheckPwd(ReviewVo vo);
+	
+	public void insertAlcReview(ReviewVo vo);
+	
+	public void updateAlcReview(ReviewVo vo);
+	
+	public void mergeAlcReviewGrade(ReviewVo vo);
+	
+	public void deleteAlcReview(ReviewVo vo);
 }
