@@ -14,7 +14,7 @@ const CategorySidebar = ({ onClose }: { onClose?: () => void }) => {
   }, []);
 
   const handleClick = (categoryName: string) => {
-    navigate(`/alcs/${categoryName}`);
+    navigate(`/c/${categoryName}`);
     onClose && onClose();
   };
 

@@ -18,7 +18,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/alcs/:category" element={<AlcoholListPage />} />
+            <Route path="/c/:category" element={<AlcoholListPage />} />
             <Route path="/alcs/:id" element={<AlcoholDetailPage />} />
             <Route path="/admin" element={<AdminMainPage />} />
             <Route path="/admin/alcs" element={<AdminAlcoholListPage />} />
