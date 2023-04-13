@@ -13,7 +13,7 @@ public class AlcVo {
 	private String fileExt;
 	private String avgGrade;
 	private String vol;
-	private String procuctor;
+	private String productor;
 	private String detail;
 	private String expYn;
 }
