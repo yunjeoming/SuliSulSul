@@ -23,6 +23,7 @@
 	     WHERE A.ALC_NO = B.ALC_NO
 	       AND A.ALC_NO = #{alcNo}
 	       AND B.REVIEW_NO = #{reviewNo}
+	     ORDER BY B.REG_DT DESC
 	</select>
 	
 	<select id="selectCheckPwd" parameterType="java.util.Map" resultType="int">
@@ -70,6 +71,7 @@
 	         , GRADE = ${grade}
 	         , CONTENT = ${content}
 	         , MODI_DT = NOW()
+	     WHERE REVIEW_NO = ${reviewNo}
 	</update>
 	
 	<delete id="deleteAlcReview" parameterType="java.util.Map">

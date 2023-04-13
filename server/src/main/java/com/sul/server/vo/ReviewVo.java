@@ -7,7 +7,7 @@ public class ReviewVo {
 	String alcNo;
 	String alcNm;
 	String reviewNo;
-	String Title;
+	String title;
 	String grade;
 	String fileNo;
 	String fileNm;
