@@ -20,7 +20,7 @@ public class ReviewController {
 	// 전체리뷰 목록(하나의 술의)
 	@ResponseBody
 	@RequestMapping("/selectReviewList.do")
-	public List<ReviewVo> selectTotalAlcList(ReviewVo vo, Model model){
+	public List<ReviewVo> selectAlcReviewList(ReviewVo vo, Model model){
 		return service.selectAlcReviewList(vo);
 	}
 	
