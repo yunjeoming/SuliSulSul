@@ -5,8 +5,8 @@ import { BsListUl } from 'react-icons/bs';
 import { RxGrid } from 'react-icons/rx';
 import axios from 'axios';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
-import { Styles } from '../../constants/Styles';
 import AlcoholList from '../../components/AlcoholList';
+import MainStyle from '../../components/MainStyle';
 
 export type ShowingType = 'listType' | 'gridType';
 
@@ -30,7 +30,7 @@ const AlcoholListPage = () => {
   };
 
   return (
-    <div className={`flex flex-col ${Styles.MAIN_AREA_HEIGHT} py-2`}>
+    <MainStyle>
       <div className="flex justify-between items-center pl-4 border-t border-b child border-stone-950">
         <span className="text-2xl flex-grow">{category}</span>
         <IconButton
@@ -46,7 +46,7 @@ const AlcoholListPage = () => {
       <div className="p-4">
         <AlcoholList alcohols={alcohols} showingType={showingType} />
       </div>
-    </div>
+    </MainStyle>
   );
 };
 

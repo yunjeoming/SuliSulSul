@@ -2,40 +2,36 @@ import React from 'react';
 import { MockAlcoholsType } from '../types/mockAlcohols';
 import Thumbnail from './Thumbnail';
 import { ShowingType } from '../pages/AlcoholListPage';
+import { Link } from 'react-router-dom';
 
 type Props = {
   alcohol: MockAlcoholsType;
   isSimple?: boolean;
   showingType?: ShowingType;
-  handleClickItem?: () => void;
 };
 
 const AlcoholListItem = ({ alcohol, isSimple = false, showingType }: Props) => {
-  const handleClickItem = () => {
-    console.log('click~~~', alcohol.name);
-  };
-
   return isSimple ? (
-    <SimpleAlcohol alcohol={alcohol} handleClickItem={handleClickItem} />
+    <SimpleAlcohol alcohol={alcohol} />
   ) : (
-    <DetailedAlcohols alcohol={alcohol} handleClickItem={handleClickItem} showingType={showingType} />
+    <DetailedAlcohols alcohol={alcohol} showingType={showingType} />
   );
 };
 
-const SimpleAlcohol = ({ alcohol, handleClickItem }: Props) => {
+const SimpleAlcohol = ({ alcohol }: Props) => {
   const { name, image } = alcohol;
 
   return (
-    <div className="flex flex-col justify-center items-center cursor-pointer" onClick={handleClickItem}>
+    <Link to={`/alcs/${alcohol.no}`} className="flex flex-col justify-center items-center cursor-pointer">
       <Thumbnail imgSrc={image} />
       <span>{name}</span>
-    </div>
+    </Link>
   );
 };
 
-const DetailedAlcohols = ({ alcohol, handleClickItem, showingType }: Props) => {
+const DetailedAlcohols = ({ alcohol, showingType }: Props) => {
   const { name, image, grade, description } = alcohol;
-  
+
   const styles =
     showingType === 'listType'
       ? {
@@ -58,9 +54,9 @@ const DetailedAlcohols = ({ alcohol, handleClickItem, showingType }: Props) => {
   };
 
   return (
-    <div
+    <Link
+      to={`/alcs/${alcohol.no}`}
       className={`flex justify-center items-center cursor-pointer mb-4 ${styles.container}`}
-      onClick={handleClickItem}
     >
       <Thumbnail imgSrc={image} size={styles.thumbnailSize} styles={`shrink-0 mr-1 ${styles.thumbnail}`} />
       <div className={styles.info}>
@@ -70,7 +66,7 @@ const DetailedAlcohols = ({ alcohol, handleClickItem, showingType }: Props) => {
           <div className={`text-sm text-slate-500 h-full mt-1 ${styles.desc}`}>{truncateDesc(description, 65)}</div>
         ) : null}
       </div>
-    </div>
+    </Link>
   );
 };
 
