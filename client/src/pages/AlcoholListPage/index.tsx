@@ -5,8 +5,8 @@ import { BsListUl } from 'react-icons/bs';
 import { RxGrid } from 'react-icons/rx';
 import axios from 'axios';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
-import { Styles } from '../../constants/Styles';
 import AlcoholList from '../../components/AlcoholList';
+import Main from '../../components/Main';
 
 export type ShowingType = 'listType' | 'gridType';
 
@@ -29,25 +29,25 @@ const AlcoholListPage = () => {
     setShowingType(type);
   };
 
-  return (
-    <div className={`flex flex-col ${Styles.MAIN_AREA_HEIGHT} py-2`}>
-      <div className="flex justify-between items-center pl-4 border-t border-b child border-stone-950">
-        <span className="text-2xl flex-grow">{category}</span>
-        <IconButton
-          styles={`border-l border-r border-stone-950 hover:bg-gray-100`}
-          onClick={() => handleClickShowingType('listType')}
-        >
-          <BsListUl color={`${showingType === 'listType' ? '#000' : '#adadad'}`} />
-        </IconButton>
-        <IconButton styles={`hover:bg-gray-100`} onClick={() => handleClickShowingType('gridType')}>
-          <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
-        </IconButton>
-      </div>
-      <div className="p-4">
-        <AlcoholList alcohols={alcohols} showingType={showingType} />
-      </div>
-    </div>
-  );
+  return category ? (
+    <Main
+      headerName={category}
+      headerChildComponent={
+        <>
+          <IconButton
+            styles={`border-l border-r border-stone-950 hover:bg-gray-100`}
+            onClick={() => handleClickShowingType('listType')}
+          >
+            <BsListUl color={`${showingType === 'listType' ? '#000' : '#adadad'}`} />
+          </IconButton>
+          <IconButton styles={`hover:bg-gray-100`} onClick={() => handleClickShowingType('gridType')}>
+            <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
+          </IconButton>
+        </>
+      }
+      bodyComponent={<AlcoholList alcohols={alcohols} showingType={showingType} />}
+    />
+  ) : null;
 };
 
 export default AlcoholListPage;
