@@ -6,3 +6,12 @@ export type MockAlcoholsType = {
   grade?: number;
   description?: string;
 };
+
+export type MockReviewType = {
+  no: number;
+  title: string;
+  grade: number;
+  userName: string;
+  createdDate: string;
+  content?: string;
+}
