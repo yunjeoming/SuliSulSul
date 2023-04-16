@@ -25,14 +25,14 @@ public class AlcController {
 	
 	// 술 목록
 	@ResponseBody
-	@RequestMapping("/selectAlcList.do")
+	@RequestMapping("/selectAlcList")
 	public List<AlcVo> selectTotalAlcList(AlcVo vo, Model model){
 		return service.selectTotalAlcList(vo);
 	}
 	
 	// 술 상세
 	@ResponseBody
-	@RequestMapping("/selectAlcDetail.do")
+	@RequestMapping("/selectAlcDetail")
 	public Map<String, Object> selectAlcDetail(AlcVo vo, ReviewVo rvVo, Model model){
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("alcData", service.selectAlcDetail(vo));

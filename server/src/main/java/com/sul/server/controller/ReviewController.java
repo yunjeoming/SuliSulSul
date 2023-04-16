@@ -19,21 +19,21 @@ public class ReviewController {
 	
 	// 전체리뷰 목록(하나의 술의)
 	@ResponseBody
-	@RequestMapping("/selectReviewList.do")
+	@RequestMapping("/selectReviewList")
 	public List<ReviewVo> selectAlcReviewList(ReviewVo vo, Model model){
 		return service.selectAlcReviewList(vo);
 	}
 	
 	// 리뷰 상세(한 개만 보여줌)
 	@ResponseBody
-	@RequestMapping("/selectReviewDetail.do")
+	@RequestMapping("/selectReviewDetail")
 	public ReviewVo selectAlcDetail(ReviewVo vo, Model model){
 		return service.selectAlcReviewDetail(vo);
 	}
 	
 	// 리뷰 등록
 	@ResponseBody
-	@RequestMapping("/insertAlcReview.do")
+	@RequestMapping("/insertAlcReview")
 	public String insertAlcReview(ReviewVo vo, Model model){
 		String rtnMsg = "SUC";
 		try {
@@ -46,7 +46,7 @@ public class ReviewController {
 	
 	// 리뷰 수정
 	@ResponseBody
-	@RequestMapping("/updateAlcReview.do")
+	@RequestMapping("/updateAlcReview")
 	public String updateAlcReview(ReviewVo vo, Model model){
 		String rtnMsg = "SUC";
 		try {
@@ -59,7 +59,7 @@ public class ReviewController {
 	
 	// 리뷰 삭제
 	@ResponseBody
-	@RequestMapping("/deleteAlcReview.do")
+	@RequestMapping("/deleteAlcReview")
 	public String deleteAlcReview(ReviewVo vo, Model model){
 		String rtnMsg = "SUC";
 		try {
