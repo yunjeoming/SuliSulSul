@@ -7,12 +7,13 @@ type AlcoholListType = {
   alcohols: MockAlcoholsType[];
   isSimple?: boolean;
   showingType?: ShowingType;
+  styles?: string;
 };
 
-const AlcoholList = ({ alcohols, isSimple = false, showingType }: AlcoholListType) => {
-  const styles = isSimple ? 'overflow-auto' : 'flex-wrap justify-evenly';
+const AlcoholList = ({ alcohols, isSimple = false, showingType, styles }: AlcoholListType) => {
+  const isSimpleStyles = isSimple ? 'overflow-auto' : 'flex-wrap justify-evenly';
   return (
-    <div className={`flex ${styles}`}>
+    <div className={`flex ${isSimpleStyles} ${styles}`}>
       {alcohols.map((al) => (
         <AlcoholListItem key={al.no} alcohol={al} isSimple={isSimple} showingType={showingType} />
       ))}

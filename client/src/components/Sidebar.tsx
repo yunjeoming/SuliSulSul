@@ -12,7 +12,7 @@ const Sidebar = ({ type, onClose }: Props) => {
   const height = type === 'category' ? Styles.MAIN_AREA_HEIGHT : 'h-60';
   return (
     <div className={`absolute flex flex-col justify-between w-full bg-slate-300 p-4 ${height}`}>
-      {type === 'category' ? <CategorySidebar onClose={onClose} /> : <SearchSidebar />}
+      {type === 'category' ? <CategorySidebar onClose={onClose} /> : <SearchSidebar onClose={onClose} />}
       <div className="flex justify-end">
         <button className="w-fit" onClick={onClose}>
           닫기
