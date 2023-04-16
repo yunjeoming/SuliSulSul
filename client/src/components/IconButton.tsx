@@ -6,7 +6,7 @@ type Props = {
   styles?: string;
 };
 
-const IconButton = ({ children, onClick, styles }: Props) => {
+const IconButton = ({ children, onClick, styles = '' }: Props) => {
   return (
     <div className={`p-3 cursor-pointer ${styles}`} onClick={onClick}>
       {children}

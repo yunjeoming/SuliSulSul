@@ -3,13 +3,13 @@ import { Styles } from '../constants/Styles';
 
 type Props = {
   headerName: string;
-  headerChildComponent: JSX.Element;
   bodyComponent: JSX.Element;
+  headerChildComponent?: JSX.Element;
   isOnlyBody?: boolean;
   bodyStyles?: string;
 };
 
-const Main = ({ headerName, headerChildComponent, bodyComponent, isOnlyBody = false, bodyStyles }: Props) => {
+const Main = ({ headerName, headerChildComponent, bodyComponent, isOnlyBody = false, bodyStyles = '' }: Props) => {
   return (
     <div className={`flex flex-col ${Styles.MAIN_AREA_HEIGHT}`}>
       {isOnlyBody ? null : (

@@ -10,7 +10,7 @@ type AlcoholListType = {
   styles?: string;
 };
 
-const AlcoholList = ({ alcohols, isSimple = false, showingType, styles }: AlcoholListType) => {
+const AlcoholList = ({ alcohols, isSimple = false, showingType, styles = '' }: AlcoholListType) => {
   const isSimpleStyles = isSimple ? 'overflow-auto' : 'flex-wrap justify-evenly';
   return (
     <div className={`flex ${isSimpleStyles} ${styles}`}>
