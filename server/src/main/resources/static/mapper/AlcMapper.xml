@@ -4,12 +4,12 @@
 
 	<select id="selectTotalAlcList" parameterType="java.util.Map" resultType="com.sul.server.vo.AlcVo">
 	    SELECT A.ALC_NO, A.ALC_NM, A.CATE_NO, D.CATE_NM, A.FILE_NO, A.EXP_YN, C.FILE_NM, C.FILE_EXT, B.AVG_GRADE
-	      FROM information A
-	      LEFT JOIN grade B
+	      FROM INFORMATION A
+	      LEFT JOIN GRADE B
 	        ON A.ALC_NO = B.ALC_NO
-	      LEFT JOIN alc_file C
+	      LEFT JOIN ALC_FILE C
 	        ON A.FILE_NO = C.FILE_NO
-	         , category D
+	         , CATEGORY D
 	     WHERE A.CATE_NO = D.CATE_NO
 	      <if test="expYn == 'Y'" >
 	            AND A.EXP_YN = 'Y'
@@ -27,12 +27,12 @@
 	
 	<select id="selectAlcDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.AlcVo">
 	    SELECT A.ALC_NO, A.ALC_NM, A.VOL, A.PRODUCTOR, A.DETAIL, A.EXP_YN, D.CATE_NM, C.FILE_NM, C.FILE_EXT, B.AVG_GRADE
-	      FROM information A
-	      LEFT JOIN grade B
+	      FROM INFORMATION A
+	      LEFT JOIN GRADE B
 	        ON A.ALC_NO = B.ALC_NO
-	      LEFT JOIN alc_file C
+	      LEFT JOIN ALC_FILE C
 	        ON A.FILE_NO = C.FILE_NO
-	         , category D
+	         , CATEGORY D
 	     WHERE A.CATE_NO = D.CATE_NO
 	       AND A.ALC_NO = #{alcNo}
 	</select>
