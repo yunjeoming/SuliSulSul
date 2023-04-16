@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 
 type Props = {
   children: JSX.Element;
-  onClick?: () => void;
+  onClick?: (e?: SyntheticEvent) => void;
   styles?: string;
 };
 
