@@ -8,13 +8,30 @@ type Props = {
   alcohol: MockAlcoholsType;
   isSimple?: boolean;
   showingType?: ShowingType;
+  isNotLink?: boolean;
 };
 
-const AlcoholListItem = ({ alcohol, isSimple = false, showingType }: Props) => {
+const SIMPLE_WRAPPER_STYLES = 'flex flex-col justify-center items-center';
+const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center py-2';
+
+const AlcoholListItem = ({ alcohol, isSimple = false, showingType, isNotLink = false }: Props) => {
   return isSimple ? (
-    <SimpleAlcohol alcohol={alcohol} />
+    isNotLink ? (
+      <SimpleAlcohol alcohol={alcohol} />
+    ) : (
+      <Link to={`/alcs/${alcohol.no}`} className={`${SIMPLE_WRAPPER_STYLES} cursor-pointer`}>
+        <SimpleAlcohol alcohol={alcohol} />
+      </Link>
+    )
+  ) : isNotLink ? (
+    <DetailedAlcohol alcohol={alcohol} showingType={showingType} isNotLink={isNotLink} />
   ) : (
-    <DetailedAlcohols alcohol={alcohol} showingType={showingType} />
+    <Link
+      to={`/alcs/${alcohol.no}`}
+      className={`${DETAILED_WRAPPER_STYLES} cursor-pointer ${showingType === 'listType' ? 'w-full' : 'flex-col'}`}
+    >
+      <DetailedAlcohol alcohol={alcohol} showingType={showingType} isNotLink={isNotLink} />
+    </Link>
   );
 };
 
@@ -22,14 +39,14 @@ const SimpleAlcohol = ({ alcohol }: Props) => {
   const { name, image } = alcohol;
 
   return (
-    <Link to={`/alcs/${alcohol.no}`} className="flex flex-col justify-center items-center cursor-pointer">
+    <div className={`${SIMPLE_WRAPPER_STYLES}`}>
       <Thumbnail imgSrc={image} />
       <span>{name}</span>
-    </Link>
+    </div>
   );
 };
 
-const DetailedAlcohols = ({ alcohol, showingType }: Props) => {
+const DetailedAlcohol = ({ alcohol, showingType }: Props) => {
   const { name, image, grade, description } = alcohol;
 
   const styles =
@@ -54,10 +71,7 @@ const DetailedAlcohols = ({ alcohol, showingType }: Props) => {
   };
 
   return (
-    <Link
-      to={`/alcs/${alcohol.no}`}
-      className={`flex justify-center items-center cursor-pointer mb-4 ${styles.container}`}
-    >
+    <div className={`${DETAILED_WRAPPER_STYLES} ${styles.container}`}>
       <Thumbnail imgSrc={image} size={styles.thumbnailSize} styles={`shrink-0 mr-1 ${styles.thumbnail}`} />
       <div className={styles.info}>
         <span className={`${showingType === 'listType' && 'mr-2'}`}>{name}</span>
@@ -66,7 +80,7 @@ const DetailedAlcohols = ({ alcohol, showingType }: Props) => {
           <div className={`text-sm text-slate-500 h-full mt-1 ${styles.desc}`}>{truncateDesc(description, 65)}</div>
         ) : null}
       </div>
-    </Link>
+    </div>
   );
 };
 
