@@ -52,7 +52,15 @@ const AlcoholDetailPage = () => {
         headerName={alcohol.name}
         headerChildComponent={
           <>
-            <span className="pr-1">⭐️ {alcohol.grade || '0.0'}</span>
+            <div className="relative mr-1">
+              <span
+                className={`absolute top-0 left-0 text-yellow-300 overflow-hidden`}
+                style={{ width: `${(alcohol.grade || 0) * 20}%` }}
+              >
+                ★★★★★
+              </span>
+              <span className="text-gray-300">★★★★★</span>
+            </div>
             <span className="text-stone-400 text-xs pr-2">(리뷰 {reviews?.length || 0})</span>
           </>
         }
@@ -75,12 +83,23 @@ const AlcoholDetailPage = () => {
               {reviews ? (
                 <ul>
                   {reviews.map((r) => (
-                    <li key={r.no + r.grade + r.userName} className="flex items-center border-b last:border-none p-2">
-                      <span className="grow overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</span>
-                      <span className="grow-0 shrink-0 w-2/12">⭐️ {r.grade}</span>
-                      <span className="grow-0 shrink-0 w-3/12 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {r.userName}
-                      </span>
+                    <li key={r.no + r.grade + r.userName} className="border-b last:border-none p-2">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center">
+                          <div className="relative mr-1">
+                            <span
+                              className={`absolute top-0 left-0 text-yellow-300 overflow-hidden`}
+                              style={{ width: `${r.grade * 20}%` }}
+                            >
+                              ★★★★★
+                            </span>
+                            <span className="text-gray-300">★★★★★</span>
+                          </div>
+                          <strong>{r.grade}</strong>
+                        </div>
+                        <span className="text-sm text-stone-600">{r.userName}</span>
+                      </div>
+                      <div className="overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</div>
                     </li>
                   ))}
                 </ul>
@@ -91,7 +110,9 @@ const AlcoholDetailPage = () => {
           </>
         }
       />
-      {isOpenNewReview && <AddReview alcohol={alcohol} onClose={() => setIsOpenNewReview(false)} getReviews={getReviews} />}
+      {isOpenNewReview && (
+        <AddReview alcohol={alcohol} onClose={() => setIsOpenNewReview(false)} getReviews={getReviews} />
+      )}
     </>
   ) : null;
 };
