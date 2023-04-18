@@ -4,7 +4,6 @@ import IconButton from '../../components/IconButton';
 import { AiOutlineClose } from 'react-icons/ai';
 import AlcoholListItem from '../../components/AlcoholListItem';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 type Props = {
@@ -21,8 +20,6 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
   const userNmRef = useRef<HTMLInputElement | null>(null);
   const reviewPwdRef = useRef<HTMLInputElement | null>(null);
-
-  const navigate = useNavigate();
 
   const clickSaveBtn = () => {
     if (!gradeRef.current?.textContent) {
@@ -61,14 +58,9 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       return;
     }
 
-    // 등록 확인 여부 modal
-
-    // 리뷰 등록
+    alert('임시 alert 창입니다. 리뷰 등록 완료되었습니다.')
     // addReview();
 
-    navigate(`/alcs/${alcohol.no}`);
-
-    // 리뷰 재 호출 & 리뷰 화면 닫기
     onClose();
     getReviews();
   };
