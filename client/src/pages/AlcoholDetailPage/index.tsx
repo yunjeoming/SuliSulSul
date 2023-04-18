@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MockAlcoholsType, MockReviewType } from '../../types/mockAlcohols';
 import Main from '../../components/Main';
@@ -42,6 +42,7 @@ const AlcoholDetailPage = () => {
   useEffect(() => {
     getAlcohol();
     getReviews();
+    console.log('rendering');
     // eslint-disable-next-line
   }, [id]);
 
@@ -61,19 +62,15 @@ const AlcoholDetailPage = () => {
               <Thumbnail imgSrc="" isCenter />
               <p className="py-4">
                 {alcohol.description}
-                테스트용 이거 너무 맛있어요. 엄청 강추합니다. 그러나 도수가 너무 높아요 그러니 한번에 많이 마시면 바로
-                훅 갈 수 있답니다~~~~! 테스트용 이거 너무 맛있어요. 엄청 강추합니다. 그러나 도수가 너무 높아요 그러니
-                한번에 많이 마시면 바로 훅 갈 수 있답니다~~~~! 테스트용 이거 너무 맛있어요. 엄청 강추합니다. 그러나
-                도수가 너무 높아요 그러니 한번에 많이 마시면 바로 훅 갈 수 있답니다~~~~!
+                테스트용 이거 너무 맛있어요.
               </p>
             </section>
             <section className="">
               <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
                 <span className="text-lg">리뷰</span>
-                <button onClick={handleAddReview}>보기</button>
-                <Link to={`/alcs/${id}/new`} className="text-sm text-stone-400 hover:text-stone-600">
+                <button className="text-sm text-stone-400 hover:text-stone-600" onClick={handleAddReview}>
                   등록하기
-                </Link>
+                </button>
               </div>
               {reviews ? (
                 <ul>
@@ -94,7 +91,7 @@ const AlcoholDetailPage = () => {
           </>
         }
       />
-      {isOpenNewReview && <AddReview alcohol={alcohol} onClose={() => setIsOpenNewReview(false)} />}
+      {isOpenNewReview && <AddReview alcohol={alcohol} onClose={() => setIsOpenNewReview(false)} getReviews={getReviews} />}
     </>
   ) : null;
 };

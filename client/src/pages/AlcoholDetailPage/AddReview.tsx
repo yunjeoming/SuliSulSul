@@ -4,34 +4,44 @@ import IconButton from '../../components/IconButton';
 import { AiOutlineClose } from 'react-icons/ai';
 import AlcoholListItem from '../../components/AlcoholListItem';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 type Props = {
   alcohol: MockAlcoholsType;
   onClose: () => void;
+  getReviews: () => void;
 };
 
-const AddReview = ({ alcohol, onClose }: Props) => {
+const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   const baseRef = useRef<HTMLSpanElement | null>(null);
   const fillRef = useRef<HTMLDivElement | null>(null);
   const gradeRef = useRef<HTMLSpanElement | null>(null);
-  const reviewTitleRef = useRef<HTMLInputElement | null>(null);
-  const reviewContentRef = useRef<HTMLTextAreaElement | null>(null);
+  const titleRef = useRef<HTMLInputElement | null>(null);
+  const contentRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const navigate = useNavigate();
 
   const clickSaveBtn = () => {
-    // console.log(gradeRef.current?.textContent);
-    // console.log(reviewTitleRef.current?.value);
-    // console.log(reviewContentRef.current?.value);
-
-    if(!gradeRef.current?.textContent) {
+    if (!gradeRef.current?.textContent) {
       alert('별점을 선택해주세요!!');
       return;
     }
-    if(!reviewTitleRef.current?.value) {
+    if (!titleRef.current?.value) {
       alert('제목을 입력해주세요!!');
       return;
     }
 
-    // 페이지 이동
+    // 등록 확인 여부 modal
+
+    // 리뷰 등록
+    // addReview();
+
+    navigate(`/alcs/${alcohol.no}`);
+
+    // 리뷰 재 호출 & 리뷰 화면 닫기
+    onClose();
+    getReviews();
   };
 
   const clickStar = (e: MouseEvent<HTMLDivElement>) => {
@@ -43,16 +53,37 @@ const AddReview = ({ alcohol, onClose }: Props) => {
     gradeRef.current.innerText = `${stars}점`;
   };
 
+  const addReview = () => {
+    const grade = gradeRef.current?.textContent?.split('점')[0];
+    const title = titleRef.current?.value;
+    const content = contentRef.current?.value;
+    console.log('grade', grade);
+    console.log('title', title);
+    console.log('content', content);
+
+    axios
+      .post(`/`, {
+        grade,
+        title,
+        content,
+      })
+      .then((res) => {
+        // status code 200일때 redirect. 실패하면 alert 다시 띄우기
+        console.log(res);
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <div className={`flex flex-col absolute top-0 left-0 w-full h-screen ${Styles.MAIN_BACKGROUND_COLOR}`}>
       <header className={`${Styles.HEADER_HEIGHT} flex justify-between items-center text-lg px-4 border-b`}>
         <span>
-          <IconButton styles="p-1" onClick={onClose}>
-            <AiOutlineClose size={'24px'} />
+          <IconButton styles="p-0" onClick={onClose}>
+            <AiOutlineClose size={'20px'} />
           </IconButton>
         </span>
         <span>리뷰작성</span>
-        <button className="text-sm" onClick={clickSaveBtn}>
+        <button className="text-sm hover:text-blue-700" onClick={clickSaveBtn}>
           저장
         </button>
       </header>
@@ -74,8 +105,8 @@ const AddReview = ({ alcohol, onClose }: Props) => {
         </section>
         <section className="flex flex-col items-center p-4 [&>*:not(:last-child)]:mb-4">
           <div>리뷰를 남겨주세요.</div>
-          <input className="w-full p-2" placeholder="제목은 필수 사항입니다." ref={reviewTitleRef} />
-          <textarea className="w-full p-2" placeholder="내용은 선택 사항입니다." rows={5} ref={reviewContentRef} />
+          <input className="w-full p-2" placeholder="제목은 필수 사항입니다." ref={titleRef} />
+          <textarea className="w-full p-2" placeholder="내용은 선택 사항입니다." rows={5} ref={contentRef} />
           <div className="">
             {/* <label>제목</label> */}
             {/* <label>내용</label> */}
