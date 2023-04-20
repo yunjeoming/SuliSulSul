@@ -12,6 +12,7 @@ const ReviewListPage = () => {
 
   const [alcohol, setAlcohol] = useState<MockAlcoholsType | null>(null);
   const [reviews, setReviews] = useState<MockReviewType[]>([]);
+  const [isOpenPasswordInput, setIsOpenPasswordInput] = useState(false);
 
   const getAlcohol = useCallback(() => {
     axios
@@ -35,9 +36,13 @@ const ReviewListPage = () => {
   useEffect(() => {
     getAlcohol();
     getReviews();
-
     // eslint-disable-next-line
   }, [id]);
+
+  const handleClickEditReview = useCallback(() => {
+    setIsOpenPasswordInput((prev) => !prev);
+  }, []);
+
   return alcohol ? (
     <div>
       <div className="px-2 border-b mb-2">
@@ -61,17 +66,23 @@ const ReviewListPage = () => {
                 <strong>{r.grade}</strong>
               </div>
             </div>
-            <div className="flex">
-              <IconButton styles="p-1">
-                <AiOutlineCloseSquare />
-              </IconButton>
-              <IconButton styles="p-1">
+            <div className="flex text-stone-400">
+              <IconButton styles="p-1 hover:text-stone-700" onClick={handleClickEditReview}>
                 <AiOutlineEdit />
+              </IconButton>
+              <IconButton styles="p-1 hover:text-stone-700">
+                <AiOutlineCloseSquare />
               </IconButton>
             </div>
           </div>
-          <div className="font-bold text-lg">{r.title}</div>
+          <div className="font-bold mb-2">{r.title}</div>
           <div>{r.content}</div>
+          {isOpenPasswordInput && (
+            <div className='flex items-center p-2'>
+              <input type="password" className='flex-grow rounded-md p-2 mr-2'/>
+              <button className='border rounded-md px-4 py-2'>확인</button>
+            </div>
+          )}
         </div>
       ))}
     </div>
