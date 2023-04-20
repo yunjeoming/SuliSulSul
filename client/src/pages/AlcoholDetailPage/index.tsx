@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MockAlcoholsType, MockReviewType } from '../../types/mockAlcohols';
 import Main from '../../components/Main';
@@ -42,7 +42,6 @@ const AlcoholDetailPage = () => {
   useEffect(() => {
     getAlcohol();
     getReviews();
-    console.log('rendering');
     // eslint-disable-next-line
   }, [id]);
 
@@ -75,7 +74,7 @@ const AlcoholDetailPage = () => {
             </section>
             <section className="">
               <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
-                <span className="text-lg">리뷰</span>
+                <Link to={`/reviews/${alcohol.no}`} className='text-lg cursor-pointer'>리뷰</Link>
                 <button className="text-sm text-stone-400 hover:text-stone-600" onClick={handleAddReview}>
                   등록하기
                 </button>
