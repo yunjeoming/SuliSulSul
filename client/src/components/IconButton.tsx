@@ -8,7 +8,7 @@ type Props = {
 
 const IconButton = ({ children, onClick, styles = '' }: Props) => {
   return (
-    <div className={`p-3 cursor-pointer ${styles}`} onClick={onClick}>
+    <div className={`cursor-pointer ${styles}`} onClick={onClick}>
       {children}
     </div>
   );

@@ -19,7 +19,7 @@ const SearchSidebar = ({ onClose }: { onClose?: () => void }) => {
   return (
     <form className="relative" onSubmit={handleSubmit}>
       <input className="w-full rounded-lg py-2 pl-4 pr-10" placeholder="검색어를 입력해주세요." ref={inputRef} />
-      <IconButton onClick={handleSubmit} styles="absolute top-0 right-0">
+      <IconButton onClick={handleSubmit} styles="absolute top-0 right-0 p-3">
         <GoSearch />
       </IconButton>
     </form>

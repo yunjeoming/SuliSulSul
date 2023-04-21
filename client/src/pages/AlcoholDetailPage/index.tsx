@@ -5,6 +5,7 @@ import { MockAlcoholsType, MockReviewType } from '../../types/mockAlcohols';
 import Main from '../../components/Main';
 import Thumbnail from '../../components/Thumbnail';
 import AddReview from './AddReview';
+import StarsWithGrade from '../../components/StarsWithGrade';
 
 const AlcoholDetailPage = () => {
   const { id } = useParams();
@@ -51,15 +52,7 @@ const AlcoholDetailPage = () => {
         headerName={alcohol.name}
         headerChildComponent={
           <>
-            <div className="relative mr-1">
-              <span
-                className={`absolute top-0 left-0 text-yellow-300 overflow-hidden`}
-                style={{ width: `${(alcohol.grade || 0) * 20}%` }}
-              >
-                ★★★★★
-              </span>
-              <span className="text-gray-300">★★★★★</span>
-            </div>
+            <StarsWithGrade grade={alcohol.grade || 0} showLabel={false} />
             <span className="text-stone-400 text-xs pr-2">(리뷰 {reviews?.length || 0})</span>
           </>
         }

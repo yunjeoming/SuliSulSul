@@ -3,6 +3,7 @@ import { MockAlcoholsType } from '../types/mockAlcohols';
 import Thumbnail from './Thumbnail';
 import { ShowingType } from '../pages/AlcoholListPage';
 import { Link } from 'react-router-dom';
+import StarsWithGrade from './StarsWithGrade';
 
 type Props = {
   alcohol: MockAlcoholsType;
@@ -75,7 +76,12 @@ const DetailedAlcohol = ({ alcohol, showingType }: Props) => {
       <Thumbnail imgSrc={image} size={styles.thumbnailSize} styles={`shrink-0 mr-1 ${styles.thumbnail}`} />
       <div className={styles.info}>
         <span className={`${showingType === 'listType' && 'mr-2'}`}>{name}</span>
-        {grade && <span className="text-sm">⭐️ {grade}</span>}
+        {grade && (
+          <span className="text-sm">
+            <span className="text-yellow-300">★</span>
+            <span> {grade}</span>
+          </span>
+        )}
         {showingType === 'listType' && description ? (
           <div className={`text-sm text-slate-500 h-full mt-1 ${styles.desc}`}>{truncateDesc(description, 65)}</div>
         ) : null}

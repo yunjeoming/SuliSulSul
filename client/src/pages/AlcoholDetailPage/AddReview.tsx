@@ -102,7 +102,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   };
 
   return (
-    <div className={`flex flex-col absolute top-0 left-0 w-full h-screen ${Styles.MAIN_BACKGROUND_COLOR}`}>
+    <div className={`flex flex-col absolute top-0 left-0 w-full h-screen ${Styles.MAIN_BACKGROUND_COLOR} z-20`}>
       <header className={`${Styles.HEADER_HEIGHT} flex justify-between items-center text-lg px-4 border-b`}>
         <span>
           <IconButton styles="p-0" onClick={onClose}>

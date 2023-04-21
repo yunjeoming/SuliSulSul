@@ -6,6 +6,7 @@ import IconButton from '../../components/IconButton';
 import { AiOutlineCloseSquare } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
 import AlcoholListItem from '../../components/AlcoholListItem';
+import StarsWithGrade from '../../components/StarsWithGrade';
 
 const ReviewListPage = () => {
   const { id } = useParams();
@@ -45,26 +46,25 @@ const ReviewListPage = () => {
 
   return alcohol ? (
     <div>
-      <div className="px-2 border-b mb-2">
+      <div className="px-2 border-b">
         <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
       </div>
+      <div className="flex items-center justify-evenly  border-b py-4">
+        <StarsWithGrade grade={alcohol.grade || 0} styles="text-2xl flex-col-reverse" />
+        <div className="text-sm">
+          <StarsWithGrade grade={5} text={`(${0})`} />
+          <StarsWithGrade grade={4} text={`(${0})`} />
+          <StarsWithGrade grade={3} text={`(${0})`} />
+          <StarsWithGrade grade={2} text={`(${0})`} />
+          <StarsWithGrade grade={1} text={`(${0})`} />
+        </div>
+      </div>
       {reviews.map((r) => (
-        <div key={r.no + r.grade + r.userName} className="mb-4">
-          <div className="flex justify-between items-center mb-2">
+        <div key={r.no + r.grade + r.userName} className="p-4 border-b">
+          <div className="flex justify-between items-center mb-4">
             <div className="flex flex-col">
+              <StarsWithGrade grade={r.grade} />
               <span className="text-sm text-stone-600">{r.userName}</span>
-              <div className="flex items-center">
-                <div className="relative mr-1">
-                  <span
-                    className={`absolute top-0 left-0 text-yellow-300 overflow-hidden`}
-                    style={{ width: `${r.grade * 20}%` }}
-                  >
-                    ★★★★★
-                  </span>
-                  <span className="text-gray-300">★★★★★</span>
-                </div>
-                <strong>{r.grade}</strong>
-              </div>
             </div>
             <div className="flex text-stone-400">
               <IconButton styles="p-1 hover:text-stone-700" onClick={handleClickEditReview}>
@@ -78,9 +78,9 @@ const ReviewListPage = () => {
           <div className="font-bold mb-2">{r.title}</div>
           <div>{r.content}</div>
           {isOpenPasswordInput && (
-            <div className='flex items-center p-2'>
-              <input type="password" className='flex-grow rounded-md p-2 mr-2'/>
-              <button className='border rounded-md px-4 py-2'>확인</button>
+            <div className="flex items-center p-2">
+              <input type="password" className="flex-grow rounded-md p-2 mr-2" />
+              <button className="border rounded-md px-4 py-2">확인</button>
             </div>
           )}
         </div>
