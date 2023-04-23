@@ -6,6 +6,7 @@ import StarsWithGrade from '../../components/StarsWithGrade';
 import { MockReviewType } from '../../types/mockAlcohols';
 import axios from 'axios';
 import DynamicStars from '../../components/DynamicStars';
+import Modal from '../../components/Modal';
 
 type Props = {
   review: MockReviewType;
@@ -16,12 +17,14 @@ const ReviewItem: FC<Props> = ({ review }) => {
     targetMode: '' | 'edit' | 'delete';
     isOpenPasswordInput: boolean;
     isEdit: boolean;
+    isOpenModalDeleteReview: boolean;
   }>({
     targetMode: '',
     isOpenPasswordInput: false,
     isEdit: false,
+    isOpenModalDeleteReview: false,
   });
-  const { isOpenPasswordInput, isEdit } = state;
+  const { isOpenPasswordInput, isEdit, isOpenModalDeleteReview } = state;
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -81,6 +84,10 @@ const ReviewItem: FC<Props> = ({ review }) => {
   const showDeleteReviewModal = useCallback(() => {
     setState((prev) => ({ ...prev, isOpenPasswordInput: false }));
     // 삭제 alert
+    setState((prev) => ({
+      ...prev,
+      isOpenModalDeleteReview: true,
+    }));
   }, []);
 
   const cancelEditMode = useCallback(() => {
@@ -102,6 +109,13 @@ const ReviewItem: FC<Props> = ({ review }) => {
     //   })
     //   .catch((err) => console.dir(err));
   }, []);
+
+  const closeModal = () => {
+    setState((prev) => ({
+      ...prev,
+      isOpenModalDeleteReview: false,
+    }));
+  };
 
   useEffect(() => {
     if (!isEdit) return;
@@ -165,6 +179,21 @@ const ReviewItem: FC<Props> = ({ review }) => {
             확인
           </button>
         </div>
+      )}
+      {isOpenModalDeleteReview && (
+        <Modal onClose={closeModal} hasCloseBtn>
+          <>
+            <div className='px-6 py-6'>리뷰를 삭제하시겠습니까?</div>
+            <div className="w-full flex justify-end border-t">
+              <button className="p-2 w-1/2 border-r" onClick={closeModal}>
+                취소
+              </button>
+              <button className="p-2 w-1/2" onClick={handleClickEditReview}>
+                확인
+              </button>
+            </div>
+          </>
+        </Modal>
       )}
     </>
   );
