@@ -4,13 +4,18 @@ type Props = {
   children: JSX.Element;
   onClick?: (e?: SyntheticEvent) => void;
   styles?: string;
+  disabled?: boolean;
 };
 
-const IconButton = ({ children, onClick, styles = '' }: Props) => {
+const IconButton = ({ children, onClick, styles = '', disabled = false }: Props) => {
   return (
-    <div className={`cursor-pointer ${styles}`} onClick={onClick}>
+    <button
+      className={`${disabled ? 'cursor-default hover:text-stone-400' : 'cursor-pointer'} ${styles}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
-    </div>
+    </button>
   );
 };
 

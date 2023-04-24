@@ -51,32 +51,8 @@ const ReviewItem: FC<Props> = ({ review }) => {
     });
   }, []);
 
-  const checkPassword = useCallback(() => {
-    if (!passwordRef.current || !passwordRef.current.value) return;
-
-    console.log(targetMode)
-
-    // 삭제
-    showDeleteReviewModal();
-
-    // 수정
-    // changeEditMode();
-
-    // axios
-    //   .post(``)
-    //   .then((res) => {
-    //     // 비밀번호 일치시
-    //     // 수정 -> text -> textarea로
-    //     // 삭제 -> 삭제 alert
-    //     if (targetMode === 'edit') changeEditMode();
-    //     if (targetMode === 'delete') showDeleteReviewModal();
-    //   })
-    //   .catch((err) => console.dir(err));
-  }, []);
-
   const changeEditMode = useCallback(() => {
     setState((prev) => ({ ...prev, isOpenPasswordInput: false, isEdit: true }));
-    // text -> textarea
   }, []);
 
   const showDeleteReviewModal = useCallback(() => {
@@ -86,8 +62,30 @@ const ReviewItem: FC<Props> = ({ review }) => {
     }));
   }, []);
 
+  const checkPassword = useCallback(() => {
+    if (!passwordRef.current || !passwordRef.current.value) return;
+
+    // 삭제 모드
+    if (targetMode === 'delete') showDeleteReviewModal();
+
+    // 수정 모드
+    if (targetMode === 'edit') changeEditMode();
+  }, [targetMode, passwordRef, showDeleteReviewModal, changeEditMode]);
+
   const cancelEditMode = useCallback(() => {
     setState((prev) => ({ ...prev, isOpenPasswordInput: false, isEdit: false }));
+  }, []);
+
+  const initState = () => {
+    // 리뷰 수정 / 삭제 성공 시 state 초기화
+    setState((prev) => ({ ...prev, targetMode: '', isOpenPasswordInput: false, isEdit: false }));
+  };
+
+  const closeModal = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      isOpenModalDeleteReview: false,
+    }));
   }, []);
 
   const handleClickEditReview = useCallback(() => {
@@ -99,7 +97,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
     console.log('title', title);
     console.log('content', content);
 
-    // 리뷰 삭제 api
+    // 리뷰 수정 api
     // axios
     //   .post('')
     //   .then((res) => {
@@ -107,20 +105,26 @@ const ReviewItem: FC<Props> = ({ review }) => {
     //   })
     //   .catch((err) => console.dir(err));
 
-    // 리뷰 삭제 완료 시
-    setState((prev) => ({ ...prev, isOpenPasswordInput: false }));
+    // 리뷰 수정 완료 시
+    // 수정 모드 -> 일반 모드로 변경
+    initState();
   }, []);
 
-  const closeModal = () => {
-    setState((prev) => ({
-      ...prev,
-      isOpenModalDeleteReview: false,
-    }));
-  };
+  const handleClickDeleteReview = useCallback(() => {
+    // 리뷰 삭제 api
+    // axios
+    //   .delete('')
+    //   .then((res) => {
+    //     //
+    //   })
+    //   .catch((err) => console.dir(err));
+    // 리뷰 삭제 완료 시
+    // 모달 닫고, 패스워드 인풋 지우기
+    initState();
+    closeModal();
+  }, [closeModal]);
 
-  useEffect(() => {
-    if (!isEdit) return;
-
+  const convertTextToInput = useCallback(() => {
     if (titleRef.current) {
       titleRef.current.value = review.title;
     }
@@ -128,7 +132,13 @@ const ReviewItem: FC<Props> = ({ review }) => {
     if (contentRef.current) {
       contentRef.current.value = review.content || '';
     }
-  }, [isEdit, review]);
+  }, [review]);
+
+  useEffect(() => {
+    if (isEdit) {
+      convertTextToInput();
+    }
+  }, [isEdit, convertTextToInput]);
 
   return (
     <>
@@ -138,10 +148,18 @@ const ReviewItem: FC<Props> = ({ review }) => {
           <span className="text-sm text-stone-600">{review.userName}</span>
         </div>
         <div className="flex text-stone-400">
-          <IconButton styles="p-1 hover:text-stone-700" onClick={() => handleClickShowPasswordInput('edit')}>
+          <IconButton
+            styles="p-1 hover:text-stone-700"
+            onClick={() => handleClickShowPasswordInput('edit')}
+            disabled={isEdit}
+          >
             <AiOutlineEdit />
           </IconButton>
-          <IconButton styles="p-1 hover:text-stone-700" onClick={() => handleClickShowPasswordInput('delete')}>
+          <IconButton
+            styles="p-1 hover:text-stone-700"
+            onClick={() => handleClickShowPasswordInput('delete')}
+            disabled={isEdit}
+          >
             <AiOutlineCloseSquare />
           </IconButton>
         </div>
@@ -184,12 +202,12 @@ const ReviewItem: FC<Props> = ({ review }) => {
       {isOpenModalDeleteReview && (
         <Modal onClose={closeModal} hasCloseBtn>
           <>
-            <div className='px-6 py-6'>리뷰를 삭제하시겠습니까?</div>
+            <div className="px-6 py-6">리뷰를 삭제하시겠습니까?</div>
             <div className="w-full flex justify-end border-t">
               <button className="p-2 w-1/2 border-r" onClick={closeModal}>
                 취소
               </button>
-              <button className="p-2 w-1/2" onClick={handleClickEditReview}>
+              <button className="p-2 w-1/2" onClick={handleClickDeleteReview}>
                 확인
               </button>
             </div>
