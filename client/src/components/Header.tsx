@@ -42,7 +42,7 @@ const Header = () => {
 
   return (
     <>
-      <header className={`sticky top-0 ${Styles.MAIN_BACKGROUND_COLOR} flex justify-between items-center text-2xl ${Styles.HEADER_HEIGHT} border-b ${Styles.HEADER_MARGIN_BOTTOM}`}>
+      <header className={`sticky top-0 ${Styles.MAIN_BACKGROUND_COLOR} flex justify-between items-center text-2xl ${Styles.HEADER_HEIGHT} border-b ${Styles.HEADER_MARGIN_BOTTOM} z-10 px-3`}>
         <IconButton onClick={clickCategoryBtn}>
           <FaBars />
         </IconButton>

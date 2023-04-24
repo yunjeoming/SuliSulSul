@@ -10,6 +10,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import Header from './components/Header';
 import { Styles } from './constants/Styles';
 import SearchListPage from './pages/SearchListPage';
+import ReviewListPage from './pages/ReviewListPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/c/:category" element={<AlcoholListPage />} />
             <Route path="/alcs/:id" element={<AlcoholDetailPage />} />
             <Route path="/search" element={<SearchListPage />} />
+            <Route path="/reviews/:id" element={<ReviewListPage />} />
             <Route path="/admin" element={<AdminMainPage />} />
             <Route path="/admin/alcs" element={<AdminAlcoholListPage />} />
             <Route path="/admin/alcs/:id" element={<AdminAlcoholDetailPage />} />

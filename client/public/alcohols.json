@@ -3,27 +3,32 @@
     {
       "no": 1,
       "name": "1664블랑",
-      "categoryName": "beer" 
+      "categoryName": "beer" ,
+      "grade": 4.4
     },
     {
       "no": 2,
       "name": "처음처럼",
-      "categoryName": "soju" 
+      "categoryName": "soju" ,
+      "grade": 3.5
     },
     {
       "no": 3,
       "name": "조니워커",
-      "categoryName": "whiskey" 
+      "categoryName": "whiskey",
+      "grade": 2.9
     },
     {
       "no": 4,
       "name": "트로피칼 모스카토 망고",
-      "categoryName": "wine" 
+      "categoryName": "wine",
+      "grade": 4.8
     },
     {
       "no": 5,
       "name": "느린마을",
-      "categoryName": "makgeolli" 
+      "categoryName": "makgeolli",
+      "grade": 4
     }
   ]
 }

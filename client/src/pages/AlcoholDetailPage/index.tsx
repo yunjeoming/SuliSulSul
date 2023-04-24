@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MockAlcoholsType, MockReviewType } from '../../types/mockAlcohols';
 import Main from '../../components/Main';
 import Thumbnail from '../../components/Thumbnail';
 import AddReview from './AddReview';
+import StarsWithGrade from '../../components/StarsWithGrade';
 
 const AlcoholDetailPage = () => {
   const { id } = useParams();
@@ -42,7 +43,6 @@ const AlcoholDetailPage = () => {
   useEffect(() => {
     getAlcohol();
     getReviews();
-    console.log('rendering');
     // eslint-disable-next-line
   }, [id]);
 
@@ -52,15 +52,7 @@ const AlcoholDetailPage = () => {
         headerName={alcohol.name}
         headerChildComponent={
           <>
-            <div className="relative mr-1">
-              <span
-                className={`absolute top-0 left-0 text-yellow-300 overflow-hidden`}
-                style={{ width: `${(alcohol.grade || 0) * 20}%` }}
-              >
-                ★★★★★
-              </span>
-              <span className="text-gray-300">★★★★★</span>
-            </div>
+            <StarsWithGrade grade={alcohol.grade || 0} showLabel={false} />
             <span className="text-stone-400 text-xs pr-2">(리뷰 {reviews?.length || 0})</span>
           </>
         }
@@ -75,7 +67,7 @@ const AlcoholDetailPage = () => {
             </section>
             <section className="">
               <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
-                <span className="text-lg">리뷰</span>
+                <Link to={`/reviews/${alcohol.no}`} className='text-lg cursor-pointer'>리뷰</Link>
                 <button className="text-sm text-stone-400 hover:text-stone-600" onClick={handleAddReview}>
                   등록하기
                 </button>
