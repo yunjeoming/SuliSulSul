@@ -24,7 +24,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
     isEdit: false,
     isOpenModalDeleteReview: false,
   });
-  const { isOpenPasswordInput, isEdit, isOpenModalDeleteReview } = state;
+  const { targetMode, isOpenPasswordInput, isEdit, isOpenModalDeleteReview } = state;
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -51,12 +51,10 @@ const ReviewItem: FC<Props> = ({ review }) => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log({ targetMode, isOpenPasswordInput, isEdit });
-  // }, [targetMode, isOpenPasswordInput, isEdit]);
-
   const checkPassword = useCallback(() => {
     if (!passwordRef.current || !passwordRef.current.value) return;
+
+    console.log(targetMode)
 
     // 삭제
     showDeleteReviewModal();
@@ -82,8 +80,6 @@ const ReviewItem: FC<Props> = ({ review }) => {
   }, []);
 
   const showDeleteReviewModal = useCallback(() => {
-    setState((prev) => ({ ...prev, isOpenPasswordInput: false }));
-    // 삭제 alert
     setState((prev) => ({
       ...prev,
       isOpenModalDeleteReview: true,
@@ -102,12 +98,17 @@ const ReviewItem: FC<Props> = ({ review }) => {
     console.log('grade', grade);
     console.log('title', title);
     console.log('content', content);
+
+    // 리뷰 삭제 api
     // axios
     //   .post('')
     //   .then((res) => {
     //     //
     //   })
     //   .catch((err) => console.dir(err));
+
+    // 리뷰 삭제 완료 시
+    setState((prev) => ({ ...prev, isOpenPasswordInput: false }));
   }, []);
 
   const closeModal = () => {
