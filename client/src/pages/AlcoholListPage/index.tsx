@@ -35,12 +35,12 @@ const AlcoholListPage = () => {
       headerChildComponent={
         <>
           <IconButton
-            styles={`border-l border-r border-stone-950 hover:bg-gray-100`}
+            styles={`border-l border-r border-stone-950 p-3 hover:bg-gray-100`}
             onClick={() => handleClickShowingType('listType')}
           >
             <BsListUl color={`${showingType === 'listType' ? '#000' : '#adadad'}`} />
           </IconButton>
-          <IconButton styles={`hover:bg-gray-100`} onClick={() => handleClickShowingType('gridType')}>
+          <IconButton styles={`p-3 hover:bg-gray-100`} onClick={() => handleClickShowingType('gridType')}>
             <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
           </IconButton>
         </>
