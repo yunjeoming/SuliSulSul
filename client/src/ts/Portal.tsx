@@ -14,7 +14,7 @@ const createElement = (id: string) => {
     newElement.style.width = '100%';
     newElement.style.height = '100vh';
     newElement.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
-    newElement.style.zIndex = '11';
+    newElement.style.zIndex = '20';
     
     newElement.style.display = 'flex';
     newElement.style.justifyContent = 'center';
