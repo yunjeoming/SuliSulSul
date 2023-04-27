@@ -4,12 +4,12 @@ import { CategoryUtils } from '../utils/Category';
 import { useNavigate } from 'react-router-dom';
 
 const CategorySidebar = ({ onClose }: { onClose?: () => void }) => {
-  const [category, setCategory] = useState<Category[]>([]);
+  const [category, setCategory] = useState<Category[]>([{ id: 999, name: 'all' }]);
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       const categoryData = await CategoryUtils.getCategory();
-      categoryData && setCategory(categoryData);
+      categoryData && setCategory((state) => ([...state, ...categoryData]));
     })();
   }, []);
 

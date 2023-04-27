@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Styles } from '../../constants/Styles';
 import IconButton from '../../components/IconButton';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -6,6 +6,7 @@ import AlcoholListItem from '../../components/AlcoholListItem';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
 // import axios from 'axios';
 import DynamicStars from '../../components/DynamicStars';
+import Modal from '../../components/Modal';
 
 type Props = {
   alcohol: MockAlcoholsType;
@@ -20,51 +21,82 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   const userNmRef = useRef<HTMLInputElement | null>(null);
   const reviewPwdRef = useRef<HTMLInputElement | null>(null);
 
+  const [modal, setModal] = useState({
+    content: '',
+    isOpen: false,
+  });
+
+  const { content, isOpen } = modal;
+
   const clickSaveBtn = () => {
     if (!gradeRef.current?.textContent) {
-      alert('별점을 선택해주세요!!');
+      setModal({
+        content: '별점을 선택해주세요',
+        isOpen: true,
+      });
       gradeRef.current?.focus();
       return;
     }
 
     if (!titleRef.current?.value) {
-      alert('제목을 입력해주세요!!');
+      setModal({
+        content: '제목을 입력해주세요',
+        isOpen: true,
+      });
       titleRef.current?.focus();
       return;
     }
 
     if (!contentRef.current?.value) {
-      alert('내용을 입력해주세요!!');
+      setModal({
+        content: '내용을 입력해주세요',
+        isOpen: true,
+      });
       contentRef.current?.focus();
       return;
     }
 
     if (!userNmRef.current?.value) {
-      alert('작성자를 입력해주세요!!');
+      setModal({
+        content: '작성자를 입력해주세요',
+        isOpen: true,
+      });
       userNmRef.current?.focus();
       return;
     }
 
     if (userNmRef.current?.value.length > 10) {
-      alert('작성자는 최대 10자까지 입력해주세요!!');
+      setModal({
+        content: '작성자는 최대 10자까지 입력해주세요',
+        isOpen: true,
+      });
       userNmRef.current?.focus();
       return;
     }
 
     if (!reviewPwdRef.current?.value) {
-      alert('비밀번호를 입력해주세요!!');
+      setModal({
+        content: '비밀번호를 입력해주세요',
+        isOpen: true,
+      });
       reviewPwdRef.current?.focus();
       return;
     }
 
-    console.log(gradeRef.current?.textContent)
+    console.log(gradeRef.current?.textContent);
 
-    // alert('임시 alert 창입니다. 리뷰 등록 완료되었습니다.')
     // addReview();
 
     // onClose();
     // getReviews();
   };
+
+  const onCloseModal = useCallback(() => {
+    setModal((state) => ({
+      ...state,
+      isOpen: false,
+    }));
+  }, []);
 
   // const addReview = () => {
   //   const grade = gradeRef.current?.textContent?.split('점')[0];
@@ -84,7 +116,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   //       title,
   //       content,
   //       userNm,
-  //       reviewPwd 
+  //       reviewPwd
   //     })
   //     .then((res) => {
   //       // status code 200일때 redirect. 실패하면 alert 다시 띄우기
@@ -121,12 +153,25 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
         </section>
         <section className="flex flex-col items-center p-4 [&>*:not(:last-child)]:mb-2">
           <div>작성자 정보를 알려주세요</div>
-          <div className='flex items-center justify-between'>
+          <div className="flex items-center justify-between">
             <input className="w-[58%] p-2" placeholder="작성자" ref={userNmRef} />
             <input className="w-2/5 p-2" placeholder="비밀번호" ref={reviewPwdRef} type="password" />
           </div>
         </section>
       </div>
+      {isOpen && (
+        <Modal
+          children={
+            <div className="flex flex-col items-center p-2">
+              <div className="p-4">{content}</div>
+              <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
+                확인
+              </button>
+            </div>
+          }
+          onClose={onCloseModal}
+        />
+      )}
     </div>
   );
 };
