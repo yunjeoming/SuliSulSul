@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AdminMainPage from './pages/Admin/MainPage';
 import AdminAlcoholDetailPage from './pages/Admin/AlcoholDetailPage';
@@ -20,6 +20,13 @@ function App() {
 
   const { category, search } = isOpenSidebar;
 
+  const initSidebar = useCallback(() => {
+    setIsOpenSidebar({
+      category: false,
+      search: false,
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="h-screen bg-gray-200 flex justify-center items-stretch">
@@ -27,7 +34,7 @@ function App() {
           <Header isOpenSidebar={isOpenSidebar} setIsOpenSidebar={setIsOpenSidebar} />
           <div className={`${category || search ? 'overflow-hidden' : ''}`}>
             <Routes>
-              <Route path="/" element={<MainPage />} />
+              <Route path="/" element={<MainPage initSidebar={initSidebar} />} />
               <Route path="/c/:category" element={<AlcoholListPage />} />
               <Route path="/alcs/:id" element={<AlcoholDetailPage />} />
               <Route path="/search" element={<SearchListPage />} />

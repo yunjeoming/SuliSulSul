@@ -9,9 +9,10 @@ type Props = {
 };
 
 const Sidebar = ({ type, onClose }: Props) => {
-  const height = type === 'category' ? Styles.MAIN_AREA_HEIGHT : 'h-60';
+  // 검색 sidebar 짧게 할 땐 h-60
+  // const height = type === 'category' ? Styles.MAIN_AREA_HEIGHT : 'h-60';
   return (
-    <div className={`absolute flex flex-col justify-between w-full bg-slate-300 p-4 ${height} z-10`}>
+    <div className={`absolute flex flex-col justify-between w-full ${Styles.MAIN_BACKGROUND_COLOR} p-4 ${Styles.MAIN_AREA_HEIGHT} z-10`}>
       {type === 'category' ? <CategorySidebar onClose={onClose} /> : <SearchSidebar onClose={onClose} />}
       <div className="flex justify-end">
         <button className="w-fit" onClick={onClose}>

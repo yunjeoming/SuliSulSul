@@ -17,6 +17,7 @@ const AlcoholListPage = () => {
   const [showingType, setShowingType] = useState<ShowingType>('listType');
 
   useEffect(() => {
+    // if category === 'all', 모든 술 가져오기
     axios
       .get(`/alcoholsByCategory.json`)
       .then((res) => {

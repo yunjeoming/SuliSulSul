@@ -1,10 +1,14 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
 import AlcoholList from '../../components/AlcoholList';
 import Main from '../../components/Main';
 
-const MainPage = () => {
+type Props = {
+  initSidebar: () => void;
+};
+
+const MainPage: FC<Props> = ({ initSidebar }) => {
   const [bestItemsByCategory, setBestItemsByCategory] = useState<MockAlcoholsType[]>([]);
   const getBestItemsByCategory = useCallback(async () => {
     axios
@@ -18,6 +22,7 @@ const MainPage = () => {
   useEffect(() => {
     let isMount = true;
     (async () => {
+      initSidebar();
       if (isMount) {
         await getBestItemsByCategory();
       }
@@ -25,7 +30,7 @@ const MainPage = () => {
     return () => {
       isMount = false;
     };
-  }, [getBestItemsByCategory]);
+  }, [getBestItemsByCategory, initSidebar]);
 
   return (
     <Main
