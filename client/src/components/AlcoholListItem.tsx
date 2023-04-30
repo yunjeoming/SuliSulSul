@@ -3,24 +3,25 @@ import { MockAlcoholsType } from '../types/mockAlcohols';
 import Thumbnail from './Thumbnail';
 import { ShowingType } from '../pages/AlcoholListPage';
 import { Link } from 'react-router-dom';
-import StarsWithGrade from './StarsWithGrade';
 
 type Props = {
   alcohol: MockAlcoholsType;
   isSimple?: boolean;
   showingType?: ShowingType;
   isNotLink?: boolean;
+  isAdmin?: boolean;
 };
 
 const SIMPLE_WRAPPER_STYLES = 'flex flex-col justify-center items-center';
 const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center py-2';
 
-const AlcoholListItem = ({ alcohol, isSimple = false, showingType, isNotLink = false }: Props) => {
+const AlcoholListItem = ({ alcohol, isSimple = false, showingType, isNotLink = false, isAdmin = false }: Props) => {
+  const link = isAdmin ? `/admin/alcs/${alcohol.no}` : `/alcs/${alcohol.no}`;
   return isSimple ? (
     isNotLink ? (
       <SimpleAlcohol alcohol={alcohol} />
     ) : (
-      <Link to={`/alcs/${alcohol.no}`} className={`${SIMPLE_WRAPPER_STYLES} cursor-pointer`}>
+      <Link to={link} className={`${SIMPLE_WRAPPER_STYLES} cursor-pointer`}>
         <SimpleAlcohol alcohol={alcohol} />
       </Link>
     )
@@ -28,7 +29,7 @@ const AlcoholListItem = ({ alcohol, isSimple = false, showingType, isNotLink = f
     <DetailedAlcohol alcohol={alcohol} showingType={showingType} isNotLink={isNotLink} />
   ) : (
     <Link
-      to={`/alcs/${alcohol.no}`}
+      to={link}
       className={`${DETAILED_WRAPPER_STYLES} cursor-pointer ${showingType === 'listType' ? 'w-full' : 'flex-col'}`}
     >
       <DetailedAlcohol alcohol={alcohol} showingType={showingType} isNotLink={isNotLink} />
