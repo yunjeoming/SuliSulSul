@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { MockAlcoholsType } from '../types/mockAlcohols';
 import axios from 'axios';
-import Main from './Main';
 import AlcoholList from './AlcoholList';
+import MainLayout from '../layout/MainLayout';
 
 type Props = {
   initSidebar: () => void;
@@ -33,24 +33,18 @@ const Home: FC<Props> = ({ initSidebar }) => {
   }, [getBestItemsByCategory, initSidebar]);
 
   return (
-    <Main
-      isOnlyBody
-      headerName=""
-      headerChildComponent={<></>}
-      bodyComponent={
-        <>
-          <section className="flex flex-col mb-12">
-            <span>카테고리별 인기 아이템</span>
-            <AlcoholList alcohols={bestItemsByCategory} isSimple styles="py-2" />
-          </section>
-          <section className="flex flex-col mb-12">
-            <span>추천 아이템</span>
-            <AlcoholList alcohols={bestItemsByCategory} isSimple styles="py-2" />
-          </section>
-        </>
-      }
-      bodyStyles=""
-    />
+    <MainLayout>
+      <div>
+        <section className="flex flex-col mb-12">
+          <span>카테고리별 인기 아이템</span>
+          <AlcoholList alcohols={bestItemsByCategory} isSimple styles="py-2" />
+        </section>
+        <section className="flex flex-col mb-12">
+          <span>추천 아이템</span>
+          <AlcoholList alcohols={bestItemsByCategory} isSimple styles="py-2" />
+        </section>
+      </div>
+    </MainLayout>
   );
 };
 

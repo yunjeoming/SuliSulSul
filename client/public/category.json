@@ -1,23 +1,23 @@
 {
   "category": [
     {
-      "no": 1,
+      "id": 1,
       "name": "beer"
     },
     {
-      "no": 2,
+      "id": 2,
       "name": "soju"
     },
     {
-      "no": 3,
+      "id": 3,
       "name": "whiskey"
     },
     {
-      "no": 4,
+      "id": 4,
       "name": "wine"
     },
     {
-      "no": 5,
+      "id": 5,
       "name": "makgeolli"
     }
   ]

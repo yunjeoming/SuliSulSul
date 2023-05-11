@@ -6,16 +6,17 @@ type Props = {
   size?: string;
   styles?: string;
   isCenter?: boolean;
+  imgStyles?: string;
 };
 
-const Thumbnail = ({ imgSrc, size = '10rem', styles = '', isCenter = false }: Props) => {
+const Thumbnail = ({ imgSrc, size = '10rem', styles = '', imgStyles = '', isCenter = false }: Props) => {
   // 추후 실제 이미지 넣을 경우 img style 작업 필수
   return (
-    <div className={`${isCenter ? 'flex items-center justify-center bg-gray-100' : ''}`}>
+    <div className={`${isCenter ? `flex items-center justify-center bg-gray-100 ${styles}`  : styles}`}>
       {imgSrc ? (
-        <img alt="alcoholImage" src={imgSrc} className={`${styles}`} />
+        <img alt="alcoholImage" src={imgSrc} className={`${imgStyles}`} />
       ) : (
-        <RxImage size={size} className={`${styles}`} />
+        <RxImage size={size} className={`${imgStyles}`} />
       )}
     </div>
   );

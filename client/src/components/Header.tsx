@@ -4,7 +4,7 @@ import { GoSearch } from 'react-icons/go';
 import IconButton from './IconButton';
 import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';
-import { Styles } from '../constants/Styles';
+import HeaderLayout from '../layout/HeaderLayout';
 
 type Props = {
   isOpenSidebar: { category: boolean; search: boolean };
@@ -49,9 +49,7 @@ const Header: FC<Props> = ({ isOpenSidebar, setIsOpenSidebar }) => {
 
   return (
     <>
-      <header
-        className={`sticky top-0 ${Styles.MAIN_BACKGROUND_COLOR} flex justify-between items-center text-2xl ${Styles.HEADER_HEIGHT} border-b ${Styles.HEADER_MARGIN_BOTTOM} z-10 px-3`}
-      >
+      <HeaderLayout>
         <IconButton onClick={clickCategoryBtn}>
           <FaBars />
         </IconButton>
@@ -61,7 +59,7 @@ const Header: FC<Props> = ({ isOpenSidebar, setIsOpenSidebar }) => {
         <IconButton onClick={clickSearchBtn}>
           <GoSearch />
         </IconButton>
-      </header>
+      </HeaderLayout>
       {isOpenSidebar.category && <Sidebar type="category" onClose={closeCategorySidebar} />}
       {isOpenSidebar.search && <Sidebar type="search" onClose={closeSearchSidebar} />}
     </>
