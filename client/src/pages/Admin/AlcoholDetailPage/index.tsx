@@ -30,7 +30,6 @@ const AdminAlcoholDetailPage = () => {
       <MainLayout>
         <SubHeader headerName={alcohol.name} />
         <div>
-          {/* <AlcoholDetailContent alcohol={alcohol} /> */}
           <AlcoholEdit alcohol={alcohol} />
         </div>
       </MainLayout>

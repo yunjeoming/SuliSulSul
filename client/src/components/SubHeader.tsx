@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 type Props = {
   headerName: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactNode;
 };
 
 const SubHeader: FC<Props> = ({ headerName = '', children }) => {

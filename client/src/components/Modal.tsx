@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import ModalPortal from '../ts/Portal';
 
 type Props = {
-  children: JSX.Element;
+  children: React.ReactNode;
   onClose: () => void;
   hasCloseBtn?: boolean;
 };

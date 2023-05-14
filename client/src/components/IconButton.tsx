@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
 type Props = {
-  children: JSX.Element;
+  children: React.ReactNode;
   onClick?: (e?: SyntheticEvent) => void;
   styles?: string;
   disabled?: boolean;

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Styles } from '../constants/Styles';
 
 type Props = {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
   isAdmin?: boolean;
 };
 
