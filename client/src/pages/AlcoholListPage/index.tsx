@@ -6,7 +6,8 @@ import { RxGrid } from 'react-icons/rx';
 import axios from 'axios';
 import { MockAlcoholsType } from '../../types/mockAlcohols';
 import AlcoholList from '../../components/AlcoholList';
-import Main from '../../components/Main';
+import MainLayout from '../../layout/MainLayout';
+import SubHeader from '../../components/SubHeader';
 
 export type ShowingType = 'listType' | 'gridType';
 
@@ -31,23 +32,20 @@ const AlcoholListPage = () => {
   };
 
   return category ? (
-    <Main
-      headerName={category}
-      headerChildComponent={
-        <>
-          <IconButton
-            styles={`border-l border-r border-stone-950 p-3 hover:bg-gray-100`}
-            onClick={() => handleClickShowingType('listType')}
-          >
-            <BsListUl color={`${showingType === 'listType' ? '#000' : '#adadad'}`} />
-          </IconButton>
-          <IconButton styles={`p-3 hover:bg-gray-100`} onClick={() => handleClickShowingType('gridType')}>
-            <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
-          </IconButton>
-        </>
-      }
-      bodyComponent={<AlcoholList alcohols={alcohols} showingType={showingType} />}
-    />
+    <MainLayout>
+      <SubHeader headerName={category}>
+        <IconButton
+          styles={`border-l border-r border-stone-950 p-3 hover:bg-gray-100`}
+          onClick={() => handleClickShowingType('listType')}
+        >
+          <BsListUl color={`${showingType === 'listType' ? '#000' : '#adadad'}`} />
+        </IconButton>
+        <IconButton styles={`p-3 hover:bg-gray-100`} onClick={() => handleClickShowingType('gridType')}>
+          <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
+        </IconButton>
+      </SubHeader>
+      <AlcoholList alcohols={alcohols} showingType={showingType} />
+    </MainLayout>
   ) : null;
 };
 

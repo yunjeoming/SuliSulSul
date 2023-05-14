@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { MockAlcoholsType } from '../../../types/mockAlcohols';
 import axios from 'axios';
-import { MockAlcoholsType } from '../../types/mockAlcohols';
-import AlcoholList from '../../components/AlcoholList';
-import MainLayout from '../../layout/MainLayout';
+import AlcoholList from '../../../components/AlcoholList';
 
-const SearchListPage = () => {
+const AdminSearchListPage = () => {
   const location = useLocation();
   const { searchWord } = location.state;
   const [searchResults, setSearchResults] = useState<MockAlcoholsType[]>([]);
@@ -17,16 +16,14 @@ const SearchListPage = () => {
       // setSearchResults(results);
       setSearchResults(res.data.alcoholsByCategory);
     });
-  });
+  }, [searchWord]);
 
   return (
-    <MainLayout>
-      <div>
-        <div className="mb-4">"{searchWord}"로 검색한 결과입니다.</div>
-        <AlcoholList alcohols={searchResults} showingType="listType" />
-      </div>
-    </MainLayout>
+    <div className='p-4'>
+      <div className="mb-4">"{searchWord}"로 검색한 결과입니다.</div>
+      <AlcoholList alcohols={searchResults} showingType="listType" isAdmin />
+    </div>
   );
 };
 
-export default SearchListPage;
+export default AdminSearchListPage;
