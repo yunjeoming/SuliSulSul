@@ -19,20 +19,26 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   const userNmRef = useRef<HTMLInputElement | null>(null);
   const reviewPwdRef = useRef<HTMLInputElement | null>(null);
 
-  const [modal, setModal] = useState({
+  const [modal, setModal] = useState<{
+    content: string;
+    isOpenModal: boolean;
+    targetRef: React.RefObject<HTMLElement> | null;
+  }>({
     content: '',
     isOpenModal: false,
+    targetRef: null
   });
 
-  const { content, isOpenModal } = modal;
+  const { content, isOpenModal, targetRef } = modal;
 
-  const onSave = () => {
+  const handleClickSave = () => {
     if (!gradeRef.current?.textContent) {
       setModal({
+        ...modal,
         content: '별점을 선택해주세요',
         isOpenModal: true,
+        targetRef: gradeRef,
       });
-      gradeRef.current?.focus();
       return;
     }
 
@@ -40,8 +46,8 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       setModal({
         content: '제목을 입력해주세요',
         isOpenModal: true,
+        targetRef: titleRef,
       });
-      titleRef.current?.focus();
       return;
     }
 
@@ -49,8 +55,8 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       setModal({
         content: '내용을 입력해주세요',
         isOpenModal: true,
+        targetRef: contentRef,
       });
-      contentRef.current?.focus();
       return;
     }
 
@@ -58,8 +64,8 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       setModal({
         content: '작성자를 입력해주세요',
         isOpenModal: true,
+        targetRef: userNmRef,
       });
-      userNmRef.current?.focus();
       return;
     }
 
@@ -67,8 +73,8 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       setModal({
         content: '작성자는 최대 10자까지 입력해주세요',
         isOpenModal: true,
+        targetRef: userNmRef,
       });
-      userNmRef.current?.focus();
       return;
     }
 
@@ -76,8 +82,8 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       setModal({
         content: '비밀번호를 입력해주세요',
         isOpenModal: true,
+        targetRef: reviewPwdRef,
       });
-      reviewPwdRef.current?.focus();
       return;
     }
 
@@ -93,8 +99,13 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
     setModal((state) => ({
       ...state,
       isOpenModal: false,
+      targetRef: null
     }));
-  }, []);
+
+    if (targetRef?.current) {
+      targetRef.current.focus();
+    }
+  }, [targetRef]);
 
   // const addReview = () => {
   //   const grade = gradeRef.current?.textContent?.split('점')[0];
@@ -125,7 +136,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
 
   return (
     <>
-      <AddLayout headerText="리뷰작성" onClose={onClose} onSave={onSave}>
+      <AddLayout headerText="리뷰작성" onClose={onClose} onSave={handleClickSave}>
         <div className="px-2 border-b mb-2">
           <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
         </div>
@@ -149,17 +160,12 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
         </div>
       </AddLayout>
       {isOpenModal && (
-        <Modal
-          children={
-            <div className="flex flex-col items-center p-2">
-              <div className="p-4">{content}</div>
-              <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
-                확인
-              </button>
-            </div>
-          }
-          onClose={onCloseModal}
-        />
+        <Modal onClose={onCloseModal}>
+          <div className="p-4">{content}</div>
+          <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
+            확인
+          </button>
+        </Modal>
       )}
     </>
   );

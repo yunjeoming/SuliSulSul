@@ -7,7 +7,6 @@ const useInput: (
 ) => {
   const [value, setValue] = useState(input);
   const handler = (e: ChangeEvent) => {
-    console.log(e)
     setValue((e.target as HTMLInputElement).value);
   };
   return [value, handler, setValue];
