@@ -28,12 +28,25 @@
 			<input type="submit" value="test">
 		</form>
 		<form action="/insertAlcReview" method="post" enctype="multipart/form-data">
-			리뷰 등록용 술넘버 : <input type="text" name="alcNo" id="alcNo">
+			리뷰 등록용 술 넘버 : <input type="text" name="alcNo" id="alcNo">
 			타이틀 : <input type="text" name="title" id="title">
 			별점 : <input type="text" name="grade" id="grade">
 			내용 : <input type="text" name="content" id="content">
 			비밀번호 : <input type="text" name="reviewPwd" id="reviewPwd">
 			사용자이름 : <input type="text" name="userNm" id="userNm">
+			<input type="submit" value="test">
+		</form>
+		<form action="/updateAlcReview" method="post" enctype="multipart/form-data">
+			리뷰 수정용 타이틀 : <input type="text" name="title" id="title">
+			별점 : <input type="text" name="grade" id="grade">
+			내용 : <input type="text" name="content" id="content">
+			비밀번호 : <input type="text" name="reviewPwd" id="reviewPwd">
+			리뷰번호 : <input type="text" name="reviewNo" id="reviewNo">
+			<input type="submit" value="test">
+		</form>
+		<form action="/deleteAlcReview" method="post" enctype="multipart/form-data">
+			리뷰 삭제용 비밀번호 : <input type="text" name="reviewPwd" id="reviewPwd">
+			리뷰번호 : <input type="text" name="reviewNo" id="reviewNo">
 			<input type="submit" value="test">
 		</form>
 	</div>

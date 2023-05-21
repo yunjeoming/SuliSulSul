@@ -28,10 +28,16 @@
 	
 	<select id="selectCheckPwd" parameterType="java.util.Map" resultType="int">
 	    /* selectCheckPwd - 리뷰 수정 삭제용 패스워드 매칭 */
-	    SELECT CASE WHEN PASSWORD(${password}) = REVIEW_PWD THEN 1 ELSE 0 END
+	    SELECT CASE WHEN PASSWORD(${reviewPwd}) = REVIEW_PWD THEN 1 ELSE 0 END
 	      FROM REVIEW
 	     WHERE REVIEW_NO = ${reviewNo}
-	       AND USER_NM = ${userNm}
+	</select>
+	
+	<select id="selectAlcNo" parameterType="int" resultType="int">
+	    /* selectAlcNo - 리뷰넘버에서 술넘버 가져오기 */
+	    SELECT ALC_NO
+	      FROM REVIEW
+	     WHERE REVIEW_NO = ${reviewNo}
 	</select>
 	
 	<!-- 등록 수정 삭제 -->

@@ -89,6 +89,8 @@ public class ReviewService {
 	
 	// 리뷰 등록, 수정, 삭제 시 GRADE값 산정
 	private void updateAvgGrade(ReviewVo vo) {
+		int alcNo = mapper.selectAlcNo(vo.getReviewNo());
+		vo.setAlcNo(alcNo);
 		mapper.mergeAlcReviewGrade(vo);
 	}
 }

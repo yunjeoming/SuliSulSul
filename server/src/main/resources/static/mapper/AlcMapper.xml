@@ -20,8 +20,8 @@
 	      <if test="alcNm != null and alcNm != ''" >
 	            AND ALC_NM LIKE CONCAT('%', #{alcNm}, '%')
 	      </if>
-	      <if test="cateNo != null and cateNo != ''" >
-	            AND CATE_NO = #{cateNo}
+	      <if test="cateNo != 0" >
+	            AND A.CATE_NO = #{cateNo}
 	      </if>
 	</select>
 	

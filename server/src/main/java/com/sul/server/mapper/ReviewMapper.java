@@ -18,6 +18,8 @@ public interface ReviewMapper {
 	
 	public int selectCheckPwd(ReviewVo vo);
 	
+	public int selectAlcNo(int reviewNo);
+	
 	public void insertAlcReview(ReviewVo vo);
 	
 	public void updateAlcReview(ReviewVo vo);
