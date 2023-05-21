@@ -11,11 +11,11 @@
 	        ON A.FILE_NO = C.FILE_NO
 	         , CATEGORY D
 	     WHERE A.CATE_NO = D.CATE_NO
-	      <if test="expYn == 'Y'" >
-	            AND A.EXP_YN = 'Y'
+	      <if test="expYn == 'true'" >
+	            AND A.EXP_YN = 'true'
 	      </if>
-	      <if test="expYn == null or expYn == '' or expYn == 'N'" >
-	            AND A.EXP_YN = 'N'
+	      <if test="expYn == null or expYn == '' or expYn == 'false'" >
+	            AND A.EXP_YN = 'false'
 	      </if>
 	      <if test="alcNm != null and alcNm != ''" >
 	            AND ALC_NM LIKE CONCAT('%', #{alcNm}, '%')
@@ -35,6 +35,11 @@
 	         , CATEGORY D
 	     WHERE A.CATE_NO = D.CATE_NO
 	       AND A.ALC_NO = #{alcNo}
+	</select>
+	
+	<select id="selectCateList" resultType="com.sul.server.vo.CategoryVo">
+	    SELECT CATE_NO, CATE_NM
+	      FROM CATEGORY
 	</select>
 
 </mapper>

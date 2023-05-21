@@ -4,7 +4,7 @@
 	<!-- 조회 -->
 	<select id="selectAlcReviewList" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
 	    /* selectAlcReviewList - 특정 술의 전체 리뷰 조회 */
-	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.GRADE
+	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.GRADE, B.REG_DT, B.MODI_DT
 	      FROM INFORMATION A
 	      LEFT JOIN REVIEW B
 	        ON A.ALC_NO = B.ALC_NO
