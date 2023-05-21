@@ -4,15 +4,15 @@ import lombok.Data;
 
 @Data
 public class AlcVo {
-	private String alcNo;
+	private int alcNo;
 	private String alcNm;
-	private String cateNo;
+	private int cateNo;
 	private String cateNm;
-	private String fileNo;
+	private int fileNo;
 	private String fileNm;
 	private String fileExt;
-	private String avgGrade;
-	private String vol;
+	private double avgGrade;
+	private double vol;
 	private String productor;
 	private String detail;
 	private String expYn;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sul.server.service.AlcService;
 import com.sul.server.service.ReviewService;
 import com.sul.server.vo.AlcVo;
+import com.sul.server.vo.CategoryVo;
 import com.sul.server.vo.ReviewVo;
 
 @RestController
@@ -38,6 +39,13 @@ public class AlcController {
 		resultMap.put("alcData", service.selectAlcDetail(vo));
 		resultMap.put("reviewData", rvService.selectAlcReviewList(rvVo));
 		return resultMap;
+	}
+	
+	// 카테고리 
+	@ResponseBody
+	@RequestMapping("/selectCateList")
+	public List<CategoryVo> selectCategoryList(){
+		return service.selectCateList();
 	}
 	
 	// 술 등록

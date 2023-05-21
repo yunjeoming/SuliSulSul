@@ -4,14 +4,18 @@ import lombok.Data;
 
 @Data
 public class ReviewVo {
-	String alcNo;
-	String alcNm;
-	String reviewNo;
-	String title;
-	String grade;
-	String fileNo;
-	String fileNm;
-	String fileExt;
-	String content;
-	String userType;
+	private int alcNo;
+	private String alcNm;
+	private int reviewNo;
+	private String title;
+	private double grade;
+	private int fileNo;
+	private String fileNm;
+	private String fileExt;
+	private String content;
+	private String userType;
+	private String modyDt;
+	private String regDt;
+	private String userNm;
+	private String reviewPwd;
 }

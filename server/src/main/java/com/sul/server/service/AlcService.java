@@ -1,8 +1,6 @@
 package com.sul.server.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sul.server.mapper.AlcMapper;
 import com.sul.server.vo.AlcVo;
-
-import lombok.extern.slf4j.Slf4j;
+import com.sul.server.vo.CategoryVo;
 
 @Service
 @Transactional
@@ -21,18 +18,17 @@ public class AlcService {
 	
 	// 술 전체 목록
 	public List<AlcVo> selectTotalAlcList(AlcVo vo){
-		List<AlcVo> returnVo = new ArrayList<>(); 
-		returnVo = mapper.selectTotalAlcList(vo);
-		
-		return returnVo;
+		return mapper.selectTotalAlcList(vo);
 	}
 	
 	// 술 상세
 	public AlcVo selectAlcDetail(AlcVo vo){
-		AlcVo returnVo = new AlcVo(); 
-		returnVo = mapper.selectAlcDetail(vo);
-		
-		return returnVo;
+		return mapper.selectAlcDetail(vo);
+	}
+	
+	// 카테고리 목록
+	public List<CategoryVo> selectCateList(){
+		return mapper.selectCateList();
 	}
 	
 	// 술 등록
