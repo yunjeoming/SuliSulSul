@@ -23,7 +23,7 @@ const AdminMainPage = () => {
       <Routes>
         <Route path="" element={<AdminAlcoholListPage />} />
         <Route path="login" element={<AdminAlcoholListPage />} />
-        <Route path="alcs/:id" element={<AdminAlcoholDetailPage />} />
+        <Route path="alcs/:no" element={<AdminAlcoholDetailPage />} />
         <Route path="search" element={<AdminSearchListPage />} />
       </Routes>
       {isOpenNewAlcohol && <AddAlcohol onClose={onClose} />}

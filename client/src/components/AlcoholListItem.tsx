@@ -1,11 +1,11 @@
-import React from 'react';
-import { MockAlcoholsType } from '../types/mockAlcohols';
+import React, { FC } from 'react';
 import Thumbnail from './Thumbnail';
 import { ShowingType } from '../pages/AlcoholListPage';
 import { Link } from 'react-router-dom';
+import { Alcohol } from '../types/alcohol';
 
 type Props = {
-  alcohol: MockAlcoholsType;
+  alcohol: Alcohol;
   isSimple?: boolean;
   showingType?: ShowingType;
   isNotLink?: boolean;
@@ -15,8 +15,8 @@ type Props = {
 const SIMPLE_WRAPPER_STYLES = 'flex flex-col justify-center items-center';
 const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center py-2';
 
-const AlcoholListItem = ({ alcohol, isSimple = false, showingType, isNotLink = false, isAdmin = false }: Props) => {
-  const link = isAdmin ? `/admin/alcs/${alcohol.no}` : `/alcs/${alcohol.no}`;
+const AlcoholListItem: FC<Props> = ({ alcohol, isSimple = false, showingType, isNotLink = false, isAdmin = false }) => {
+  const link = isAdmin ? `/admin/alcs/${alcohol.alcNo}` : `/alcs/${alcohol.alcNo}`;
   return isSimple ? (
     isNotLink ? (
       <SimpleAlcohol alcohol={alcohol} />
@@ -38,18 +38,18 @@ const AlcoholListItem = ({ alcohol, isSimple = false, showingType, isNotLink = f
 };
 
 const SimpleAlcohol = ({ alcohol }: Props) => {
-  const { name, image } = alcohol;
+  const { alcNm, fileNm: image } = alcohol;
 
   return (
     <div className={`${SIMPLE_WRAPPER_STYLES}`}>
       <Thumbnail imgSrc={image} />
-      <span>{name}</span>
+      <span>{alcNm}</span>
     </div>
   );
 };
 
 const DetailedAlcohol = ({ alcohol, showingType }: Props) => {
-  const { name, image, grade, description } = alcohol;
+  const { alcNm, fileNm: image, avgGrade, detail } = alcohol;
 
   const styles =
     showingType === 'listType'
@@ -76,15 +76,15 @@ const DetailedAlcohol = ({ alcohol, showingType }: Props) => {
     <div className={`${DETAILED_WRAPPER_STYLES} ${styles.container}`}>
       <Thumbnail imgSrc={image} size={styles.thumbnailSize} styles={`shrink-0 mr-1 ${styles.thumbnail}`} />
       <div className={styles.info}>
-        <span className={`${showingType === 'listType' && 'mr-2'}`}>{name}</span>
-        {grade && (
+        <span className={`${showingType === 'listType' && 'mr-2'}`}>{alcNm}</span>
+        {avgGrade && (
           <span className="text-sm">
             <span className="text-yellow-300">★</span>
-            <span> {grade}</span>
+            <span> {avgGrade}</span>
           </span>
         )}
-        {showingType === 'listType' && description ? (
-          <div className={`text-sm text-slate-500 h-full mt-1 ${styles.desc}`}>{truncateDesc(description, 65)}</div>
+        {showingType === 'listType' && detail ? (
+          <div className={`text-sm text-slate-500 h-full mt-1 ${styles.desc}`}>{truncateDesc(detail, 65)}</div>
         ) : null}
       </div>
     </div>

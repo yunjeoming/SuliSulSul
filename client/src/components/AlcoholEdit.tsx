@@ -1,14 +1,14 @@
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { MockAlcoholsType } from '../types/mockAlcohols';
-import { Category } from '../types/alcohol';
+import { Alcohol, Category } from '../types/alcohol';
 import { CategoryUtils } from '../utils/Category';
 import { Styles } from '../constants/Styles';
 import Thumbnail from './Thumbnail';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 type Props = {
-  alcohol?: MockAlcoholsType;
+  alcohol?: Alcohol;
   onCancel?: () => void;
   setSaveFunc?: React.Dispatch<
     React.SetStateAction<{
@@ -115,9 +115,20 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
       e.preventDefault();
       console.log('제출');
 
+      const form = new FormData();
+      // form.append('alcNo', alcNo);
+      // form.append('alcNm', alcNm);
+      // form.append('cateNm', cateNm);
+      // form.append('cateNo', cateNo);
+      // form.append('detail', detail);
+      // form.append('exeYn', exeYn);
+      // form.append('vol', vol);
+
       // 변경사항 저장
-      // axios.get(``).then((data) => {
-      // }).catch((err) => console.dir(err))
+      axios
+        .post(`/insertAlcReview`, form)
+        .then((res) => {})
+        .catch((err) => console.dir(err));
 
       onCloseModal();
     },
@@ -136,21 +147,21 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
   useEffect(() => {
     if (!alcohol || !category.length) return;
 
-    if (alcoholNmRef.current && alcohol.name) {
-      alcoholNmRef.current.value = alcohol.name;
+    if (alcoholNmRef.current && alcohol.alcNm) {
+      alcoholNmRef.current.value = alcohol.alcNm;
     }
 
-    if (categoryNmRef.current && alcohol.categoryName) {
-      categoryNmRef.current.value = alcohol.categoryName;
+    if (categoryNmRef.current && alcohol.cateNm) {
+      categoryNmRef.current.value = alcohol.cateNm;
     }
 
-    if (imageRef.current && alcohol.image) {
-      imageRef.current.value = alcohol.image;
-      setImageName(alcohol.image);
+    if (imageRef.current && alcohol.fileNm) {
+      imageRef.current.value = alcohol.fileNm;
+      setImageName(alcohol.fileNm);
     }
 
-    if (descriptionRef.current && alcohol.description) {
-      descriptionRef.current.value = alcohol.description;
+    if (descriptionRef.current && alcohol.detail) {
+      descriptionRef.current.value = alcohol.detail;
     }
   }, [alcohol, category]);
 
@@ -174,8 +185,8 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
           <select className="input-area p-2" ref={categoryNmRef}>
             <option value={''}>선택</option>
             {category.map((c) => (
-              <option key={c.id} value={c.name}>
-                {c.name}
+              <option key={c.cateNo} value={c.cateNm}>
+                {c.cateNm}
               </option>
             ))}
           </select>

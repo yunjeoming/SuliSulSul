@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import IconButton from '../../components/IconButton';
 import { BsListUl } from 'react-icons/bs';
 import { RxGrid } from 'react-icons/rx';
 import axios from 'axios';
-import { MockAlcoholsType } from '../../types/mockAlcohols';
 import AlcoholList from '../../components/AlcoholList';
 import MainLayout from '../../layout/MainLayout';
 import SubHeader from '../../components/SubHeader';
+import { Alcohol } from '../../types/alcohol';
 
 export type ShowingType = 'listType' | 'gridType';
 
 const AlcoholListPage = () => {
-  const { category } = useParams();
+  const {
+    state: { cateNm, cateNo },
+  } = useLocation();
 
-  const [alcohols, setAlcohols] = useState<MockAlcoholsType[]>([]);
+  const [alcohols, setAlcohols] = useState<Alcohol[]>([]);
   const [showingType, setShowingType] = useState<ShowingType>('listType');
 
   useEffect(() => {
     // if category === 'all', 모든 술 가져오기
+    const form = new FormData();
+    form.append('cateNo', cateNo);
+    if (cateNm === 'all') {
+      form.delete('cateNo');
+    }
     axios
-      .get(`/alcoholsByCategory.json`)
+      .post(`/selectAlcList`, form)
       .then((res) => {
-        setAlcohols(res.data.alcoholsByCategory);
+        setAlcohols(res.data);
       })
       .catch((err) => console.error(err));
-  }, [category]);
+  }, [cateNm, cateNo]);
 
   const handleClickShowingType = (type: ShowingType) => {
     setShowingType(type);
   };
 
-  return category ? (
+  return cateNm ? (
     <MainLayout>
-      <SubHeader headerName={category}>
+      <SubHeader headerName={cateNm}>
         <IconButton
           styles={`border-l border-r border-stone-950 p-3 hover:bg-gray-100`}
           onClick={() => handleClickShowingType('listType')}

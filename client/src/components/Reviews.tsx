@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { MockAlcoholsType, MockReviewType } from '../types/mockAlcohols';
+import { Alcohol, Review } from '../types/alcohol';
 
 type Props = {
-  alcohol: MockAlcoholsType;
-  reviews: MockReviewType[];
+  alcohol: Alcohol;
+  reviews: Review[];
   setIsOpenNewReview: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -16,7 +16,7 @@ const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
   return (
     <section className="">
       <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
-        <Link to={`/reviews/${alcohol.no}`} className="text-lg cursor-pointer">
+        <Link to={`/reviews/${alcohol.alcNo}`} className="text-lg cursor-pointer">
           리뷰
         </Link>
         <button className="text-sm text-stone-400 hover:text-stone-600" onClick={handleAddReview}>
@@ -26,7 +26,7 @@ const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
       {reviews ? (
         <ul>
           {reviews.map((r) => (
-            <li key={r.no + r.grade + r.userName} className="border-b last:border-none p-2">
+            <li key={r.reviewNo + r.grade + r.userNm} className="border-b last:border-none p-2">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <div className="relative mr-1">
@@ -40,7 +40,7 @@ const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
                   </div>
                   <strong>{r.grade}</strong>
                 </div>
-                <span className="text-sm text-stone-600">{r.userName}</span>
+                <span className="text-sm text-stone-600">{r.userNm}</span>
               </div>
               <div className="overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</div>
             </li>
