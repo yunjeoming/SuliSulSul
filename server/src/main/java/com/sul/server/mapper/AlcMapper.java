@@ -16,4 +16,12 @@ public interface AlcMapper {
 	public AlcVo selectAlcDetail(AlcVo vo);
 	
 	public List<CategoryVo> selectCateList();
+	
+	public void insertAlcInfo(AlcVo vo);
+	
+	public void updateAlcInfo(AlcVo vo);
+	
+	public void deleteAlcInfo(AlcVo vo);
+	
+	public void updateAlcExp(AlcVo vo);
 }

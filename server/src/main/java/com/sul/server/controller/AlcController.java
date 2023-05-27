@@ -49,10 +49,30 @@ public class AlcController {
 	}
 	
 	// 술 등록
+	@ResponseBody
+	@RequestMapping("/insertAlcInfo")
+	public void insertAlcInfo(AlcVo vo){
+		service.insertAlcInfo(vo);
+	}
 	
 	// 술 삭제
+	@ResponseBody
+	@RequestMapping("/deleteAlcInfo")
+	public void deleteAlcInfo(AlcVo vo){
+		service.deleteAlcInfo(vo);
+	}
 	
 	// 술 수정
+	@ResponseBody
+	@RequestMapping("/updateAlcInfo")
+	public void updateAlcInfo(AlcVo vo){
+		service.updateAlcInfo(vo);
+	}
 	
 	// 술 단종(단종 여부만 업데이트)
+	@ResponseBody
+	@RequestMapping("/updateAlcExp")
+	public void updateAlcExp(AlcVo vo){
+		service.updateAlcExp(vo);
+	}
 }

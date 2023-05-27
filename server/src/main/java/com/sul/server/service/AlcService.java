@@ -32,10 +32,22 @@ public class AlcService {
 	}
 	
 	// 술 등록
+	public void insertAlcInfo(AlcVo vo){
+		mapper.insertAlcInfo(vo);
+	}
 	
 	// 술 삭제
+	public void updateAlcInfo(AlcVo vo){
+		mapper.updateAlcInfo(vo);
+	}
 	
 	// 술 수정
+	public void deleteAlcInfo(AlcVo vo){
+		mapper.deleteAlcInfo(vo);
+	}
 	
 	// 술 단종(단종 여부만 업데이트)
+	public void updateAlcExp(AlcVo vo){
+		mapper.updateAlcExp(vo);
+	}
 }
