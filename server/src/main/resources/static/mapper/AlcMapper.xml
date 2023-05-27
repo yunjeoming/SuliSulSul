@@ -41,5 +41,34 @@
 	    SELECT CATE_NO, CATE_NM
 	      FROM CATEGORY
 	</select>
+	
+	<insert id="insertAlcInfo" parameterType="java.util.Map">
+	    INSERT INTO 
+	           INFORMATION(ALC_NM, CATE_NO, VOL, PRODUCTOR, DETAIL, FILE_NO, EXP_YN)
+	    VALUES (#{alcNm}, #{cateNo}, #{vol}, #{productor}, #{detail}, #{fileNo}, #{expYn})
+	</insert>
+	
+	<update id="updateAlcInfo" parameterType="java.util.Map">
+	    UPDATE INFORMATION
+	       SET ALC_NM = #{alcNm}
+	         , CATE_NO = #{cateNo}
+	         , VOL = #{vol}
+	         , PRODUCTOR = #{productor}
+	         , DETAIL = #{detail}
+	         , FILE_NO = #{fileNo}
+	         , EXP_YN = #{expYn}
+	     WHERE ALC_NO = #{alcNo}
+	</update>
+	
+	<update id="updateAlcExp" parameterType="java.util.Map">
+	    UPDATE INFORMATION
+	       SET EXP_YN = #{expYn}
+	     WHERE ALC_NO = #{alcNo}
+	</update>
+	
+	<delete id="deleteAlcInfo" parameterType="java.util.Map">
+	    DELETE FROM INFORMATION
+	     WHERE ALC_NO = #{alcNo}
+	</delete>
 
 </mapper>
