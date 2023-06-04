@@ -1,13 +1,13 @@
 import React, { useCallback, useRef, useState } from 'react';
 import AlcoholListItem from '../../components/AlcoholListItem';
-import { MockAlcoholsType } from '../../types/mockAlcohols';
-// import axios from 'axios';
+import axios from 'axios';
 import DynamicStars from '../../components/DynamicStars';
 import Modal from '../../components/Modal';
 import AddLayout from '../../layout/AddLayout';
+import { Alcohol } from '../../types/alcohol';
 
 type Props = {
-  alcohol: MockAlcoholsType;
+  alcohol: Alcohol;
   onClose: () => void;
   getReviews: () => void;
 };
@@ -26,7 +26,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   }>({
     content: '',
     isOpenModal: false,
-    targetRef: null
+    targetRef: null,
   });
 
   const { content, isOpenModal, targetRef } = modal;
@@ -60,6 +60,15 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       return;
     }
 
+    if (contentRef.current?.value.length > 300) {
+      setModal({
+        content: '내용은 최대 300자까지 입력해주세요',
+        isOpenModal: true,
+        targetRef: contentRef,
+      });
+      return;
+    }
+
     if (!userNmRef.current?.value) {
       setModal({
         content: '작성자를 입력해주세요',
@@ -87,19 +96,14 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       return;
     }
 
-    console.log(gradeRef.current?.textContent);
-
-    // addReview();
-
-    // onClose();
-    // getReviews();
+    addReview();
   };
 
   const onCloseModal = useCallback(() => {
     setModal((state) => ({
       ...state,
       isOpenModal: false,
-      targetRef: null
+      targetRef: null,
     }));
 
     if (targetRef?.current) {
@@ -107,32 +111,47 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
     }
   }, [targetRef]);
 
-  // const addReview = () => {
-  //   const grade = gradeRef.current?.textContent?.split('점')[0];
-  //   const title = titleRef.current?.value;
-  //   const content = contentRef.current?.value;
-  //   const userNm = userNmRef.current?.value;
-  //   const reviewPwd = reviewPwdRef.current?.value;
-  //   console.log('grade', grade);
-  //   console.log('title', title);
-  //   console.log('content', content);
-  //   console.log('userNm', userNm);
-  //   console.log('reviewPwd', reviewPwd);
+  const addReview = () => {
+    const grade = gradeRef.current?.textContent?.split('점')[0]!;
+    const title = titleRef.current?.value!;
+    const content = contentRef.current?.value!;
+    const userNm = userNmRef.current?.value!;
+    const reviewPwd = reviewPwdRef.current?.value!;
 
-  //   axios
-  //     .post(`/`, {
-  //       grade,
-  //       title,
-  //       content,
-  //       userNm,
-  //       reviewPwd
-  //     })
-  //     .then((res) => {
-  //       // status code 200일때 redirect. 실패하면 alert 다시 띄우기
-  //       console.log(res);
-  //     })
-  //     .catch((err) => console.error(err));
-  // };
+    const form = new FormData();
+    form.append('alcNo', alcohol.alcNo!.toString());
+    form.append('title', title);
+    form.append('grade', grade);
+    form.append('content', content);
+    form.append('userNm', userNm);
+    form.append('reviewPwd', reviewPwd);
+
+    axios
+      .post(`/insertAlcReview`, form)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          onClose();
+          getReviews();
+        } else {
+          // error alert
+          setModal({
+            content: '등록에 실패했어요',
+            isOpenModal: true,
+            targetRef: contentRef,
+          });
+        }
+      })
+      .catch((err) => {
+        // error alert
+        console.error(err);
+        setModal({
+          content: '등록에 실패했어요',
+          isOpenModal: true,
+          targetRef: contentRef,
+        });
+      });
+  };
 
   return (
     <>

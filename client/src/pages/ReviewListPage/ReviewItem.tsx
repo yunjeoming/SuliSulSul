@@ -3,13 +3,13 @@ import IconButton from '../../components/IconButton';
 import { AiOutlineCloseSquare } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
 import StarsWithGrade from '../../components/StarsWithGrade';
-import { MockReviewType } from '../../types/mockAlcohols';
 import axios from 'axios';
 import DynamicStars from '../../components/DynamicStars';
 import Modal from '../../components/Modal';
+import { Review } from '../../types/alcohol';
 
 type Props = {
-  review: MockReviewType;
+  review: Review;
 };
 
 const ReviewItem: FC<Props> = ({ review }) => {
@@ -79,6 +79,11 @@ const ReviewItem: FC<Props> = ({ review }) => {
   const initState = () => {
     // 리뷰 수정 / 삭제 성공 시 state 초기화
     setState((prev) => ({ ...prev, targetMode: '', isOpenPasswordInput: false, isEdit: false }));
+
+    // pwd ref 초기화
+    if (passwordRef.current) {
+      passwordRef.current.value = '';
+    }
   };
 
   const closeModal = useCallback(() => {
@@ -90,39 +95,51 @@ const ReviewItem: FC<Props> = ({ review }) => {
 
   const handleClickEditReview = useCallback(() => {
     // 리뷰수정
-    const grade = gradeRef.current?.textContent?.split('점')[0];
-    const title = titleRef.current?.value;
-    const content = contentRef.current?.value;
-    console.log('grade', grade);
-    console.log('title', title);
-    console.log('content', content);
+    const grade = gradeRef.current?.textContent?.split('점')[0]!;
+    const title = titleRef.current?.value!;
+    const content = contentRef.current?.value!;
+    const reviewPwd = passwordRef.current?.value!;
+
+    const form = new FormData();
+    form.append('title', title);
+    form.append('grade', grade);
+    form.append('content', content);
+    form.append('reviewPwd', reviewPwd);
+    form.append('userNm', review.userNm);
+    form.append('reviewNo', review.reviewNo.toString());
 
     // 리뷰 수정 api
-    // axios
-    //   .post('')
-    //   .then((res) => {
-    //     //
-    //   })
-    //   .catch((err) => console.dir(err));
+    axios
+      .post(`/updateAlcReview`, form)
+      .then((res) => {
+        //
+        console.log('reviewItem.tsx 수정 api');
 
-    // 리뷰 수정 완료 시
-    // 수정 모드 -> 일반 모드로 변경
-    initState();
-  }, []);
+        // 수정 모드 -> 일반 모드로 변경
+        initState();
+      })
+      .catch((err) => console.dir(err));
+  }, [review]);
 
   const handleClickDeleteReview = useCallback(() => {
     // 리뷰 삭제 api
-    // axios
-    //   .delete('')
-    //   .then((res) => {
-    //     //
-    //   })
-    //   .catch((err) => console.dir(err));
-    // 리뷰 삭제 완료 시
-    // 모달 닫고, 패스워드 인풋 지우기
-    initState();
-    closeModal();
-  }, [closeModal]);
+    // reviewNo, userNm, reviewPwd
+    const reviewPwd = passwordRef.current?.value!;
+    const form = new FormData();
+    form.append('reviewPwd', reviewPwd);
+    form.append('userNm', review.userNm);
+    form.append('reviewNo', review.reviewNo.toString());
+    axios
+      .post(`/deleteAlcReview`, form)
+      .then((res) => {
+        //
+        console.log('reviewItem.tsx 삭제 api');
+        closeModal();
+        // 모달 닫고, 패스워드 인풋 지우기
+        initState();
+      })
+      .catch((err) => console.dir(err));
+  }, [closeModal, review]);
 
   const convertTextToInput = useCallback(() => {
     if (titleRef.current) {
@@ -145,7 +162,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col">
           <StarsWithGrade grade={review.grade} />
-          <span className="text-sm text-stone-600">{review.userName}</span>
+          <span className="text-sm text-stone-600">{review.userNm}</span>
         </div>
         <div className="flex text-stone-400">
           <IconButton

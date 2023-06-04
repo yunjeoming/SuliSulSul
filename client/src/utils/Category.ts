@@ -14,9 +14,9 @@ export class CategoryUtils {
 
   private static async loadCategory() {
     return axios
-      .get('/category.json')
+      .get('/selectCateList')
       .then((res) => {
-        return res.data.category as Category[];
+        return res.data as Category[];
       })
       .catch((err) => console.error(err));
   }

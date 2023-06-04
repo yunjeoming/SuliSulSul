@@ -1,34 +1,39 @@
-import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { MockAlcoholsType } from '../../../types/mockAlcohols';
 import AlcoholEdit from '../../../components/AlcoholEdit';
 import MainLayout from '../../../layout/MainLayout';
 import SubHeader from '../../../components/SubHeader';
+import { Alcohol } from '../../../types/alcohol';
 
 const AdminAlcoholDetailPage = () => {
-  const { id } = useParams();
-  const [alcohol, setAlcohol] = useState<MockAlcoholsType | null>(null);
+  const { no } = useParams();
+  const [alcohol, setAlcohol] = useState<Alcohol | null>(null);
 
   const getAlcohol = useCallback(() => {
+    if (!no) return;
+    const form = new FormData();
+    form.append('alcNo', no);
+
     axios
-      .get(`/alcohols.json`)
+      .post(`/selectAlcDetail`, form)
       .then((res) => {
-        const targetAlcohol = res.data.alcohols.find((a: MockAlcoholsType) => a.no === Number(id)) as MockAlcoholsType;
-        setAlcohol(targetAlcohol);
+        if (res.data) {
+          setAlcohol(res.data.alcData);
+        }
       })
       .catch((err) => console.error(err));
-  }, [id]);
+  }, [no]);
 
   useEffect(() => {
     getAlcohol();
     // eslint-disable-next-line
-  }, [id]);
+  }, [no]);
 
   return alcohol ? (
     <>
       <MainLayout>
-        <SubHeader headerName={alcohol.name} />
+        <SubHeader headerName={alcohol.alcNm} />
         <div>
           <AlcoholEdit alcohol={alcohol} />
         </div>

@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { MockAlcoholsType } from '../../../types/mockAlcohols';
 import axios from 'axios';
 import AlcoholList from '../../../components/AlcoholList';
+import { Alcohol } from '../../../types/alcohol';
 
 const AdminAlcoholListPage = () => {
-  const [alcohols, setAlcohols] = useState<MockAlcoholsType[]>([]);
+  const [alcohols, setAlcohols] = useState<Alcohol[]>([]);
 
   const getAlcohols = useCallback(() => {
     axios
-      .get('/alcohols.json')
+      .get(`/selectAlcList`)
       .then((res) => {
-        setAlcohols(res.data.alcohols);
+        setAlcohols(res.data);
       })
       .catch((err) => console.error(err.response));
   }, []);

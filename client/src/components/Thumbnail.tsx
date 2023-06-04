@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { RxImage } from 'react-icons/rx';
 
 type Props = {
@@ -9,10 +9,10 @@ type Props = {
   imgStyles?: string;
 };
 
-const Thumbnail = ({ imgSrc, size = '10rem', styles = '', imgStyles = '', isCenter = false }: Props) => {
+const Thumbnail: FC<Props> = ({ imgSrc, size = '10rem', styles = '', imgStyles = '', isCenter = false }) => {
   // 추후 실제 이미지 넣을 경우 img style 작업 필수
   return (
-    <div className={`${isCenter ? `flex items-center justify-center bg-gray-100 ${styles}`  : styles}`}>
+    <div className={`${isCenter ? `flex items-center justify-center bg-gray-100 ${styles}` : styles}`}>
       {imgSrc ? (
         <img alt="alcoholImage" src={imgSrc} className={`${imgStyles}`} />
       ) : (

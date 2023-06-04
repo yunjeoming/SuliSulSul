@@ -1,20 +1,21 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { MockAlcoholsType } from '../types/mockAlcohols';
 import axios from 'axios';
 import AlcoholList from './AlcoholList';
 import MainLayout from '../layout/MainLayout';
+import { Alcohol } from '../types/alcohol';
 
 type Props = {
   initSidebar: () => void;
 };
 
 const Home: FC<Props> = ({ initSidebar }) => {
-  const [bestItemsByCategory, setBestItemsByCategory] = useState<MockAlcoholsType[]>([]);
+  const [bestItemsByCategory, setBestItemsByCategory] = useState<Alcohol[]>([]);
   const getBestItemsByCategory = useCallback(async () => {
     axios
-      .get('/alcohols.json')
+      .get(`/selectAlcList`)
       .then((res) => {
-        setBestItemsByCategory(res.data.alcohols);
+        setBestItemsByCategory(res.data);
+        // setBestItemsByCategory(res.data.alcohols);
       })
       .catch((err) => console.error(err.response));
   }, []);
