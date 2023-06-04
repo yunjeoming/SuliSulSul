@@ -77,7 +77,7 @@ const DetailedAlcohol = ({ alcohol, showingType }: Props) => {
       <Thumbnail imgSrc={image} size={styles.thumbnailSize} styles={`shrink-0 mr-1 ${styles.thumbnail}`} />
       <div className={styles.info}>
         <span className={`${showingType === 'listType' && 'mr-2'}`}>{alcNm}</span>
-        {avgGrade && (
+        {typeof avgGrade === 'number' && (
           <span className="text-sm">
             <span className="text-yellow-300">★</span>
             <span> {avgGrade}</span>

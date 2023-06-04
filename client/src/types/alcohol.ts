@@ -5,7 +5,7 @@ export type Alcohol = {
   cateNo: number;
   avgGrade: number;
   detail?: string;
-  exeYn: boolean;
+  expYn: boolean;
   fileExt?: string;
   fileNm?: string;
   productor?: string;
