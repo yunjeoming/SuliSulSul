@@ -49,6 +49,16 @@
 			리뷰번호 : <input type="text" name="reviewNo" id="reviewNo">
 			<input type="submit" value="test">
 		</form>
+		<form action="/insertAlcInfo" method="post" enctype="multipart/form-data">
+			이름:  <input type="text" name=alcNm id="alcNm">
+			카테고리:  <input type="text" name="cateNo" id="cateNo">
+			vol:  <input type="text" name="vol" id="vol">
+			productor:  <input type="text" name="productor" id="productor">
+			detail:  <input type="text" name="detail" id="detail">
+			fileNo:  <input type="text" name="fileNo" id="fileNo">
+			expYn:  <input type="text" name="expYn" id="expYn">
+			<input type="submit" value="test">
+		</form>
 	</div>
 </body>
 </html>

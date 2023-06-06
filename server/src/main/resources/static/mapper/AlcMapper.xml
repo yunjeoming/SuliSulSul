@@ -26,7 +26,7 @@
 	</select>
 	
 	<select id="selectAlcDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.AlcVo">
-	    SELECT A.ALC_NO, A.ALC_NM, A.VOL, A.PRODUCTOR, A.DETAIL, A.EXP_YN, D.CATE_NM, C.FILE_NM, C.FILE_EXT, B.AVG_GRADE
+	    SELECT A.ALC_NO, A.ALC_NM, A.VOL, A.PRODUCTOR, A.DETAIL, A.EXP_YN, D.CATE_NO, D.CATE_NM, C.FILE_NM, C.FILE_EXT, B.AVG_GRADE
 	      FROM INFORMATION A
 	      LEFT JOIN GRADE B
 	        ON A.ALC_NO = B.ALC_NO
