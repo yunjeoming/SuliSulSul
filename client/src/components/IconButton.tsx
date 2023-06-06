@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -7,7 +7,7 @@ type Props = {
   disabled?: boolean;
 };
 
-const IconButton = ({ children, onClick, styles = '', disabled = false }: Props) => {
+const IconButton: FC<Props> = ({ children, onClick, styles = '', disabled = false }) => {
   return (
     <button
       className={`${disabled ? 'cursor-default hover:text-stone-400' : 'cursor-pointer'} ${styles}`}

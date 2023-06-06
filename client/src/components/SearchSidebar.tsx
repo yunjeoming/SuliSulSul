@@ -1,9 +1,13 @@
-import React, { SyntheticEvent, useRef } from 'react';
+import React, { FC, SyntheticEvent, useRef } from 'react';
 import IconButton from './IconButton';
 import { GoSearch } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
 
-const SearchSidebar = ({ onClose }: { onClose?: () => void }) => {
+type Props = {
+  onClose?: () => void;
+};
+
+const SearchSidebar: FC<Props> = ({ onClose }) => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const handleSubmit = (e?: SyntheticEvent) => {

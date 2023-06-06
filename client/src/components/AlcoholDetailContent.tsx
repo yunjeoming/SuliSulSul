@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import Thumbnail from './Thumbnail';
-import { MockAlcoholsType } from '../types/mockAlcohols';
+import { Alcohol } from '../types/alcohol';
 
 type Props = {
-  alcohol: MockAlcoholsType;
+  alcohol: Alcohol;
 };
 
 const AlcoholDetailContent: FC<Props> = ({ alcohol }) => {
@@ -11,7 +11,7 @@ const AlcoholDetailContent: FC<Props> = ({ alcohol }) => {
     <section className="mb-4">
       <Thumbnail imgSrc="" isCenter />
       <p className="py-4">
-        {alcohol.description}
+        {alcohol.detail}
         테스트용 이거 너무 맛있어요.
       </p>
     </section>

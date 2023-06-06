@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Category } from '../types/alcohol';
 import { CategoryUtils } from '../utils/Category';
 import { useNavigate } from 'react-router-dom';
 
-const CategorySidebar = ({ onClose }: { onClose?: () => void }) => {
-  const [category, setCategory] = useState<Category[]>([{ id: 999, name: 'all' }]);
+type Props = {
+  onClose?: () => void;
+};
+
+const CategorySidebar: FC<Props> = ({ onClose }) => {
+  const [category, setCategory] = useState<Category[]>([{ cateNo: 999, cateNm: 'all' }]);
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
       const categoryData = await CategoryUtils.getCategory();
-      categoryData && setCategory((state) => ([...state, ...categoryData]));
+      categoryData && setCategory((state) => [...state, ...categoryData]);
     })();
   }, []);
 
-  const handleClick = (categoryName: string) => {
-    navigate(`/c/${categoryName}`);
+  const handleClick = (category: Category) => {
+    navigate(`/c/${category.cateNm}`, { state: category });
     onClose && onClose();
   };
 
@@ -22,11 +26,11 @@ const CategorySidebar = ({ onClose }: { onClose?: () => void }) => {
     <ul className="text-center">
       {category.map((c) => (
         <li
-          key={c.id + c.name}
+          key={c.cateNo + c.cateNm}
           className="p-2 hover:bg-sky-700 hover:text-slate-200 hover:cursor-pointer"
-          onClick={() => handleClick(c.name)}
+          onClick={() => handleClick(c)}
         >
-          {c.name}
+          {c.cateNm}
         </li>
       ))}
     </ul>

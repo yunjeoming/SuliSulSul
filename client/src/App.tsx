@@ -15,10 +15,10 @@ function App() {
       <div className={`relative ${Styles.MAIN_BACKGROUND_COLOR} w-96 overflow-auto`}>
         <Routes>
           <Route path="/" element={<MainPage />}>
-            <Route path="c/:category" element={<AlcoholListPage />} />
-            <Route path="alcs/:id" element={<AlcoholDetailPage />} />
+            <Route path="c/:no" element={<AlcoholListPage />} />
+            <Route path="alcs/:no" element={<AlcoholDetailPage />} />
             <Route path="search" element={<SearchListPage />} />
-            <Route path="reviews/:id" element={<ReviewListPage />} />
+            <Route path="reviews/:no" element={<ReviewListPage />} />
           </Route>
           <Route path="/admin/*" element={<AdminMainPage />} />
           <Route path="/*" element={<NotFoundPage />} />

@@ -1,43 +1,38 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { MockAlcoholsType, MockReviewType } from '../../types/mockAlcohols';
 import AlcoholListItem from '../../components/AlcoholListItem';
 import StarsWithGrade from '../../components/StarsWithGrade';
 import ReviewList from './ReviewList';
+import { Alcohol, Review } from '../../types/alcohol';
 
 const ReviewListPage = () => {
-  const { id } = useParams();
-
-  const [alcohol, setAlcohol] = useState<MockAlcoholsType | null>(null);
-  const [reviews, setReviews] = useState<MockReviewType[]>([]);
+  const { no } = useParams();
+  const [alcohol, setAlcohol] = useState<Alcohol | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const getAlcohol = useCallback(() => {
+    if (!no) return;
+    const form = new FormData();
+    form.append('alcNo', no);
+
     axios
-      .get(`/alcohols.json`)
+      .post(`/selectAlcDetail`, form)
       .then((res) => {
-        const targetAlcohol = res.data.alcohols.find((a: MockAlcoholsType) => a.no === Number(id)) as MockAlcoholsType;
-        setAlcohol(targetAlcohol);
+        if (res.data) {
+          setAlcohol(res.data.alcData);
+
+          // const sortedReviews = ReviewUtil.sortReviews(res.data.reviewData)
+          setReviews(res.data.reviewData);
+        }
       })
       .catch((err) => console.error(err));
-  }, [id]);
-
-  const getReviews = useCallback(() => {
-    axios
-      .get(`/reviews.json`)
-      .then((res) => {
-        setReviews(res.data.reviews);
-      })
-      .catch((err) => console.error(err));
-
-    //eslint-disable-next-line
-  }, [id]);
+  }, [no]);
 
   useEffect(() => {
     getAlcohol();
-    getReviews();
     // eslint-disable-next-line
-  }, [id]);
+  }, [no]);
 
   return alcohol ? (
     <div>
@@ -45,7 +40,7 @@ const ReviewListPage = () => {
         <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
       </div>
       <div className="flex items-center justify-evenly  border-b py-4">
-        <StarsWithGrade grade={alcohol.grade || 0} styles="text-2xl flex-col-reverse" />
+        <StarsWithGrade grade={alcohol.avgGrade || 0} styles="text-2xl flex-col-reverse" />
         <div className="text-sm">
           <StarsWithGrade grade={5} text={`(${0})`} />
           <StarsWithGrade grade={4} text={`(${0})`} />

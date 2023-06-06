@@ -1,42 +1,51 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { MockAlcoholsType, MockReviewType } from '../../types/mockAlcohols';
 import AddReview from './AddReview';
 import StarsWithGrade from '../../components/StarsWithGrade';
 import Reviews from '../../components/Reviews';
 import AlcoholDetailContent from '../../components/AlcoholDetailContent';
 import MainLayout from '../../layout/MainLayout';
 import SubHeader from '../../components/SubHeader';
+import { Alcohol, Review } from '../../types/alcohol';
+// import ReviewUtil from '../../utils/Review';
 
 const AlcoholDetailPage = () => {
-  const { id } = useParams();
-  const [alcohol, setAlcohol] = useState<MockAlcoholsType | null>(null);
-  const [reviews, setReviews] = useState<MockReviewType[]>([]);
+  const { no } = useParams();
+  const [alcohol, setAlcohol] = useState<Alcohol | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [isOpenNewReview, setIsOpenNewReview] = useState(false);
 
   const getAlcohol = useCallback(() => {
+    if (!no) return;
+    const form = new FormData();
+    form.append('alcNo', no);
     axios
-      .get(`/alcohols.json`)
+      .post(`/selectAlcDetail`, form)
       .then((res) => {
-        const targetAlcohol = res.data.alcohols.find((a: MockAlcoholsType) => a.no === Number(id)) as MockAlcoholsType;
-        setAlcohol(targetAlcohol);
+        if (res.data) {
+          setAlcohol(res.data.alcData);
+
+          // const sortedReviews = ReviewUtil.sortReviews(res.data.reviewData)
+          setReviews(res.data.reviewData);
+        }
       })
       .catch((err) => console.error(err));
-  }, [id]);
+  }, [no]);
 
   const getReviews = useCallback(() => {
-    // 추후 id 얻게되면 요청 url에 id 넣어서 해당 data 가져오기
+    if (!no) return;
+    const form = new FormData();
+    form.append('alcNo', no);
     axios
-      .get(`/reviews.json`)
+      .post(`/selectReviewList`, form)
       .then((res) => {
-        const targetReviews = res.data.reviews as MockReviewType[];
-        const sortedReviews = targetReviews.sort((a, b) => +b.createdDate - +a.createdDate);
-        setReviews(sortedReviews);
+        // const sortedReviews = ReviewUtil.sortReviews(res.data.reviewData)
+        setReviews(res.data.reviewData);
       })
       .catch((err) => console.error(err));
     // eslint-disable-next-line
-  }, [id]);
+  }, [no]);
 
   const onClose = useCallback(() => {
     setIsOpenNewReview(false);
@@ -44,15 +53,14 @@ const AlcoholDetailPage = () => {
 
   useEffect(() => {
     getAlcohol();
-    getReviews();
     // eslint-disable-next-line
-  }, [id]);
+  }, [no]);
 
   return alcohol ? (
     <>
       <MainLayout>
-        <SubHeader headerName={alcohol.name}>
-          <StarsWithGrade grade={alcohol.grade || 0} showLabel={false} />
+        <SubHeader headerName={alcohol.alcNm}>
+          <StarsWithGrade grade={alcohol.avgGrade || 0} showLabel={false} />
           <span className="text-stone-400 text-xs pr-2">(리뷰 {reviews?.length || 0})</span>
         </SubHeader>
         <div>
