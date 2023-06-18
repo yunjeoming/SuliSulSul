@@ -42,10 +42,26 @@
 	      FROM CATEGORY
 	</select>
 	
+	<select id="selectFileInfo" resultType="com.sul.server.vo.AlcVo">
+	    /* selectFileInfo - 파일 조회 */
+	    SELECT B.ALC_NO, A.FILE_NO, A.FILE_PATH, A.FILE_NM, A.FILE_EXT
+	      FROM ALC_FILE A
+	         , INFORMATION B
+	     WHERE A.FILE_NO = B.FILE_NO
+	       AND B.ALC_NO = #{alcNo}
+	</select>
+	
 	<insert id="insertAlcInfo" parameterType="java.util.Map">
 	    INSERT INTO 
 	           INFORMATION(ALC_NM, CATE_NO, VOL, PRODUCTOR, DETAIL, FILE_NO, EXP_YN)
 	    VALUES (#{alcNm}, #{cateNo}, #{vol}, #{productor}, #{detail}, #{fileNo}, #{expYn})
+	</insert>
+	
+	<insert id="insertFileInfo" parameterType="com.sul.server.vo.AlcVo" useGeneratedKeys="true" keyProperty="fileNo" keyColumn="FILE_NO">
+	    /* insertFileInfo - 파일 등록 */
+	    INSERT INTO
+	           ALC_FILE(FILE_NO, FILE_PATH, FILE_NM, FILE_EXT)
+	    VALUES (#{fileNo}, #{filePath}, #{fileNm}, #{fileExt})
 	</insert>
 	
 	<update id="updateAlcInfo" parameterType="java.util.Map">
@@ -66,9 +82,21 @@
 	     WHERE ALC_NO = #{alcNo}
 	</update>
 	
+	<update id="updateAlcFileInfo" parameterType="java.util.Map">
+	    /* updateAlcFileInfo - 파일 등록 - 술에 파일 정보 업데이트 */
+	    UPDATE INFORMATION
+	       SET FILE_NO = #{fileNo}
+	     WHERE ALC_NO = #{alcNo}
+	</update>
+	
 	<delete id="deleteAlcInfo" parameterType="java.util.Map">
 	    DELETE FROM INFORMATION
 	     WHERE ALC_NO = #{alcNo}
+	</delete>
+	
+	<delete id="deleteFileInfo" parameterType="java.util.Map">
+	    DELETE FROM ALC_FILE
+	     WHERE FILE_NO = (SELECT FILE_NO FROM INFORMATION WHERE ALC_NO = #{alcNo})
 	</delete>
 
 </mapper>

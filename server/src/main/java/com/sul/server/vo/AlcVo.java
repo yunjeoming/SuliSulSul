@@ -9,6 +9,7 @@ public class AlcVo {
 	private int cateNo;
 	private String cateNm;
 	private int fileNo;
+	private String filePath;
 	private String fileNm;
 	private String fileExt;
 	private double avgGrade;
