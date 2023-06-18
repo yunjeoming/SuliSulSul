@@ -50,13 +50,29 @@
 			<input type="submit" value="test">
 		</form>
 		<form action="/insertAlcInfo" method="post" enctype="multipart/form-data">
-			이름:  <input type="text" name=alcNm id="alcNm">
+			이름:  <input type="text" name="alcNm" id="alcNm">
 			카테고리:  <input type="text" name="cateNo" id="cateNo">
 			vol:  <input type="text" name="vol" id="vol">
 			productor:  <input type="text" name="productor" id="productor">
 			detail:  <input type="text" name="detail" id="detail">
 			fileNo:  <input type="text" name="fileNo" id="fileNo">
 			expYn:  <input type="text" name="expYn" id="expYn">
+			<input type="submit" value="test">
+		</form>
+		
+		<form action="/insertFileInfo" method="post" enctype="multipart/form-data">
+			파일등록용 술넘버 : <input type="text" name="alcNo" id="alcNo">
+			<input name="file" type="file" multiple>
+			<input type="submit" value="test">
+		</form>
+		
+		<form action="/selectFileInfo" method="post" enctype="multipart/form-data">
+			파일조회용 술넘버 : <input type="text" name="alcNo" id="alcNo">
+			<input type="submit" value="test">
+		</form>
+		<img src="./file/dd1e6fee-196f-46bd-ae92-c6cbd0b50eb5_2022101809381399647_1.jpg" />
+		<form action="/deleteFileInfo" method="post" enctype="multipart/form-data">
+			파일삭제용 술넘버 : <input type="text" name="alcNo" id="alcNo">
 			<input type="submit" value="test">
 		</form>
 	</div>

@@ -1,14 +1,22 @@
 package com.sul.server.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sul.server.service.AlcService;
 import com.sul.server.service.ReviewService;
@@ -23,6 +31,9 @@ public class AlcController {
 	
 	@Autowired
 	ReviewService rvService;
+	
+	@Value("${part4.upload.path}")
+	private String uploadPath;
 	
 	// 술 목록
 	@ResponseBody
@@ -74,5 +85,40 @@ public class AlcController {
 	@RequestMapping("/updateAlcExp")
 	public void updateAlcExp(AlcVo vo){
 		service.updateAlcExp(vo);
+	}
+	
+	// 파일 조회
+	@ResponseBody
+	@RequestMapping("/selectFileInfo")
+	public AlcVo selectFileInfo(AlcVo vo){
+		return service.selectFileInfo(vo);
+	}
+	
+	// 파일 저장
+	@ResponseBody
+	@RequestMapping("/insertFileInfo")
+	public void insertFileInfo(AlcVo vo, MultipartFile file){
+		String originalName = file.getOriginalFilename();
+		String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+		String uuid = UUID.randomUUID().toString();
+		String saveName = uuid + "_" + fileName;
+		
+		Path savePath = Paths.get(uploadPath + saveName);
+		vo.setFileNm(saveName);
+		
+		try {
+			file.transferTo(savePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		service.insertFileInfo(vo);
+	}
+	
+	// 파일 삭제
+	@ResponseBody
+	@RequestMapping("/deleteFileInfo")
+	public void deleteFileInfo(AlcVo vo){
+		service.deleteFileInfo(vo);
 	}
 }

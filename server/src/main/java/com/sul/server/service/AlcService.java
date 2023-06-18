@@ -31,6 +31,11 @@ public class AlcService {
 		return mapper.selectCateList();
 	}
 	
+	// 파일 조회
+	public AlcVo selectFileInfo(AlcVo vo){
+		return mapper.selectFileInfo(vo);
+	}
+	
 	// 술 등록
 	public void insertAlcInfo(AlcVo vo){
 		mapper.insertAlcInfo(vo);
@@ -49,5 +54,16 @@ public class AlcService {
 	// 술 단종(단종 여부만 업데이트)
 	public void updateAlcExp(AlcVo vo){
 		mapper.updateAlcExp(vo);
+	}
+	
+	// 파일 저장(술에도 파일 정보 업데이트)
+	public void insertFileInfo(AlcVo vo){
+		mapper.insertFileInfo(vo);
+		mapper.updateAlcFileInfo(vo);
+	}
+	
+	// 파일 삭제
+	public void deleteFileInfo(AlcVo vo){
+		mapper.deleteFileInfo(vo);
 	}
 }

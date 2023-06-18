@@ -9,6 +9,11 @@
 	      LEFT JOIN REVIEW B
 	        ON A.ALC_NO = B.ALC_NO
 	     WHERE A.ALC_NO = #{alcNo}
+	       AND EXISTS (
+	                   SELECT 1
+	                     FROM REVIEW BB
+	                    WHERE A.ALC_NO = BB.ALC_NO
+	                  )
 	</select>
 	
 	<select id="selectAlcReviewDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
