@@ -73,6 +73,7 @@
 		<img src="./file/dd1e6fee-196f-46bd-ae92-c6cbd0b50eb5_2022101809381399647_1.jpg" />
 		<form action="/deleteFileInfo" method="post" enctype="multipart/form-data">
 			파일삭제용 술넘버 : <input type="text" name="alcNo" id="alcNo">
+			파일삭제용 파일명 : <input type="text" name="fileNm" id="fileNm">
 			<input type="submit" value="test">
 		</form>
 	</div>

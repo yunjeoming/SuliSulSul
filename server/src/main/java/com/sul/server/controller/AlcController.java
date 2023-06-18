@@ -119,6 +119,8 @@ public class AlcController {
 	@ResponseBody
 	@RequestMapping("/deleteFileInfo")
 	public void deleteFileInfo(AlcVo vo){
+		File file = new File(uploadPath + vo.getFileNm());
+		file.delete();
 		service.deleteFileInfo(vo);
 	}
 }
