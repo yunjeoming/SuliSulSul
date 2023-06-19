@@ -24,7 +24,7 @@ const AdminSearchListPage = () => {
 
   return (
     <div className="p-4">
-      <div className="mb-4">"{searchWord}"로(으로) 검색한 결과입니다.</div>
+      <div className="mb-4">"{searchWord}" 검색 결과입니다.</div>
       <AlcoholList alcohols={searchResults} showingType="listType" isAdmin />
     </div>
   );

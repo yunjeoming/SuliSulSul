@@ -12,7 +12,6 @@ const AlcoholDetailContent: FC<Props> = ({ alcohol }) => {
       <Thumbnail imgSrc="" isCenter />
       <p className="py-4">
         {alcohol.detail}
-        테스트용 이거 너무 맛있어요.
       </p>
     </section>
   );

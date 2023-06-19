@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alcohol, Review } from '../types/alcohol';
+import StarsWithGrade from './StarsWithGrade';
 
 type Props = {
   alcohol: Alcohol;
@@ -16,9 +17,15 @@ const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
   return (
     <section className="">
       <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
-        <Link to={`/reviews/${alcohol.alcNo}`} className="text-lg cursor-pointer">
-          리뷰
-        </Link>
+        <div className="flex items-center">
+          <span className="text-lg">리뷰</span>
+          <Link
+            to={`/reviews/${alcohol.alcNo}`}
+            className="text-sm text-stone-400 hover:text-stone-600 cursor-pointer ml-2"
+          >
+            전체보기
+          </Link>
+        </div>
         <button className="text-sm text-stone-400 hover:text-stone-600" onClick={handleAddReview}>
           등록하기
         </button>
@@ -28,18 +35,7 @@ const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
           {reviews.map((r) => (
             <li key={r.reviewNo + r.grade + r.userNm} className="border-b last:border-none p-2">
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center">
-                  <div className="relative mr-1">
-                    <span
-                      className={`absolute top-0 left-0 text-yellow-300 overflow-hidden`}
-                      style={{ width: `${r.grade * 20}%` }}
-                    >
-                      ★★★★★
-                    </span>
-                    <span className="text-gray-300">★★★★★</span>
-                  </div>
-                  <strong>{r.grade}</strong>
-                </div>
+                <StarsWithGrade grade={r.grade || 0} />
                 <span className="text-sm text-stone-600">{r.userNm}</span>
               </div>
               <div className="overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</div>
