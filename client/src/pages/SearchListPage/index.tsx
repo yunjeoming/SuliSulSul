@@ -26,7 +26,7 @@ const SearchListPage = () => {
   return (
     <MainLayout>
       <div>
-        <div className="mb-4">"{searchWord}"로 검색한 결과입니다.</div>
+        <div className="mb-4">"{searchWord}" 검색 결과입니다.</div>
         <AlcoholList alcohols={searchResults} showingType="listType" />
       </div>
     </MainLayout>

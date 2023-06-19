@@ -5,11 +5,13 @@ import AlcoholListItem from '../../components/AlcoholListItem';
 import StarsWithGrade from '../../components/StarsWithGrade';
 import ReviewList from './ReviewList';
 import { Alcohol, Review } from '../../types/alcohol';
+import AddReview from '../AlcoholDetailPage/AddReview';
 
 const ReviewListPage = () => {
   const { no } = useParams();
   const [alcohol, setAlcohol] = useState<Alcohol | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [isOpenNewReview, setIsOpenNewReview] = useState(false);
 
   const getAlcohol = useCallback(() => {
     if (!no) return;
@@ -28,6 +30,28 @@ const ReviewListPage = () => {
       })
       .catch((err) => console.error(err));
   }, [no]);
+
+  const getReviews = useCallback(() => {
+    if (!no) return;
+    const form = new FormData();
+    form.append('alcNo', no);
+    axios
+      .post(`/selectReviewList`, form)
+      .then((res) => {
+        // const sortedReviews = ReviewUtil.sortReviews(res.data.reviewData)
+        setReviews(res.data.reviewData);
+      })
+      .catch((err) => console.error(err));
+    // eslint-disable-next-line
+  }, [no]);
+
+  const handleAddReview = useCallback(() => {
+    setIsOpenNewReview(true);
+  }, [setIsOpenNewReview]);
+
+  const onClose = useCallback(() => {
+    setIsOpenNewReview(false);
+  }, []);
 
   useEffect(() => {
     getAlcohol();
@@ -49,7 +73,13 @@ const ReviewListPage = () => {
           <StarsWithGrade grade={1} text={`(${0})`} />
         </div>
       </div>
+      <div className="border-b py-4 text-center">
+        <span className="cursor-pointer hover:text-stone-600" onClick={handleAddReview}>
+          리뷰 등록하기
+        </span>
+      </div>
       <ReviewList reviews={reviews} />
+      {isOpenNewReview && <AddReview alcohol={alcohol} onClose={onClose} getReviews={getReviews} />}
     </div>
   ) : null;
 };

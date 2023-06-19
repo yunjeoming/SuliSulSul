@@ -60,9 +60,9 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       return;
     }
 
-    if (contentRef.current?.value.length > 300) {
+    if (contentRef.current?.value.length > 100) {
       setModal({
-        content: '내용은 최대 300자까지 입력해주세요',
+        content: '내용은 최대 100자까지 입력해주세요',
         isOpenModal: true,
         targetRef: contentRef,
       });
@@ -130,7 +130,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       .post(`/insertAlcReview`, form)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) {
+        if (res.data === 'SUC') {
           onClose();
           getReviews();
         } else {
