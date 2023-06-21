@@ -3,10 +3,11 @@ import IconButton from '../../components/IconButton';
 import { AiOutlineCloseSquare } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
 import StarsWithGrade from '../../components/StarsWithGrade';
-import axios from 'axios';
 import DynamicStars from '../../components/DynamicStars';
 import Modal from '../../components/Modal';
 import { Review } from '../../types/alcohol';
+import { useMutation } from '@tanstack/react-query';
+import API from '../../api';
 
 type Props = {
   review: Review;
@@ -93,53 +94,49 @@ const ReviewItem: FC<Props> = ({ review }) => {
     }));
   }, []);
 
-  const handleClickEditReview = useCallback(() => {
-    // 리뷰수정
-    const grade = gradeRef.current?.textContent?.split('점')[0]!;
-    const title = titleRef.current?.value!;
-    const content = contentRef.current?.value!;
-    const reviewPwd = passwordRef.current?.value!;
+  const { mutate: editReview } = useMutation({
+    mutationFn: () => {
+      const grade = gradeRef.current?.textContent?.split('점')[0]!;
+      const title = titleRef.current?.value!;
+      const content = contentRef.current?.value!;
+      const reviewPwd = passwordRef.current?.value!;
 
-    const form = new FormData();
-    form.append('title', title);
-    form.append('grade', grade);
-    form.append('content', content);
-    form.append('reviewPwd', reviewPwd);
-    form.append('userNm', review.userNm);
-    form.append('reviewNo', review.reviewNo.toString());
+      const data = new FormData();
+      data.append('title', title);
+      data.append('grade', grade);
+      data.append('content', content);
+      data.append('reviewPwd', reviewPwd);
+      data.append('userNm', review.userNm);
+      data.append('reviewNo', review.reviewNo.toString());
 
-    // 리뷰 수정 api
-    axios
-      .post(`/updateAlcReview`, form)
-      .then((res) => {
-        //
-        console.log('reviewItem.tsx 수정 api');
+      return API.updateReview(data);
+    },
+    onSuccess: () => {
+      console.log('reviewItem.tsx 수정 api');
 
-        // 수정 모드 -> 일반 모드로 변경
-        initState();
-      })
-      .catch((err) => console.dir(err));
-  }, [review]);
+      // 수정 모드 -> 일반 모드로 변경
+      initState();
+    },
+  });
 
-  const handleClickDeleteReview = useCallback(() => {
-    // 리뷰 삭제 api
-    // reviewNo, userNm, reviewPwd
-    const reviewPwd = passwordRef.current?.value!;
-    const form = new FormData();
-    form.append('reviewPwd', reviewPwd);
-    form.append('userNm', review.userNm);
-    form.append('reviewNo', review.reviewNo.toString());
-    axios
-      .post(`/deleteAlcReview`, form)
-      .then((res) => {
-        //
-        console.log('reviewItem.tsx 삭제 api');
-        closeModal();
-        // 모달 닫고, 패스워드 인풋 지우기
-        initState();
-      })
-      .catch((err) => console.dir(err));
-  }, [closeModal, review]);
+  const { mutate: deleteReview } = useMutation({
+    mutationFn: () => {
+      const reviewPwd = passwordRef.current?.value!;
+      const data = new FormData();
+      data.append('reviewPwd', reviewPwd);
+      data.append('userNm', review.userNm);
+      data.append('reviewNo', review.reviewNo.toString());
+
+      return API.updateReview(data);
+    },
+    onSuccess: () => {
+      console.log('reviewItem.tsx 삭제 api');
+
+      // 모달 닫고, 패스워드 인풋 지우기
+      closeModal();
+      initState();
+    },
+  });
 
   const convertTextToInput = useCallback(() => {
     if (titleRef.current) {
@@ -192,7 +189,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
             <button className="border px-4 py-2 mr-2" onClick={cancelEditMode}>
               취소
             </button>
-            <button className="border px-4 py-2" onClick={handleClickEditReview}>
+            <button className="border px-4 py-2" onClick={() => editReview()}>
               확인
             </button>
           </div>
@@ -224,7 +221,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
               <button className="p-2 w-1/2 border-r" onClick={closeModal}>
                 취소
               </button>
-              <button className="p-2 w-1/2" onClick={handleClickDeleteReview}>
+              <button className="p-2 w-1/2" onClick={() => deleteReview()}>
                 확인
               </button>
             </div>

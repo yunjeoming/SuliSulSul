@@ -1,15 +1,16 @@
 import React, { useCallback, useRef, useState } from 'react';
 import AlcoholListItem from '../../components/AlcoholListItem';
-import axios from 'axios';
 import DynamicStars from '../../components/DynamicStars';
 import Modal from '../../components/Modal';
 import AddLayout from '../../layout/AddLayout';
 import { Alcohol } from '../../types/alcohol';
+import { useMutation } from '@tanstack/react-query';
+import API from '../../api';
 
 type Props = {
   alcohol: Alcohol;
   onClose: () => void;
-  getReviews: () => void;
+  getReviews?: () => void;
 };
 
 const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
@@ -111,47 +112,46 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
     }
   }, [targetRef]);
 
-  const addReview = () => {
-    const grade = gradeRef.current?.textContent?.split('점')[0]!;
-    const title = titleRef.current?.value!;
-    const content = contentRef.current?.value!;
-    const userNm = userNmRef.current?.value!;
-    const reviewPwd = reviewPwdRef.current?.value!;
+  const { mutate: addReview } = useMutation({
+    mutationFn: () => {
+      const grade = gradeRef.current?.textContent?.split('점')[0]!;
+      const title = titleRef.current?.value!;
+      const content = contentRef.current?.value!;
+      const userNm = userNmRef.current?.value!;
+      const reviewPwd = reviewPwdRef.current?.value!;
 
-    const form = new FormData();
-    form.append('alcNo', alcohol.alcNo!.toString());
-    form.append('title', title);
-    form.append('grade', grade);
-    form.append('content', content);
-    form.append('userNm', userNm);
-    form.append('reviewPwd', reviewPwd);
+      const data = new FormData();
+      data.append('alcNo', alcohol.alcNo!.toString());
+      data.append('title', title);
+      data.append('grade', grade);
+      data.append('content', content);
+      data.append('userNm', userNm);
+      data.append('reviewPwd', reviewPwd);
 
-    axios
-      .post(`/insertAlcReview`, form)
-      .then((res) => {
-        console.log(res);
-        if (res.data === 'SUC') {
-          onClose();
-          getReviews();
-        } else {
-          // error alert
-          setModal({
-            content: '등록에 실패했어요',
-            isOpenModal: true,
-            targetRef: contentRef,
-          });
-        }
-      })
-      .catch((err) => {
-        // error alert
-        console.error(err);
+      return API.addReview(data);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      if (data === 'SUC') {
+        onClose();
+        getReviews && getReviews();
+      } else {
         setModal({
           content: '등록에 실패했어요',
           isOpenModal: true,
           targetRef: contentRef,
         });
+      }
+    },
+    onError: (err) => {
+      console.error(err);
+      setModal({
+        content: '등록에 실패했어요',
+        isOpenModal: true,
+        targetRef: contentRef,
       });
-  };
+    },
+  });
 
   return (
     <>

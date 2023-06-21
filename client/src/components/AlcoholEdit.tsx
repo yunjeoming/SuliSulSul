@@ -1,11 +1,12 @@
 import React, { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alcohol, Category } from '../types/alcohol';
-import { CategoryUtils } from '../utils/Category';
+import { Alcohol } from '../types/alcohol';
 import { Styles } from '../constants/Styles';
 // import Thumbnail from './Thumbnail';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import API from '../api';
+import { queryKeys } from '../queryClient';
 
 type Props = {
   alcohol?: Alcohol;
@@ -39,7 +40,11 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
     [],
   );
 
-  const [category, setCategory] = useState<Category[]>([]);
+  const { data: category } = useQuery({
+    queryKey: [queryKeys.CATEGORY],
+    queryFn: API.getCategories,
+    select: (data) => [{ cateNo: 999, cateNm: 'all' }, ...data],
+  });
   const [modal, setModal] = useState<{
     content: string;
     isOpenModal: boolean;
@@ -140,45 +145,37 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
     }
   }, [targetRef]);
 
-  const addAlcohol = useCallback((form: FormData) => {
-    axios
-      .post(`/insertAlcInfo`, form)
-      .then((res) => {
-        if (res.status.toString().startsWith('2')) {
-          setModal((state) => ({
-            ...state,
-            content: '추가를 완료했습니다.',
-            showOneBtn: true,
-            isOpenModal: true,
-            isAdded: true,
-            targetRef: null,
-          }));
-        }
-      })
-      .catch((err) => console.dir(err));
-  }, []);
-
-  const updateAlcohol = useCallback(
-    (form: FormData) => {
-      if (!alcohol) return;
-      form.append('alcNo', alcohol.alcNo.toString());
-      axios
-        .post(`/updateAlcInfo`, form)
-        .then((res) => {
-          if (res.status.toString().startsWith('2')) {
-            setModal((state) => ({
-              ...state,
-              content: '내용을 수정했습니다.',
-              showOneBtn: true,
-              isOpenModal: true,
-              targetRef: null,
-            }));
-          }
-        })
-        .catch((err) => console.dir(err));
+  const { mutate: addAlcohol } = useMutation({
+    mutationFn: (data: FormData) => API.updateAlcohol(data),
+    onSuccess: () => {
+      setModal((state) => ({
+        ...state,
+        content: '추가를 완료했습니다.',
+        showOneBtn: true,
+        isOpenModal: true,
+        isAdded: true,
+        targetRef: null,
+      }));
     },
-    [alcohol],
-  );
+  });
+
+  const { mutate: updateAlcohol } = useMutation({
+    mutationFn: (data: FormData) => {
+      if (alcohol && alcohol.alcNo) {
+        data.append('alcNo', alcohol.alcNo.toString());
+      }
+      return API.updateAlcohol(data);
+    },
+    onSuccess: () => {
+      setModal((state) => ({
+        ...state,
+        content: '내용을 수정했습니다.',
+        showOneBtn: true,
+        isOpenModal: true,
+        targetRef: null,
+      }));
+    },
+  });
 
   // 최종 api 실행
   const onSubmit = useCallback(
@@ -235,17 +232,9 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
     navigate('/admin', { replace: true });
   }, [navigate, onCloseModal, handleClickCancel]);
 
-  // category 가져오기
-  useEffect(() => {
-    (async () => {
-      const categoryData = await CategoryUtils.getCategory();
-      categoryData && setCategory(categoryData);
-    })();
-  }, []);
-
   // 수정 시 alcohol 정보 넣기
   useEffect(() => {
-    if (!alcohol || !category.length) return;
+    if (!alcohol) return;
 
     if (alcoholNmRef.current && alcohol.alcNm) {
       alcoholNmRef.current.value = alcohol.alcNm;
@@ -296,7 +285,7 @@ const AlcoholEdit: React.FC<Props> = ({ alcohol, onCancel, setSaveFunc }) => {
           <label htmlFor="alcohol-name">카테고리</label>
           <select className="input-area p-2" ref={categoryNmRef}>
             <option value={''}>선택</option>
-            {category.map((c) => (
+            {category?.map((c) => (
               <option key={c.cateNo} value={c.cateNo}>
                 {c.cateNm}
               </option>

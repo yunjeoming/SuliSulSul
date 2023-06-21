@@ -5,7 +5,7 @@ import StarsWithGrade from './StarsWithGrade';
 
 type Props = {
   alcohol: Alcohol;
-  reviews: Review[];
+  reviews: Review[] | undefined;
   setIsOpenNewReview: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
