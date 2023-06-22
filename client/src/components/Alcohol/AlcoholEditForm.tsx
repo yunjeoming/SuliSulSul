@@ -7,7 +7,8 @@ import { Alcohol } from '../../types/alcohol';
 import { Styles } from '../../constants/Styles';
 import { useMutation } from '@tanstack/react-query';
 import API from '../../api';
-import Modal from '../Modal';
+import OneBtnModal from '../Modal/OneBtnModal';
+import TwoBtnsModal from '../Modal/TwoBtnsModal';
 
 type Props = {
   alcohol: Alcohol;
@@ -136,27 +137,12 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
           </button>
         </div>
       )}
-      {isOpenModal && (
-        <Modal onClose={onCloseModal}>
-          <div className="p-4">{content}</div>
-          {showOneBtn ? (
-            // 확인 버튼만 보여줄 때
-            <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
-              확인
-            </button>
-          ) : (
-            // 확인 & 취소 둘 다 보여줄 때
-            <div className="flex">
-              <button type="button" className={`${Styles.BUTTON_DEFAULT} mr-2`} onClick={onCloseModal}>
-                취소
-              </button>
-              <button type="submit" className={`${Styles.BUTTON_DEFAULT}`} onClick={onSubmit}>
-                확인
-              </button>
-            </div>
-          )}
-        </Modal>
-      )}
+      {isOpenModal &&
+        (showOneBtn ? (
+          <OneBtnModal content={content} onClose={onCloseModal} />
+        ) : (
+          <TwoBtnsModal content={content} onClose={onCloseModal} onLeftFn={onCloseModal} onRightFn={onSubmit} />
+        ))}
     </>
   );
 };

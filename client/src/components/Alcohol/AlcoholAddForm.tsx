@@ -2,11 +2,11 @@ import React, { FormEvent, useCallback, useEffect } from 'react';
 import AlcoholForm from './AlcoholForm';
 import useAlcoholFormRef from '../../hooks/useAlcoholFormRef';
 import useModal from '../../hooks/useModal';
-import Modal from '../Modal';
-import { Styles } from '../../constants/Styles';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import API from '../../api';
+import TwoBtnsModal from '../Modal/TwoBtnsModal';
+import OneBtnModal from '../Modal/OneBtnModal';
 
 type Props = {
   onCancel: () => void;
@@ -123,37 +123,21 @@ const AlcoholAddForm: React.FC<Props> = ({ onCancel, setSaveFunc }) => {
   return (
     <>
       <AlcoholForm ref={refObj} />
-      {isOpenModal && (
-        <Modal onClose={onCloseModal}>
-          <div className="p-4">{content}</div>
-          {isAdded ? (
-            // 술 추가 되었을 때
-            <div className="flex">
-              <button type="button" className={`${Styles.BUTTON_DEFAULT} mr-2`} onClick={addAnotherOne}>
-                계속 추가
-              </button>
-              <button type="submit" className={`${Styles.BUTTON_DEFAULT}`} onClick={goHome}>
-                홈으로
-              </button>
-            </div>
-          ) : showOneBtn ? (
-            // 확인 버튼만 보여줄 때
-            <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
-              확인
-            </button>
-          ) : (
-            // 확인 & 취소 둘 다 보여줄 때
-            <div className="flex">
-              <button type="button" className={`${Styles.BUTTON_DEFAULT} mr-2`} onClick={onCloseModal}>
-                취소
-              </button>
-              <button type="submit" className={`${Styles.BUTTON_DEFAULT}`} onClick={onSubmit}>
-                확인
-              </button>
-            </div>
-          )}
-        </Modal>
-      )}
+      {isOpenModal &&
+        (isAdded ? (
+          <TwoBtnsModal
+            content={content}
+            onClose={onCloseModal}
+            onLeftFn={addAnotherOne}
+            onRightFn={goHome}
+            closeBtnName="계속 추가"
+            okBtnName="홈으로"
+          />
+        ) : showOneBtn ? (
+          <OneBtnModal content={content} onClose={onCloseModal} />
+        ) : (
+          <TwoBtnsModal content={content} onClose={onCloseModal} onLeftFn={onCloseModal} onRightFn={onSubmit} />
+        ))}
     </>
   );
 };

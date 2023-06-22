@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react';
-import ModalPortal from '../ts/Portal';
+import ModalPortal from '../../ts/Portal';
 
 type Props = {
   children: React.ReactNode;
