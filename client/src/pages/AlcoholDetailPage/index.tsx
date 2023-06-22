@@ -6,22 +6,12 @@ import SimpleReviewList from '../../components/Review/SimpleReviewList';
 import AlcoholDetailContent from '../../components/Alcohol/AlcoholDetailContent';
 import MainLayout from '../../layout/MainLayout';
 import SubHeader from '../../components/Header/SubHeader';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '../../queryClient';
-import API from '../../api';
+import useAlcoholAndReviews from '../../hooks/useAlcoholAndReviews';
 
 const AlcoholDetailPage = () => {
   const { no } = useParams<{ no: string }>();
   const [isOpenNewReview, setIsOpenNewReview] = useState(false);
-
-  const { data: { alcohol, reviews } = { alcohol: null, reviews: [] } } = useQuery({
-    queryKey: [queryKeys.ALCOHOL, no],
-    queryFn: () => API.getAlcoholByNo(no ?? ''),
-    select: (data) => ({
-      alcohol: data.alcData,
-      reviews: data.reviewData,
-    }),
-  });
+  const { alcohol, reviews } = useAlcoholAndReviews(no);
 
   const onClose = useCallback(() => {
     setIsOpenNewReview(false);

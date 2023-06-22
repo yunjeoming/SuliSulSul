@@ -4,22 +4,12 @@ import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
 import StarsWithGrade from '../../components/Stars/StarsWithGrade';
 import ReviewList from '../../components/Review/ReviewList';
 import AddReview from '../AlcoholDetailPage/AddReview';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '../../queryClient';
-import API from '../../api';
+import useAlcoholAndReviews from '../../hooks/useAlcoholAndReviews';
 
 const ReviewListPage = () => {
   const { no } = useParams();
   const [isOpenNewReview, setIsOpenNewReview] = useState(false);
-
-  const { data: { alcohol, reviews } = { alcohol: null, reviews: [] } } = useQuery({
-    queryKey: [queryKeys.ALCOHOL, no],
-    queryFn: () => API.getAlcoholByNo(no || ''),
-    select: (data) => ({
-      alcohol: data.alcData,
-      reviews: data.reviewData,
-    }),
-  });
+  const { alcohol, reviews } = useAlcoholAndReviews(no);
 
   const handleAddReview = useCallback(() => {
     setIsOpenNewReview(true);
