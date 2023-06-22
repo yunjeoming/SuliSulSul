@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AddReview from './AddReview';
-import StarsWithGrade from '../../components/StarsWithGrade';
-import Reviews from '../../components/Reviews';
-import AlcoholDetailContent from '../../components/AlcoholDetailContent';
+import StarsWithGrade from '../../components/Stars/StarsWithGrade';
+import SimpleReviewList from '../../components/Review/SimpleReviewList';
+import AlcoholDetailContent from '../../components/Alcohol/AlcoholDetailContent';
 import MainLayout from '../../layout/MainLayout';
-import SubHeader from '../../components/SubHeader';
+import SubHeader from '../../components/Header/SubHeader';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../queryClient';
 import API from '../../api';
@@ -36,7 +36,7 @@ const AlcoholDetailPage = () => {
         </SubHeader>
         <div>
           <AlcoholDetailContent alcohol={alcohol} />
-          <Reviews alcohol={alcohol} reviews={reviews} setIsOpenNewReview={setIsOpenNewReview} />
+          <SimpleReviewList alcohol={alcohol} reviews={reviews} setIsOpenNewReview={setIsOpenNewReview} />
         </div>
       </MainLayout>
       {isOpenNewReview && <AddReview alcohol={alcohol} onClose={onClose} />}

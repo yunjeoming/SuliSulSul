@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import AlcoholListItem from './AlcoholListItem';
-import { ShowingType } from '../pages/AlcoholListPage';
-import { Alcohol } from '../types/alcohol';
+import { ShowingType } from '../../pages/AlcoholListPage';
+import { Alcohol } from '../../types/alcohol';
 
 type AlcoholListType = {
   alcohols: Alcohol[];

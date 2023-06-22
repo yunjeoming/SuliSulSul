@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { ShowingType } from '../pages/AlcoholListPage';
-import { Alcohol } from '../types/alcohol';
+import { ShowingType } from '../../pages/AlcoholListPage';
+import { Alcohol } from '../../types/alcohol';
 import SimpleAlcoholItem from './SimpleAlcoholItem';
 import DetailedAlcoholItem from './DetailedAlcoholItem';
 

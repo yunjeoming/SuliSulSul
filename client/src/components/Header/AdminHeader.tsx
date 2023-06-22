@@ -1,8 +1,8 @@
 import React, { FC, SyntheticEvent, useRef } from 'react';
-import HeaderLayout from '../layout/HeaderLayout';
+import HeaderLayout from '../../layout/HeaderLayout';
 import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
-import IconButton from './IconButton';
+import IconButton from '../IconButton';
 import { GoSearch } from 'react-icons/go';
 
 type Props = {

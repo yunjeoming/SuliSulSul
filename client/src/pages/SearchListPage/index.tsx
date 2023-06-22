@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import AlcoholList from '../../components/AlcoholList';
+import AlcoholList from '../../components/Alcohol/AlcoholList';
 import MainLayout from '../../layout/MainLayout';
 import { Alcohol } from '../../types/alcohol';
 import { useQuery } from '@tanstack/react-query';

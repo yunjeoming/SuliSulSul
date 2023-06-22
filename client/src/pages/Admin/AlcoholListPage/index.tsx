@@ -1,4 +1,4 @@
-import AlcoholList from '../../../components/AlcoholList';
+import AlcoholList from '../../../components/Alcohol/AlcoholList';
 import { Alcohol } from '../../../types/alcohol';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../../queryClient';

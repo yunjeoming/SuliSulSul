@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
-import { Category } from '../types/alcohol';
+import { Category } from '../../types/alcohol';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '../queryClient';
-import API from '../api';
+import useCategory from '../../hooks/useCategory';
 
 type Props = {
   onClose?: () => void;
@@ -11,11 +9,7 @@ type Props = {
 
 const CategorySidebar: FC<Props> = ({ onClose }) => {
   const navigate = useNavigate();
-  const { data: category } = useQuery({
-    queryKey: [queryKeys.CATEGORY],
-    queryFn: API.getCategories,
-    select: (data) => [{ cateNo: 999, cateNm: 'all' }, ...data],
-  });
+  const category = useCategory();
 
   const handleClick = (category: Category) => {
     navigate(`/c/${category.cateNm}`, { state: category });

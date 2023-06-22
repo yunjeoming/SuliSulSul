@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Thumbnail from './Thumbnail';
-import { Alcohol } from '../types/alcohol';
+import Thumbnail from '../Thumbnail';
+import { Alcohol } from '../../types/alcohol';
 
 type Props = {
   alcohol: Alcohol;

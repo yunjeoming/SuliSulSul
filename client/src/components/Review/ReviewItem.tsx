@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import IconButton from '../../components/IconButton';
+import IconButton from '../IconButton';
 import { AiOutlineCloseSquare } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
-import StarsWithGrade from '../../components/StarsWithGrade';
-import DynamicStars from '../../components/DynamicStars';
-import Modal from '../../components/Modal';
+import StarsWithGrade from '../Stars/StarsWithGrade';
+import DynamicStars from '../Stars/DynamicStars';
+import Modal from '../Modal';
 import { Review } from '../../types/alcohol';
 import { useMutation } from '@tanstack/react-query';
 import API from '../../api';

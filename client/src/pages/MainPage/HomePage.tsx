@@ -1,16 +1,16 @@
-import React, { FC, useEffect } from 'react';
-import AlcoholList from './AlcoholList';
-import MainLayout from '../layout/MainLayout';
-import { Alcohol } from '../types/alcohol';
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '../queryClient';
-import API from '../api';
+import React, { FC, useEffect } from 'react';
+import { Alcohol } from '../../types/alcohol';
+import { queryKeys } from '../../queryClient';
+import API from '../../api';
+import MainLayout from '../../layout/MainLayout';
+import AlcoholList from '../../components/Alcohol/AlcoholList';
 
 type Props = {
   initSidebar: () => void;
 };
 
-const Home: FC<Props> = ({ initSidebar }) => {
+const HomePage: FC<Props> = ({ initSidebar }) => {
   const { data: alcohols } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL],
     queryFn: API.getAlcohols,
@@ -40,4 +40,4 @@ const Home: FC<Props> = ({ initSidebar }) => {
   );
 };
 
-export default Home;
+export default HomePage;

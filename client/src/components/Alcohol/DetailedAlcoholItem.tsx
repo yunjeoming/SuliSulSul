@@ -1,8 +1,8 @@
 import React from 'react';
-import Thumbnail from './Thumbnail';
-import { ShowingType } from '../pages/AlcoholListPage';
+import Thumbnail from '../Thumbnail';
+import { ShowingType } from '../../pages/AlcoholListPage';
 import { Link } from 'react-router-dom';
-import { Alcohol } from '../types/alcohol';
+import { Alcohol } from '../../types/alcohol';
 
 type Props = {
   alcohol: Alcohol;

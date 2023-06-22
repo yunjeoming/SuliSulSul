@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 import API from '../../../api';
-import AlcoholList from '../../../components/AlcoholList';
+import AlcoholList from '../../../components/Alcohol/AlcoholList';
 import { Alcohol } from '../../../types/alcohol';
 import { queryKeys } from '../../../queryClient';
 

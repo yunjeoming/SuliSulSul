@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { GoSearch } from 'react-icons/go';
-import IconButton from './IconButton';
-import Sidebar from './Sidebar';
+import IconButton from '../IconButton';
+import Sidebar from '../Sidebar/Sidebar';
 import { useNavigate } from 'react-router-dom';
-import HeaderLayout from '../layout/HeaderLayout';
+import HeaderLayout from '../../layout/HeaderLayout';
 
 type Props = {
   isOpenSidebar: { category: boolean; search: boolean };

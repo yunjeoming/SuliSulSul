@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import AlcoholListItem from '../../components/AlcoholListItem';
-import StarsWithGrade from '../../components/StarsWithGrade';
-import ReviewList from './ReviewList';
+import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
+import StarsWithGrade from '../../components/Stars/StarsWithGrade';
+import ReviewList from '../../components/Review/ReviewList';
 import AddReview from '../AlcoholDetailPage/AddReview';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../queryClient';

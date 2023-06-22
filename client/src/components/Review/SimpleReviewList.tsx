@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Alcohol, Review } from '../types/alcohol';
-import StarsWithGrade from './StarsWithGrade';
+import { Alcohol, Review } from '../../types/alcohol';
+import StarsWithGrade from '../Stars/StarsWithGrade';
 
 type Props = {
   alcohol: Alcohol;
@@ -9,13 +9,13 @@ type Props = {
   setIsOpenNewReview: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
+const SimpleReviewList: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
   const handleAddReview = useCallback(() => {
     setIsOpenNewReview(true);
   }, [setIsOpenNewReview]);
 
   return (
-    <section className="">
+    <section>
       <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
         <div className="flex items-center">
           <span className="text-lg">리뷰</span>
@@ -49,4 +49,4 @@ const Reviews: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
   );
 };
 
-export default Reviews;
+export default SimpleReviewList;

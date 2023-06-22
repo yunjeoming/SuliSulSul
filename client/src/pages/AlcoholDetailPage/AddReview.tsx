@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
-import AlcoholListItem from '../../components/AlcoholListItem';
-import DynamicStars from '../../components/DynamicStars';
+import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
+import DynamicStars from '../../components/Stars/DynamicStars';
 import Modal from '../../components/Modal';
 import AddLayout from '../../layout/AddLayout';
 import { Alcohol } from '../../types/alcohol';

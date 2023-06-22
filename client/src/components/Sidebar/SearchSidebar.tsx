@@ -1,5 +1,5 @@
 import React, { FC, SyntheticEvent, useRef, useState } from 'react';
-import IconButton from './IconButton';
+import IconButton from '../IconButton';
 import { GoSearch } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
 
