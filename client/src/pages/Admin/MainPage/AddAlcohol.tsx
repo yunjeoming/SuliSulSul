@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import AddLayout from '../../../layout/AddLayout';
-import AlcoholEdit from '../../../components/AlcoholEdit';
+import AlcoholAddForm from '../../../components/Alcohol/AlcoholAddForm';
 
 type Props = {
   onClose: () => void;
@@ -27,7 +27,7 @@ const AddAlcohol: React.FC<Props> = ({ onClose }) => {
   return (
     <AddLayout headerText="술 등록" onClose={onClose} onSave={onSave} ref={ref}>
       <div className="p-4">
-        <AlcoholEdit onCancel={onClose} setSaveFunc={setSaveFunc} />
+        <AlcoholAddForm onCancel={onClose} setSaveFunc={setSaveFunc} />
       </div>
     </AddLayout>
   );

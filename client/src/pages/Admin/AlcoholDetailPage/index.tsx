@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../../queryClient';
-import AlcoholEdit from '../../../components/AlcoholEdit';
 import MainLayout from '../../../layout/MainLayout';
 import SubHeader from '../../../components/SubHeader';
 import API from '../../../api';
+import AlcoholEditForm from '../../../components/Alcohol/AlcoholEditForm';
 
 const AdminAlcoholDetailPage = () => {
   const { no } = useParams();
@@ -21,7 +21,7 @@ const AdminAlcoholDetailPage = () => {
     <MainLayout>
       <SubHeader headerName={alcohol.alcNm} />
       <div>
-        <AlcoholEdit alcohol={alcohol} />
+        <AlcoholEditForm alcohol={alcohol} />
       </div>
     </MainLayout>
   ) : null;
