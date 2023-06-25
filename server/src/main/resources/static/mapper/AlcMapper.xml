@@ -23,6 +23,8 @@
 	      <if test="cateNo != 0" >
 	            AND A.CATE_NO = #{cateNo}
 	      </if>
+	     ORDER BY ALC_
+	     LIMIT #{startPage}, #{lastPage}
 	</select>
 	
 	<select id="selectAlcDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.AlcVo">

@@ -22,19 +22,17 @@ public class ReviewService {
 	ReviewMapper mapper;
 	
 	// 리뷰 전체 목록(하나의 술의)
-	public List<ReviewVo> selectAlcReviewList(ReviewVo vo){
-		List<ReviewVo> returnVo = new ArrayList<>(); 
-		returnVo = mapper.selectAlcReviewList(vo);
+	public List<ReviewVo> selectAlcReviewList(ReviewVo vo){ 
+		// 페이지 설정
+		vo.setStartPage((vo.getPageNo() - 1) * 10);
+		vo.setLastpage(vo.getPageNo() * 10);
 		
-		return returnVo;
+		return mapper.selectAlcReviewList(vo);
 	}
 	
 	// 리뷰 상세(한개만 보여줌)
 	public ReviewVo selectAlcReviewDetail(ReviewVo vo){
-		ReviewVo returnVo = new ReviewVo(); 
-		returnVo = mapper.selectAlcReviewDetail(vo);
-		
-		return returnVo;
+		return mapper.selectAlcReviewDetail(vo);
 	}
 	
 	// 리뷰 등록

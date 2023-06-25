@@ -12,6 +12,7 @@
 			술 이름 : <input type="text" name="alcNm" id="alcNm">
 			단종여부 : <input type="radio" name="expYn" value="true"> 단종 <input type="radio" name="expYn" value="false"> 단종 아님
 			카테고리번호 : <input type="text" name="cateNo" id="cateNo">
+			페이지 넘버 : <input type="text" name="pageNo" id="pageNo">
 			<input type="submit" value="test">
 		</form>
 		<form action="/selectAlcDetail" method="post" enctype="multipart/form-data">
@@ -20,6 +21,7 @@
 		</form>
 		<form action="/selectReviewList" method="post" enctype="multipart/form-data">
 			리뷰용 술 넘버 : <input type="text" name="alcNo" id="alcNo">
+			페이지 넘버 : <input type="text" name="pageNo" id="pageNo">
 			<input type="submit" value="test">
 		</form>
 		<form action="/selectReviewDetail" method="post" enctype="multipart/form-data">
