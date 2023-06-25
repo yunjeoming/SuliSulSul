@@ -18,4 +18,7 @@ public class ReviewVo {
 	private String regDt;
 	private String userNm;
 	private String reviewPwd;
+	private int pageNo;
+	private int startPage;
+	private int lastpage;
 }

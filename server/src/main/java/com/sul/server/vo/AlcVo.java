@@ -17,4 +17,7 @@ public class AlcVo {
 	private String productor;
 	private String detail;
 	private String expYn;
+	private int pageNo;
+	private int startPage;
+	private int lastPage;
 }
