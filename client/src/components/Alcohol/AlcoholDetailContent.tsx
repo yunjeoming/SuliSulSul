@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import Thumbnail from './Thumbnail';
-import { Alcohol } from '../types/alcohol';
+import Thumbnail from '../Thumbnail';
+import { Alcohol } from '../../types/alcohol';
 
 type Props = {
   alcohol: Alcohol;

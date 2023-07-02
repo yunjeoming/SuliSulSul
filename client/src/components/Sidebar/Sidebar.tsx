@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import CategorySidebar from './CategorySidebar';
 import SearchSidebar from './SearchSidebar';
-import { Styles } from '../constants/Styles';
+import { Styles } from '../../constants/Styles';
 
 type Props = {
   type: 'category' | 'search';

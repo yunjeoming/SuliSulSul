@@ -1,13 +1,16 @@
-export type Alcohol = {
+type CommonType = {
   alcNo: number;
   alcNm: string;
+  fileNm?: string;
+};
+
+export type Alcohol = CommonType & {
   cateNm: string;
   cateNo: number;
   avgGrade: number;
   detail?: string;
   expYn: boolean;
   fileExt?: string;
-  fileNm?: string;
   productor?: string;
   vol?: number;
 };
@@ -17,9 +20,7 @@ export type Category = {
   cateNm: string;
 };
 
-export type Review = {
-  alcNo: number;
-  alcNm: string;
+export type Review = CommonType & {
   userNm: string;
   cateNm: string;
   reviewNo: number;
@@ -27,7 +28,6 @@ export type Review = {
   grade: number;
   content?: string;
   fileNo?: string;
-  fileNm?: string;
   fileExt?: string;
   userType?: string;
   modifiedDate: string;

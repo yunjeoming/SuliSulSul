@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import AdminAlcoholListPage from '../AlcoholListPage';
 import AdminAlcoholDetailPage from '../AlcoholDetailPage';
 import AddAlcohol from './AddAlcohol';
-import AdminHeader from '../../../components/AdminHeader';
+import AdminHeader from '../../../components/Header/AdminHeader';
 import AdminSearchListPage from '../SearchListPage';
 
 const AdminMainPage = () => {

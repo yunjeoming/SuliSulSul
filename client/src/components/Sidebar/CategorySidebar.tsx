@@ -1,21 +1,15 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Category } from '../types/alcohol';
-import { CategoryUtils } from '../utils/Category';
+import React, { FC } from 'react';
+import { Category } from '../../types/alcohol';
 import { useNavigate } from 'react-router-dom';
+import useCategory from '../../hooks/useCategory';
 
 type Props = {
   onClose?: () => void;
 };
 
 const CategorySidebar: FC<Props> = ({ onClose }) => {
-  const [category, setCategory] = useState<Category[]>([{ cateNo: 999, cateNm: 'all' }]);
   const navigate = useNavigate();
-  useEffect(() => {
-    (async () => {
-      const categoryData = await CategoryUtils.getCategory();
-      categoryData && setCategory((state) => [...state, ...categoryData]);
-    })();
-  }, []);
+  const category = useCategory();
 
   const handleClick = (category: Category) => {
     navigate(`/c/${category.cateNm}`, { state: category });
@@ -24,7 +18,7 @@ const CategorySidebar: FC<Props> = ({ onClose }) => {
 
   return (
     <ul className="text-center">
-      {category.map((c) => (
+      {category?.map((c) => (
         <li
           key={c.cateNo + c.cateNm}
           className="p-2 hover:bg-sky-700 hover:text-slate-200 hover:cursor-pointer"

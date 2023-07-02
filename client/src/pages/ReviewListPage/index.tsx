@@ -1,49 +1,15 @@
-import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import AlcoholListItem from '../../components/AlcoholListItem';
-import StarsWithGrade from '../../components/StarsWithGrade';
-import ReviewList from './ReviewList';
-import { Alcohol, Review } from '../../types/alcohol';
+import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
+import StarsWithGrade from '../../components/Stars/StarsWithGrade';
+import ReviewList from '../../components/Review/ReviewList';
 import AddReview from '../AlcoholDetailPage/AddReview';
+import useAlcoholAndReviews from '../../hooks/useAlcoholAndReviews';
 
 const ReviewListPage = () => {
   const { no } = useParams();
-  const [alcohol, setAlcohol] = useState<Alcohol | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [isOpenNewReview, setIsOpenNewReview] = useState(false);
-
-  const getAlcohol = useCallback(() => {
-    if (!no) return;
-    const form = new FormData();
-    form.append('alcNo', no);
-
-    axios
-      .post(`/selectAlcDetail`, form)
-      .then((res) => {
-        if (res.data) {
-          setAlcohol(res.data.alcData);
-
-          // const sortedReviews = ReviewUtil.sortReviews(res.data.reviewData)
-          setReviews(res.data.reviewData);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, [no]);
-
-  const getReviews = useCallback(() => {
-    if (!no) return;
-    const form = new FormData();
-    form.append('alcNo', no);
-    axios
-      .post(`/selectReviewList`, form)
-      .then((res) => {
-        // const sortedReviews = ReviewUtil.sortReviews(res.data.reviewData)
-        setReviews(res.data.reviewData);
-      })
-      .catch((err) => console.error(err));
-    // eslint-disable-next-line
-  }, [no]);
+  const { alcohol, reviews } = useAlcoholAndReviews(no);
 
   const handleAddReview = useCallback(() => {
     setIsOpenNewReview(true);
@@ -52,11 +18,6 @@ const ReviewListPage = () => {
   const onClose = useCallback(() => {
     setIsOpenNewReview(false);
   }, []);
-
-  useEffect(() => {
-    getAlcohol();
-    // eslint-disable-next-line
-  }, [no]);
 
   return alcohol ? (
     <div>
@@ -79,7 +40,7 @@ const ReviewListPage = () => {
         </span>
       </div>
       <ReviewList reviews={reviews} />
-      {isOpenNewReview && <AddReview alcohol={alcohol} onClose={onClose} getReviews={getReviews} />}
+      {isOpenNewReview && <AddReview alcohol={alcohol} onClose={onClose} />}
     </div>
   ) : null;
 };
