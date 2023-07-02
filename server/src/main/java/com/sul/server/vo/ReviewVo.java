@@ -20,5 +20,5 @@ public class ReviewVo {
 	private String reviewPwd;
 	private int pageNo;
 	private int startPage;
-	private int lastpage;
+	private int lastPage;
 }
