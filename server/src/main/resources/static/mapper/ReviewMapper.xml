@@ -15,7 +15,7 @@
 	                    WHERE A.ALC_NO = BB.ALC_NO
 	                  )
 	     ORDER BY B.REG_DT
-	     LIMIT #{startPage}, #{lastPage}
+	     LIMIT #{startPage}, 10
 	</select>
 	
 	<select id="selectAlcReviewDetail" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">

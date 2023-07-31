@@ -19,8 +19,7 @@ public class AlcService {
 	// 술 전체 목록
 	public List<AlcVo> selectTotalAlcList(AlcVo vo){
 		// 페이지 설정
-		vo.setStartPage((vo.getPageNo() - 1) * 10);
-		vo.setLastPage(vo.getPageNo() * 10);
+		vo.setStartPage(vo.getPageNo() * 10);
 		
 		return mapper.selectTotalAlcList(vo);
 	}
