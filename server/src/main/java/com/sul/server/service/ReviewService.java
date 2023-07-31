@@ -24,8 +24,7 @@ public class ReviewService {
 	// 리뷰 전체 목록(하나의 술의)
 	public List<ReviewVo> selectAlcReviewList(ReviewVo vo){ 
 		// 페이지 설정
-		vo.setStartPage((vo.getPageNo() - 1) * 10);
-		vo.setLastpage(vo.getPageNo() * 10);
+		vo.setStartPage(vo.getPageNo() * 10);
 		
 		return mapper.selectAlcReviewList(vo);
 	}
