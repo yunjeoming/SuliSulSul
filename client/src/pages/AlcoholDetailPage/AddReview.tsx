@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
 import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
 import DynamicStars from '../../components/Stars/DynamicStars';
-import Modal from '../../components/Modal';
 import AddLayout from '../../layout/AddLayout';
 import { Alcohol } from '../../types/alcohol';
 import { useMutation } from '@tanstack/react-query';
-import API from '../../api';
+import ReviewAPI from '../../api/review';
+import OneBtnModal from '../../components/Modal/OneBtnModal';
 
 type Props = {
   alcohol: Alcohol;
@@ -128,7 +128,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       data.append('userNm', userNm);
       data.append('reviewPwd', reviewPwd);
 
-      return API.addReview(data);
+      return ReviewAPI.addReview(data);
     },
     onSuccess: (data) => {
       console.log(data);
@@ -178,14 +178,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
           </section>
         </div>
       </AddLayout>
-      {isOpenModal && (
-        <Modal onClose={onCloseModal}>
-          <div className="p-4">{content}</div>
-          <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
-            확인
-          </button>
-        </Modal>
-      )}
+      {isOpenModal && <OneBtnModal content={content} onClose={onCloseModal} />}
     </>
   );
 };

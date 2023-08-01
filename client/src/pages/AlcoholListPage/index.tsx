@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import IconButton from '../../components/IconButton';
 import { BsListUl } from 'react-icons/bs';
@@ -8,7 +8,7 @@ import MainLayout from '../../layout/MainLayout';
 import SubHeader from '../../components/Header/SubHeader';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../queryClient';
-import API from '../../api';
+import AlcoholAPI from '../../api/alcohol';
 import { Alcohol } from '../../types/alcohol';
 
 export type ShowingType = 'listType' | 'gridType';
@@ -22,7 +22,7 @@ const AlcoholListPage = () => {
 
   const { data: alcohols = [] } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL, cateNm, cateNo],
-    queryFn: () => API.getAlcoholByCategory({ cateNo, cateNm }),
+    queryFn: () => AlcoholAPI.getAlcoholByCategory({ cateNo, cateNm }),
   });
 
   const handleClickShowingType = (type: ShowingType) => {
@@ -42,7 +42,7 @@ const AlcoholListPage = () => {
           <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
         </IconButton>
       </SubHeader>
-      <AlcoholList alcohols={alcohols} showingType={showingType} />
+      <AlcoholList alcohols={alcohols} showingType={showingType} category={{ cateNm, cateNo }} />
     </MainLayout>
   ) : null;
 };

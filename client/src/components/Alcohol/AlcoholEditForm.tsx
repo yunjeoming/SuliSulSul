@@ -6,7 +6,7 @@ import useModal from '../../hooks/useModal';
 import { Alcohol } from '../../types/alcohol';
 import { Styles } from '../../constants/Styles';
 import { useMutation } from '@tanstack/react-query';
-import API from '../../api';
+import AlcoholAPI from '../../api/alcohol';
 import OneBtnModal from '../Modal/OneBtnModal';
 import TwoBtnsModal from '../Modal/TwoBtnsModal';
 
@@ -80,7 +80,7 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
       if (alcohol && alcohol.alcNo) {
         data.append('alcNo', alcohol.alcNo.toString());
       }
-      return API.updateAlcohol(data);
+      return AlcoholAPI.updateAlcohol(data);
     },
     onSuccess: () => {
       setModal((state) => ({

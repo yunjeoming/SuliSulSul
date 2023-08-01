@@ -1,20 +1,6 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import requestAxios from './axios';
 
-const requestAxios = async (config: AxiosRequestConfig) => {
-  try {
-    const response = await axios(config);
-    if (!response.status.toString().startsWith('2')) {
-      throw Error('status num is not 200+');
-    }
-
-    console.log(response);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const API = {
+const AlcoholAPI = {
   getAlcohols: () => {
     return requestAxios({ method: 'get', url: `/selectAlcList` });
   },
@@ -44,27 +30,6 @@ const API = {
   updateAlcohol: (data: FormData) => {
     return requestAxios({ method: 'post', url: `/updateAlcInfo`, data });
   },
-  getCategories: () => {
-    return requestAxios({ method: 'get', url: `/selectCateList` });
-  },
-  getReviewsByNo: (no: string) => {
-    const data = new FormData();
-    data.append('alcNo', no);
-    return requestAxios({ method: 'post', url: `/selectReviewList`, data });
-  },
-  addReview: (data: FormData) => {
-    return requestAxios({ method: 'post', url: `/insertAlcReview`, data });
-  },
-  updateReview: (data: FormData) => {
-    return requestAxios({ method: 'post', url: `/updateAlcReview`, data });
-  },
-  deleteReview: (data: FormData) => {
-    return requestAxios({
-      method: 'post',
-      url: `/deleteAlcReview`,
-      data,
-    });
-  },
 };
 
-export default API;
+export default AlcoholAPI;

@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../queryClient';
-import API from '../api';
+import CategoryAPI from '../api/category';
 import { Category } from '../types/alcohol';
 
 const useCategory = () => {
   const { data: category } = useQuery<Category[]>({
     queryKey: [queryKeys.CATEGORY],
-    queryFn: API.getCategories,
+    queryFn: CategoryAPI.getCategories,
     select: (data) => [{ cateNo: 999, cateNm: 'all' }, ...data],
   });
 

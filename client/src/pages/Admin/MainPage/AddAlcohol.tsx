@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useAlcoholFormRef from '../../../hooks/useAlcoholFormRef';
 import useModal from '../../../hooks/useModal';
 import { useMutation } from '@tanstack/react-query';
-import API from '../../../api';
+import AlcoholAPI from '../../../api/alcohol';
 import TwoBtnsModal from '../../../components/Modal/TwoBtnsModal';
 import OneBtnModal from '../../../components/Modal/OneBtnModal';
 
@@ -21,7 +21,7 @@ const AddAlcohol: React.FC<Props> = ({ onClose }) => {
   const { content, isOpenModal, showOneBtn, isAdded } = modal;
 
   const { mutate: addAlcohol } = useMutation({
-    mutationFn: (data: FormData) => API.addAlcohol(data),
+    mutationFn: (data: FormData) => AlcoholAPI.addAlcohol(data),
     onSuccess: () => {
       setModal((state) => ({
         ...state,

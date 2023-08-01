@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../queryClient';
-import API from '../api';
+import AlcoholAPI from '../api/alcohol';
 
 const useAlcoholAndReviews = (no: string | undefined) => {
   const { data: { alcohol, reviews } = { alcohol: null, reviews: [] } } = useQuery({
     queryKey: [queryKeys.ALCOHOL, no],
-    queryFn: () => API.getAlcoholByNo(no ?? ''),
+    queryFn: () => AlcoholAPI.getAlcoholByNo(no ?? ''),
     select: (data) => ({
       alcohol: data.alcData,
       reviews: data.reviewData,
