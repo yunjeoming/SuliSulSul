@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alcohol, Review } from '../../types/alcohol';
 import StarsWithGrade from '../Stars/StarsWithGrade';
+import ReviewUtil from '../../utils/Review';
 
 type Props = {
   alcohol: Alcohol;
@@ -32,7 +33,7 @@ const SimpleReviewList: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) =
       </div>
       {reviews ? (
         <ul>
-          {reviews.map((r) => (
+          {ReviewUtil.sortDescReviews(reviews).map((r) => (
             <li key={r.reviewNo + r.grade + r.userNm} className="border-b last:border-none p-2">
               <div className="flex items-center justify-between mb-2">
                 <StarsWithGrade grade={r.grade || 0} />
