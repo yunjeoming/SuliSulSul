@@ -1,6 +1,5 @@
 import React, { MouseEventHandler } from 'react';
 import Modal from '.';
-import { Styles } from '../../constants/Styles';
 
 type Props = {
   content: string;
@@ -21,12 +20,12 @@ const TwoBtnsModal: React.FC<Props> = ({
 }) => {
   return (
     <Modal onClose={onClose}>
-      <div className="p-4">{content}</div>
-      <div className="flex">
-        <button type="button" className={`${Styles.BUTTON_DEFAULT} mr-2`} onClick={onLeftFn}>
+      <div className="p-6">{content}</div>
+      <div className="w-full flex justify-end border-t">
+        <button className="p-2 w-1/2 border-r hover:bg-gray-200" onClick={onLeftFn}>
           {closeBtnName}
         </button>
-        <button type="submit" className={`${Styles.BUTTON_DEFAULT}`} onClick={onRightFn}>
+        <button className="p-2 w-1/2 hover:bg-gray-200" onClick={onRightFn}>
           {okBtnName}
         </button>
       </div>

@@ -9,8 +9,8 @@ type Props = {
 const OneBtnModal: React.FC<Props> = ({ content = '', onClose }) => {
   return (
     <Modal onClose={onClose}>
-      <div className="p-4">{content}</div>
-      <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onClose}>
+      <div className="p-6">{content}</div>
+      <button className="w-full border-t p-2 hover:bg-gray-200" onClick={onClose}>
         확인
       </button>
     </Modal>
