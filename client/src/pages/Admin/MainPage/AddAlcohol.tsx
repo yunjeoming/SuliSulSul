@@ -9,13 +9,15 @@ import AlcoholAPI from '../../../api/alcohol';
 import TwoBtnsModal from '../../../components/Modal/TwoBtnsModal';
 import OneBtnModal from '../../../components/Modal/OneBtnModal';
 import useInvalidateAlcohol from '../../../hooks/useInvalidateAlcohol';
+import useCautionModal from '../../../hooks/useCautionModal';
 
 type Props = {
   onClose: () => void;
 };
 
-const AddAlcohol: FC<Props> = ({ onClose }) => {
+const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
   const navigate = useNavigate();
+  const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
   const { modal, setModal, initModalState, onCloseModal } = useModal();
   const { refObj, resetRefs, getFormDataByRefObj } = useAlcoholFormRef();
   const { content, isOpenModal, showOneBtn, isAdded } = modal;
@@ -101,12 +103,12 @@ const AddAlcohol: FC<Props> = ({ onClose }) => {
   // 술 추가 완료 후 '홈으로'
   const goHome = useCallback(() => {
     onCloseModal();
-    onClose();
+    closeAddAlcohol();
 
     // 메인 새로 불러오기
     invalidateAlcohol();
     navigate('/admin', { replace: true });
-  }, [navigate, onCloseModal, onClose, invalidateAlcohol]);
+  }, [navigate, onCloseModal, closeAddAlcohol, invalidateAlcohol]);
 
   // 술 추가 완료 후 '계속 추가'
   const addAnotherOne = useCallback(() => {
@@ -116,7 +118,7 @@ const AddAlcohol: FC<Props> = ({ onClose }) => {
   }, [onCloseModal, initModalState, refObj, setModal, resetRefs]);
 
   return (
-    <AddLayout headerText="술 등록" onClose={onClose} onSave={handleClickSave}>
+    <AddLayout headerText="술 등록" onClose={openCautionModal} onSave={handleClickSave}>
       <div className="p-4">
         <AlcoholForm ref={refObj} />
         {isAdded ? (
@@ -141,6 +143,13 @@ const AddAlcohol: FC<Props> = ({ onClose }) => {
           />
         )}
       </div>
+      <TwoBtnsModal
+        isOpen={isOpenCaution}
+        content={cautionContent}
+        onClose={closeCautionModal}
+        onLeftFn={closeCautionModal}
+        onRightFn={closeAddAlcohol}
+      />
     </AddLayout>
   );
 };
