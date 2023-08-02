@@ -1,4 +1,4 @@
-import { FC, FormEvent, useCallback, useEffect, useRef } from 'react';
+import { FC, FormEvent, useCallback } from 'react';
 import AddLayout from '../../../layout/AddLayout';
 import AlcoholForm from '../../../components/Alcohol/AlcoholForm';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import AlcoholAPI from '../../../api/alcohol';
 import TwoBtnsModal from '../../../components/Modal/TwoBtnsModal';
 import OneBtnModal from '../../../components/Modal/OneBtnModal';
+import useInvalidateAlcohol from '../../../hooks/useInvalidateAlcohol';
 
 type Props = {
   onClose: () => void;
@@ -15,10 +16,10 @@ type Props = {
 
 const AddAlcohol: FC<Props> = ({ onClose }) => {
   const navigate = useNavigate();
-  const ref = useRef<HTMLDivElement>(null);
   const { modal, setModal, initModalState, onCloseModal } = useModal();
   const { refObj, resetRefs, getFormDataByRefObj } = useAlcoholFormRef();
   const { content, isOpenModal, showOneBtn, isAdded } = modal;
+  const { invalidateAlcohol } = useInvalidateAlcohol();
 
   const { mutate: addAlcohol } = useMutation({
     mutationFn: (data: FormData) => AlcoholAPI.addAlcohol(data),
@@ -101,9 +102,11 @@ const AddAlcohol: FC<Props> = ({ onClose }) => {
   const goHome = useCallback(() => {
     onCloseModal();
     onClose();
-    navigate('/admin', { replace: true });
+
     // 메인 새로 불러오기
-  }, [navigate, onCloseModal, onClose]);
+    invalidateAlcohol();
+    navigate('/admin', { replace: true });
+  }, [navigate, onCloseModal, onClose, invalidateAlcohol]);
 
   // 술 추가 완료 후 '계속 추가'
   const addAnotherOne = useCallback(() => {
@@ -112,17 +115,8 @@ const AddAlcohol: FC<Props> = ({ onClose }) => {
     resetRefs(refObj);
   }, [onCloseModal, initModalState, refObj, setModal, resetRefs]);
 
-  useEffect(() => {
-    const parentElem = ref.current?.parentElement;
-    if (!parentElem) return;
-    parentElem.style.overflow = 'hidden';
-    return () => {
-      parentElem.style.overflow = 'auto';
-    };
-  }, []);
-
   return (
-    <AddLayout headerText="술 등록" onClose={onClose} onSave={handleClickSave} ref={ref}>
+    <AddLayout headerText="술 등록" onClose={onClose} onSave={handleClickSave}>
       <div className="p-4">
         <AlcoholForm ref={refObj} />
         {isAdded ? (
