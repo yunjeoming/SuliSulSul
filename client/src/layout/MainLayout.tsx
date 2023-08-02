@@ -7,7 +7,7 @@ type Props = {
 
 const MainLayout = forwardRef<HTMLDivElement, Props>(({ children }, ref) => {
   return (
-    <div ref={ref} className={`flex flex-col ${Styles.MAIN_AREA_HEIGHT} [&>*:last-child]:p-4`}>
+    <div ref={ref} className={`flex flex-col ${Styles.MAIN_AREA_HEIGHT} overflow-auto [&>*:last-child]:p-4`}>
       {children}
     </div>
   );
