@@ -7,7 +7,7 @@ type Props = {
 };
 
 const AlcoholForm = forwardRef<RefObjType, Props>(({ selectedCategory }, ref) => {
-  const category = useCategory();
+  const { category } = useCategory();
   const { current } = ref as React.MutableRefObject<RefObjType>;
 
   useEffect(() => {

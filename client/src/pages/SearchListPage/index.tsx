@@ -3,7 +3,7 @@ import AlcoholList from '../../components/Alcohol/AlcoholList';
 import MainLayout from '../../layout/MainLayout';
 import { Alcohol } from '../../types/alcohol';
 import { useQuery } from '@tanstack/react-query';
-import API from '../../api';
+import AlcoholAPI from '../../api/alcohol';
 import { queryKeys } from '../../queryClient';
 
 const SearchListPage = () => {
@@ -12,7 +12,7 @@ const SearchListPage = () => {
 
   const { data: searchResults = [] } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL, searchWord],
-    queryFn: () => API.getAlcoholsBySearchWord(searchWord),
+    queryFn: () => AlcoholAPI.getAlcoholsBySearchWord(searchWord),
   });
 
   return (

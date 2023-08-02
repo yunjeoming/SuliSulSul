@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect } from 'react';
+import { FC, FormEvent, useCallback, useEffect } from 'react';
 import AlcoholForm from './AlcoholForm';
 import { useNavigate } from 'react-router-dom';
 import useAlcoholFormRef from '../../hooks/useAlcoholFormRef';
@@ -6,16 +6,18 @@ import useModal from '../../hooks/useModal';
 import { Alcohol } from '../../types/alcohol';
 import { Styles } from '../../constants/Styles';
 import { useMutation } from '@tanstack/react-query';
-import API from '../../api';
+import AlcoholAPI from '../../api/alcohol';
 import OneBtnModal from '../Modal/OneBtnModal';
 import TwoBtnsModal from '../Modal/TwoBtnsModal';
+import useInvalidateAlcohol from '../../hooks/useInvalidateAlcohol';
 
 type Props = {
   alcohol: Alcohol;
 };
 
-const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
+const AlcoholEditForm: FC<Props> = ({ alcohol }) => {
   const navigate = useNavigate();
+  const { invalidateAlcohol } = useInvalidateAlcohol();
   const { refObj, getFormDataByRefObj } = useAlcoholFormRef();
   const { modal, setModal, onCloseModal } = useModal();
   const { content, isOpenModal, showOneBtn } = modal;
@@ -80,7 +82,7 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
       if (alcohol && alcohol.alcNo) {
         data.append('alcNo', alcohol.alcNo.toString());
       }
-      return API.updateAlcohol(data);
+      return AlcoholAPI.updateAlcohol(data);
     },
     onSuccess: () => {
       setModal((state) => ({
@@ -90,6 +92,7 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
         isOpenModal: true,
         targetRef: null,
       }));
+      invalidateAlcohol();
     },
   });
 
@@ -137,12 +140,17 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
           </button>
         </div>
       )}
-      {isOpenModal &&
-        (showOneBtn ? (
-          <OneBtnModal content={content} onClose={onCloseModal} />
-        ) : (
-          <TwoBtnsModal content={content} onClose={onCloseModal} onLeftFn={onCloseModal} onRightFn={onSubmit} />
-        ))}
+      {showOneBtn ? (
+        <OneBtnModal isOpen={isOpenModal} content={content} onClose={onCloseModal} />
+      ) : (
+        <TwoBtnsModal
+          isOpen={isOpenModal}
+          content={content}
+          onClose={onCloseModal}
+          onLeftFn={onCloseModal}
+          onRightFn={onSubmit}
+        />
+      )}
     </>
   );
 };

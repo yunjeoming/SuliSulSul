@@ -26,11 +26,12 @@ export type Review = CommonType & {
   reviewNo: number;
   title: string;
   grade: number;
+  regDt: string; 
   content?: string;
   fileNo?: string;
   fileExt?: string;
   userType?: string;
-  modifiedDate: string;
+  modyDt?: string;
 };
 
 export type File = {

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, useRef } from 'react';
 import AlcoholListItem from './AlcoholListItem';
 import { ShowingType } from '../../pages/AlcoholListPage';
 import { Alcohol } from '../../types/alcohol';
@@ -18,23 +18,26 @@ const AlcoholList: FC<AlcoholListType> = ({
   styles = '',
   isAdmin = false,
 }) => {
-  const isSimpleStyles = isSimple ? 'overflow-auto' : 'flex-wrap justify-evenly';
+  const targetRef = useRef<HTMLDivElement>(null);
   return (
-    <div className={`flex ${isSimpleStyles} ${styles}`}>
-      {alcohols.length ? (
-        alcohols.map((al) => (
-          <AlcoholListItem
-            key={al.alcNo}
-            alcohol={al}
-            isSimple={isSimple}
-            showingType={showingType}
-            isAdmin={isAdmin}
-          />
-        ))
-      ) : (
-        <div>등록된 술이 없습니다.</div>
-      )}
-    </div>
+    <>
+      <div className={`flex ${isSimple ? 'overflow-auto' : 'flex-wrap justify-evenly'} ${styles}`}>
+        {alcohols.length ? (
+          alcohols.map((al) => (
+            <AlcoholListItem
+              key={al.alcNo}
+              alcohol={al}
+              isSimple={isSimple}
+              showingType={showingType}
+              isAdmin={isAdmin}
+            />
+          ))
+        ) : (
+          <div>등록된 술이 없습니다.</div>
+        )}
+      </div>
+      <div ref={targetRef}></div>
+    </>
   );
 };
 

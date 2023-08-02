@@ -28,7 +28,7 @@ const Modal: FC<Props> = ({ children, onClose, hasCloseBtn = false }) => {
 
   return (
     <ModalPortal>
-      <div className="relative bg-gray-100 w-72 border rounded-md flex flex-col items-center p-2" ref={modalRef}>
+      <div className="relative bg-gray-100 w-72 border rounded-md flex flex-col items-center" ref={modalRef}>
         {hasCloseBtn && (
           <button className="absolute top-2 right-2 hover:text-gray-500" onClick={onClose}>
             X

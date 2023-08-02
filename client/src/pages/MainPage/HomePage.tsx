@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Alcohol } from '../../types/alcohol';
 import { queryKeys } from '../../queryClient';
-import API from '../../api';
+import AlcoholAPI from '../../api/alcohol';
 import MainLayout from '../../layout/MainLayout';
 import AlcoholList from '../../components/Alcohol/AlcoholList';
 
@@ -13,7 +13,7 @@ type Props = {
 const HomePage: FC<Props> = ({ initSidebar }) => {
   const { data: alcohols } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL],
-    queryFn: API.getAlcohols,
+    queryFn: AlcoholAPI.getAlcohols,
   });
 
   useEffect(() => {

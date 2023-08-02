@@ -1,98 +1,89 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import IconButton from '../IconButton';
-import { AiOutlineCloseSquare } from 'react-icons/ai';
 import { AiOutlineEdit } from 'react-icons/ai';
 import StarsWithGrade from '../Stars/StarsWithGrade';
 import DynamicStars from '../Stars/DynamicStars';
-import Modal from '../Modal';
 import { Review } from '../../types/alcohol';
 import { useMutation } from '@tanstack/react-query';
-import API from '../../api';
+import ReviewAPI from '../../api/review';
+import TwoBtnsModal from '../Modal/TwoBtnsModal';
+import useModal from '../../hooks/useModal';
+import OneBtnModal from '../Modal/OneBtnModal';
+import ReviewPassword from './ReviewPassword';
 
 type Props = {
   review: Review;
 };
 
+const initEditState = {
+  showPasswordInput: false,
+  isEditMode: false,
+};
+
 const ReviewItem: FC<Props> = ({ review }) => {
-  const [state, setState] = useState<{
-    targetMode: '' | 'edit' | 'delete';
-    isOpenPasswordInput: boolean;
-    isEdit: boolean;
-    isOpenModalDeleteReview: boolean;
-  }>({
-    targetMode: '',
-    isOpenPasswordInput: false,
-    isEdit: false,
-    isOpenModalDeleteReview: false,
-  });
-  const { targetMode, isOpenPasswordInput, isEdit, isOpenModalDeleteReview } = state;
+  const [editState, setEditState] = useState<{
+    showPasswordInput: boolean;
+    isEditMode: boolean;
+  }>(initEditState);
+  const { showPasswordInput, isEditMode } = editState;
+  const {
+    modal: { content, isOpenModal: isOpenSucModal },
+    onCloseModal,
+    setModal,
+    updateInitModalState,
+  } = useModal();
+
+  const [isOpenFailModal, setIsOpenFailModal] = useState(false);
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const gradeRef = useRef<HTMLSpanElement | null>(null);
 
-  const handleClickShowPasswordInput = useCallback((targetMode: 'edit' | 'delete') => {
-    setState((prev) => {
-      if (!prev.targetMode)
-        return {
-          ...prev,
-          isOpenPasswordInput: true,
-          targetMode,
-        };
-
-      const isSameMode = prev.targetMode === targetMode;
-      const isShowingPasswordInput = prev.isOpenPasswordInput;
-
-      return isSameMode
-        ? isShowingPasswordInput
-          ? { ...prev, isOpenPasswordInput: false }
-          : { ...prev, isOpenPasswordInput: true }
-        : { ...prev, isOpenPasswordInput: true, targetMode };
-    });
+  const handleClickShowPasswordInput = useCallback(() => {
+    setEditState((prev) => ({ ...prev, showPasswordInput: !prev.showPasswordInput }));
   }, []);
 
-  const changeEditMode = useCallback(() => {
-    setState((prev) => ({ ...prev, isOpenPasswordInput: false, isEdit: true }));
-  }, []);
+  const handleClickEditModeBtn = useCallback(
+    (targetMode: string) => {
+      const content = `${targetMode} 하시겠습니까?`;
+      setModal((prev) => ({ ...prev, content, isOpenModal: true }));
+    },
+    [setModal],
+  );
 
-  const showDeleteReviewModal = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      isOpenModalDeleteReview: true,
-    }));
-  }, []);
-
-  const checkPassword = useCallback(() => {
-    if (!passwordRef.current || !passwordRef.current.value) return;
-
-    // 삭제 모드
-    if (targetMode === 'delete') showDeleteReviewModal();
-
-    // 수정 모드
-    if (targetMode === 'edit') changeEditMode();
-  }, [targetMode, passwordRef, showDeleteReviewModal, changeEditMode]);
-
-  const cancelEditMode = useCallback(() => {
-    setState((prev) => ({ ...prev, isOpenPasswordInput: false, isEdit: false }));
-  }, []);
-
-  const initState = () => {
-    // 리뷰 수정 / 삭제 성공 시 state 초기화
-    setState((prev) => ({ ...prev, targetMode: '', isOpenPasswordInput: false, isEdit: false }));
-
-    // pwd ref 초기화
+  const updateInitPasswordRef = () => {
     if (passwordRef.current) {
       passwordRef.current.value = '';
     }
   };
 
-  const closeModal = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      isOpenModalDeleteReview: false,
-    }));
-  }, []);
+  const updateInitState = () => {
+    setEditState(initEditState);
+    updateInitModalState();
+    updateInitPasswordRef();
+  };
+
+  const { mutate: checkPassword } = useMutation({
+    mutationFn: () => {
+      const reviewPwd = passwordRef.current?.value!;
+
+      const data = new FormData();
+      data.append('reviewPwd', reviewPwd);
+      data.append('reviewNo', review.reviewNo.toString());
+
+      return ReviewAPI.checkPassword(data);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      console.log('password 확인 api');
+      if (data === 'SUC') {
+        setEditState((prev) => ({ ...prev, showPasswordInput: false, isEditMode: true }));
+      } else {
+        setIsOpenFailModal(true);
+      }
+    },
+  });
 
   const { mutate: editReview } = useMutation({
     mutationFn: () => {
@@ -109,13 +100,14 @@ const ReviewItem: FC<Props> = ({ review }) => {
       data.append('userNm', review.userNm);
       data.append('reviewNo', review.reviewNo.toString());
 
-      return API.updateReview(data);
+      return ReviewAPI.updateReview(data);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       console.log('reviewItem.tsx 수정 api');
-
-      // 수정 모드 -> 일반 모드로 변경
-      initState();
+      if (data === 'SUC') {
+        updateInitState();
+      }
     },
   });
 
@@ -127,16 +119,28 @@ const ReviewItem: FC<Props> = ({ review }) => {
       data.append('userNm', review.userNm);
       data.append('reviewNo', review.reviewNo.toString());
 
-      return API.updateReview(data);
+      return ReviewAPI.deleteReview(data);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
       console.log('reviewItem.tsx 삭제 api');
-
-      // 모달 닫고, 패스워드 인풋 지우기
-      closeModal();
-      initState();
+      if (data === 'SUC') {
+        updateInitState();
+      }
     },
   });
+
+  const handleClickRequestBtn = useCallback(() => {
+    if (content.startsWith('수정')) {
+      editReview();
+      return;
+    }
+
+    if (content.startsWith('삭제')) {
+      deleteReview();
+      return;
+    }
+  }, [content, deleteReview, editReview]);
 
   const convertTextToInput = useCallback(() => {
     if (titleRef.current) {
@@ -149,10 +153,10 @@ const ReviewItem: FC<Props> = ({ review }) => {
   }, [review]);
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEditMode) {
       convertTextToInput();
     }
-  }, [isEdit, convertTextToInput]);
+  }, [isEditMode, convertTextToInput]);
 
   return (
     <>
@@ -162,36 +166,33 @@ const ReviewItem: FC<Props> = ({ review }) => {
           <span className="text-sm text-stone-600">{review.userNm}</span>
         </div>
         <div className="flex text-stone-400">
-          <IconButton
-            styles="p-1 hover:text-stone-700"
-            onClick={() => handleClickShowPasswordInput('edit')}
-            disabled={isEdit}
-          >
+          <IconButton styles="p-1 hover:text-stone-700" onClick={handleClickShowPasswordInput} disabled={isEditMode}>
             <AiOutlineEdit />
-          </IconButton>
-          <IconButton
-            styles="p-1 hover:text-stone-700"
-            onClick={() => handleClickShowPasswordInput('delete')}
-            disabled={isEdit}
-          >
-            <AiOutlineCloseSquare />
           </IconButton>
         </div>
       </div>
-      {isEdit ? (
+      {isEditMode ? (
         <div className="border border-dashed p-2">
           <div className="flex flex-col items-center mb-4">
             <DynamicStars selectedGrade={review.grade} gradeRef={gradeRef} />
           </div>
           <input className="w-full p-2 mb-2" placeholder="제목" ref={titleRef} />
           <textarea className="w-full p-2" placeholder="내용" rows={5} ref={contentRef} />
-          <div className="flex items-center justify-end mt-2">
-            <button className="border px-4 py-2 mr-2" onClick={cancelEditMode}>
-              취소
+          <div className="flex items-center justify-between mt-2">
+            <button
+              className="text-white bg-red-600 border px-4 py-2 mr-2"
+              onClick={() => handleClickEditModeBtn('삭제')}
+            >
+              삭제
             </button>
-            <button className="border px-4 py-2" onClick={() => editReview()}>
-              확인
-            </button>
+            <div>
+              <button className="border px-4 py-2 mr-2" onClick={updateInitState}>
+                취소
+              </button>
+              <button className="border px-4 py-2" onClick={() => handleClickEditModeBtn('수정')}>
+                수정
+              </button>
+            </div>
           </div>
         </div>
       ) : (
@@ -200,36 +201,25 @@ const ReviewItem: FC<Props> = ({ review }) => {
           <div>{review.content}</div>
         </>
       )}
-      {isOpenPasswordInput && (
-        <div className="flex items-center mt-4 text-sm">
-          <input
-            type="password"
-            className="flex-grow p-2 mr-2"
-            placeholder="비밀번호를 입력해주세요"
-            ref={passwordRef}
-          />
-          <button className="border px-4 py-2" onClick={checkPassword}>
-            확인
-          </button>
-        </div>
-      )}
-      {isOpenModalDeleteReview && (
-        <Modal onClose={closeModal} hasCloseBtn>
-          <>
-            <div className="px-6 py-6">리뷰를 삭제하시겠습니까?</div>
-            <div className="w-full flex justify-end border-t">
-              <button className="p-2 w-1/2 border-r" onClick={closeModal}>
-                취소
-              </button>
-              <button className="p-2 w-1/2" onClick={() => deleteReview()}>
-                확인
-              </button>
-            </div>
-          </>
-        </Modal>
-      )}
+      <ReviewPassword isShow={showPasswordInput} checkPassword={checkPassword} ref={passwordRef} />
+      <TwoBtnsModal
+        isOpen={isOpenSucModal}
+        content={content}
+        onClose={onCloseModal}
+        onLeftFn={onCloseModal}
+        onRightFn={handleClickRequestBtn}
+      />
+      <OneBtnModal
+        isOpen={isOpenFailModal}
+        content="비밀번호가 일치하지 않습니다."
+        onClose={() => {
+          setIsOpenFailModal(false);
+          updateInitPasswordRef();
+          if (passwordRef.current) passwordRef.current.focus();
+        }}
+      />
     </>
   );
 };
 
-export default ReviewItem;
+export default memo(ReviewItem);

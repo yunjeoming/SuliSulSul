@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 
-const useModal = () => {
-  const initModalState = {
-    content: '',
-    isOpenModal: false,
-    showOneBtn: true,
-    isAdded: false,
-    targetRef: null,
-  };
+const initModalState = {
+  content: '',
+  isOpenModal: false,
+  showOneBtn: true,
+  isAdded: false,
+  targetRef: null,
+};
 
+const useModal = () => {
   const [modal, setModal] = useState<{
     content: string;
     isOpenModal: boolean;
@@ -30,7 +30,11 @@ const useModal = () => {
     }
   }, [modal.targetRef]);
 
-  return { initModalState, modal, setModal, onCloseModal };
+  const updateInitModalState = useCallback(() => {
+    setModal(initModalState);
+  }, []);
+
+  return { initModalState, modal, setModal, onCloseModal, updateInitModalState };
 };
 
 export default useModal;

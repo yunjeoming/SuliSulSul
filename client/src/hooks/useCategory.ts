@@ -1,16 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../queryClient';
-import API from '../api';
+import CategoryAPI from '../api/category';
 import { Category } from '../types/alcohol';
+import { useCallback } from 'react';
 
 const useCategory = () => {
   const { data: category } = useQuery<Category[]>({
     queryKey: [queryKeys.CATEGORY],
-    queryFn: API.getCategories,
+    queryFn: CategoryAPI.getCategories,
     select: (data) => [{ cateNo: 999, cateNm: 'all' }, ...data],
   });
 
-  return category;
+  const getCategoryByName = useCallback(
+    (cateNm: string | undefined) => {
+      return category?.find((c) => c.cateNm === cateNm);
+    },
+    [category],
+  );
+
+  return { category, getCategoryByName };
 };
 
 export default useCategory;

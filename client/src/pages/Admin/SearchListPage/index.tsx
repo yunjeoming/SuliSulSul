@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
-import API from '../../../api';
+import AlcoholAPI from '../../../api/alcohol';
 import AlcoholList from '../../../components/Alcohol/AlcoholList';
 import { Alcohol } from '../../../types/alcohol';
 import { queryKeys } from '../../../queryClient';
@@ -11,7 +11,7 @@ const AdminSearchListPage = () => {
 
   const { data: searchResults = [] } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL, searchWord],
-    queryFn: () => API.getAlcoholsBySearchWord(searchWord),
+    queryFn: () => AlcoholAPI.getAlcoholsBySearchWord(searchWord),
   });
 
   return (

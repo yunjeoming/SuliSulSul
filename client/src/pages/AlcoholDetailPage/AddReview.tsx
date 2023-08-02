@@ -1,19 +1,22 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
 import DynamicStars from '../../components/Stars/DynamicStars';
-import Modal from '../../components/Modal';
 import AddLayout from '../../layout/AddLayout';
 import { Alcohol } from '../../types/alcohol';
 import { useMutation } from '@tanstack/react-query';
-import API from '../../api';
+import ReviewAPI from '../../api/review';
+import OneBtnModal from '../../components/Modal/OneBtnModal';
+import useCautionModal from '../../hooks/useCautionModal';
+import TwoBtnsModal from '../../components/Modal/TwoBtnsModal';
 
 type Props = {
   alcohol: Alcohol;
   onClose: () => void;
-  getReviews?: () => void;
+  invalidateFn?: () => void;
 };
 
-const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
+const AddReview = ({ alcohol, onClose: closeAddReview, invalidateFn }: Props) => {
+  const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
   const gradeRef = useRef<HTMLSpanElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
@@ -23,86 +26,94 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   const [modal, setModal] = useState<{
     content: string;
     isOpenModal: boolean;
-    targetRef: React.RefObject<HTMLElement> | null;
+    targetRef: RefObject<HTMLElement> | null;
+    onCloseModal: () => void;
   }>({
     content: '',
     isOpenModal: false,
     targetRef: null,
+    onCloseModal: () => {},
   });
 
   const { content, isOpenModal, targetRef } = modal;
 
   const handleClickSave = () => {
     if (!gradeRef.current?.textContent) {
-      setModal({
-        ...modal,
+      setModal((prevState) => ({
+        ...prevState,
         content: '별점을 선택해주세요',
         isOpenModal: true,
         targetRef: gradeRef,
-      });
+      }));
       return;
     }
 
     if (!titleRef.current?.value) {
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '제목을 입력해주세요',
         isOpenModal: true,
         targetRef: titleRef,
-      });
+      }));
       return;
     }
 
     if (!contentRef.current?.value) {
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '내용을 입력해주세요',
         isOpenModal: true,
         targetRef: contentRef,
-      });
+      }));
       return;
     }
 
     if (contentRef.current?.value.length > 100) {
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '내용은 최대 100자까지 입력해주세요',
         isOpenModal: true,
         targetRef: contentRef,
-      });
+      }));
       return;
     }
 
     if (!userNmRef.current?.value) {
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '작성자를 입력해주세요',
         isOpenModal: true,
         targetRef: userNmRef,
-      });
+      }));
       return;
     }
 
     if (userNmRef.current?.value.length > 10) {
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '작성자는 최대 10자까지 입력해주세요',
         isOpenModal: true,
         targetRef: userNmRef,
-      });
+      }));
       return;
     }
 
     if (!reviewPwdRef.current?.value) {
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '비밀번호를 입력해주세요',
         isOpenModal: true,
         targetRef: reviewPwdRef,
-      });
+      }));
       return;
     }
 
     addReview();
   };
 
-  const onCloseModal = useCallback(() => {
-    setModal((state) => ({
-      ...state,
+  const closeModalByDefault = useCallback(() => {
+    setModal((prevState) => ({
+      ...prevState,
       isOpenModal: false,
       targetRef: null,
     }));
@@ -111,6 +122,18 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       targetRef.current.focus();
     }
   }, [targetRef]);
+
+  const closeModalBySuccess = useCallback(() => {
+    setModal((prevState) => ({
+      ...prevState,
+      isOpenModal: false,
+      targetRef: null,
+      onCloseModal: closeModalByDefault,
+    }));
+
+    closeAddReview();
+    invalidateFn && invalidateFn();
+  }, [closeModalByDefault, closeAddReview, invalidateFn]);
 
   const { mutate: addReview } = useMutation({
     mutationFn: () => {
@@ -128,34 +151,48 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
       data.append('userNm', userNm);
       data.append('reviewPwd', reviewPwd);
 
-      return API.addReview(data);
+      return ReviewAPI.addReview(data);
     },
     onSuccess: (data) => {
-      console.log(data);
       if (data === 'SUC') {
-        onClose();
-        getReviews && getReviews();
+        // onClose();
+        // invalidateFn && invalidateFn();
+        setModal((prevState) => ({
+          ...prevState,
+          content: '리뷰가 등록되었습니다.',
+          isOpenModal: true,
+          onCloseModal: closeModalBySuccess,
+        }));
       } else {
-        setModal({
+        setModal((prevState) => ({
+          ...prevState,
           content: '등록에 실패했어요',
           isOpenModal: true,
           targetRef: contentRef,
-        });
+        }));
       }
     },
     onError: (err) => {
       console.error(err);
-      setModal({
+      setModal((prevState) => ({
+        ...prevState,
         content: '등록에 실패했어요',
         isOpenModal: true,
         targetRef: contentRef,
-      });
+      }));
     },
   });
 
+  useEffect(() => {
+    setModal((prevState) => ({
+      ...prevState,
+      onCloseModal: closeModalByDefault,
+    }));
+  }, [closeModalByDefault]);
+
   return (
     <>
-      <AddLayout headerText="리뷰작성" onClose={onClose} onSave={handleClickSave}>
+      <AddLayout headerText="리뷰작성" onClose={openCautionModal} onSave={handleClickSave}>
         <div className="px-2 border-b mb-2">
           <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
         </div>
@@ -178,14 +215,14 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
           </section>
         </div>
       </AddLayout>
-      {isOpenModal && (
-        <Modal onClose={onCloseModal}>
-          <div className="p-4">{content}</div>
-          <button className="w-full border rounded-md py-1 hover:bg-gray-200" onClick={onCloseModal}>
-            확인
-          </button>
-        </Modal>
-      )}
+      <OneBtnModal isOpen={isOpenModal} content={content} onClose={modal.onCloseModal} />
+      <TwoBtnsModal
+        isOpen={isOpenCaution}
+        content={cautionContent}
+        onClose={closeCautionModal}
+        onLeftFn={closeCautionModal}
+        onRightFn={closeAddReview}
+      />
     </>
   );
 };

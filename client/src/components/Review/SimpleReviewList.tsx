@@ -1,19 +1,17 @@
-import React, { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Alcohol, Review } from '../../types/alcohol';
 import StarsWithGrade from '../Stars/StarsWithGrade';
+import ReviewUtil from '../../utils/Review';
+import FirstReviewRequest from './FirstReviewRequest';
 
 type Props = {
   alcohol: Alcohol;
   reviews: Review[] | undefined;
-  setIsOpenNewReview: React.Dispatch<React.SetStateAction<boolean>>;
+  addReview: () => void;
 };
 
-const SimpleReviewList: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) => {
-  const handleAddReview = useCallback(() => {
-    setIsOpenNewReview(true);
-  }, [setIsOpenNewReview]);
-
+const SimpleReviewList: FC<Props> = ({ alcohol, reviews, addReview }) => {
   return (
     <section>
       <div className="flex justify-between items-center py-2 mb-2 border-t border-b">
@@ -26,24 +24,26 @@ const SimpleReviewList: FC<Props> = ({ alcohol, reviews, setIsOpenNewReview }) =
             전체보기
           </Link>
         </div>
-        <button className="text-sm text-stone-400 hover:text-stone-600" onClick={handleAddReview}>
+        <button className="text-sm text-stone-400 hover:text-stone-600" onClick={addReview}>
           등록하기
         </button>
       </div>
-      {reviews ? (
+      {reviews?.length ? (
         <ul>
-          {reviews.map((r) => (
-            <li key={r.reviewNo + r.grade + r.userNm} className="border-b last:border-none p-2">
-              <div className="flex items-center justify-between mb-2">
-                <StarsWithGrade grade={r.grade || 0} />
-                <span className="text-sm text-stone-600">{r.userNm}</span>
-              </div>
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</div>
-            </li>
-          ))}
+          {ReviewUtil.sortDescReviews(reviews)
+            .slice(0, 5)
+            .map((r) => (
+              <li key={r.reviewNo + r.grade + r.userNm} className="border-b last:border-none p-2">
+                <div className="flex items-center justify-between mb-2">
+                  <StarsWithGrade grade={r.grade || 0} />
+                  <span className="text-sm text-stone-600">{r.userNm}</span>
+                </div>
+                <div className="overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</div>
+              </li>
+            ))}
         </ul>
       ) : (
-        '등록된 리뷰가 없습니다. 리뷰를 남겨주세요'
+        <FirstReviewRequest />
       )}
     </section>
   );
