@@ -1,3 +1,4 @@
+import { Category } from '../types/alcohol';
 import requestAxios from './axios';
 
 const AlcoholAPI = {
@@ -9,9 +10,12 @@ const AlcoholAPI = {
     data.append('alcNo', no);
     return requestAxios({ method: 'post', url: `/selectAlcDetail`, data });
   },
-  getAlcoholByCategory: ({ cateNo, cateNm }: { cateNo: string; cateNm: string }) => {
+  getAlcoholByCategory: (category: Category | undefined) => {
+    if (!category) return [];
+    
+    const { cateNo, cateNm } = category;
     const data = new FormData();
-    data.append('cateNo', cateNo);
+    data.append('cateNo', cateNo.toString());
     if (cateNm === 'all') {
       data.delete('cateNo');
     }

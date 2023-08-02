@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Category } from '../../types/alcohol';
 import { useNavigate } from 'react-router-dom';
 import useCategory from '../../hooks/useCategory';
@@ -9,10 +9,10 @@ type Props = {
 
 const CategorySidebar: FC<Props> = ({ onClose }) => {
   const navigate = useNavigate();
-  const category = useCategory();
+  const { category } = useCategory();
 
   const handleClick = (category: Category) => {
-    navigate(`/c/${category.cateNm}`, { state: category });
+    navigate(`/c/${category.cateNm}`);
     onClose && onClose();
   };
 
