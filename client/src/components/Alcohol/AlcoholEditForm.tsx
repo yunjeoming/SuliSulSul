@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect } from 'react';
+import { FC, FormEvent, useCallback, useEffect } from 'react';
 import AlcoholForm from './AlcoholForm';
 import { useNavigate } from 'react-router-dom';
 import useAlcoholFormRef from '../../hooks/useAlcoholFormRef';
@@ -9,13 +9,15 @@ import { useMutation } from '@tanstack/react-query';
 import AlcoholAPI from '../../api/alcohol';
 import OneBtnModal from '../Modal/OneBtnModal';
 import TwoBtnsModal from '../Modal/TwoBtnsModal';
+import useInvalidateAlcohol from '../../hooks/useInvalidateAlcohol';
 
 type Props = {
   alcohol: Alcohol;
 };
 
-const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
+const AlcoholEditForm: FC<Props> = ({ alcohol }) => {
   const navigate = useNavigate();
+  const { invalidateAlcohol } = useInvalidateAlcohol();
   const { refObj, getFormDataByRefObj } = useAlcoholFormRef();
   const { modal, setModal, onCloseModal } = useModal();
   const { content, isOpenModal, showOneBtn } = modal;
@@ -90,6 +92,7 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
         isOpenModal: true,
         targetRef: null,
       }));
+      invalidateAlcohol();
     },
   });
 
