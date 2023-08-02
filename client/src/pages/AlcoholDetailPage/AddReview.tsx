@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { RefObject, useCallback, useRef, useState } from 'react';
 import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
 import DynamicStars from '../../components/Stars/DynamicStars';
 import AddLayout from '../../layout/AddLayout';
@@ -23,7 +23,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
   const [modal, setModal] = useState<{
     content: string;
     isOpenModal: boolean;
-    targetRef: React.RefObject<HTMLElement> | null;
+    targetRef: RefObject<HTMLElement> | null;
   }>({
     content: '',
     isOpenModal: false,
@@ -178,7 +178,7 @@ const AddReview = ({ alcohol, onClose, getReviews }: Props) => {
           </section>
         </div>
       </AddLayout>
-      {isOpenModal && <OneBtnModal content={content} onClose={onCloseModal} />}
+      <OneBtnModal isOpen={isOpenModal} content={content} onClose={onCloseModal} />
     </>
   );
 };

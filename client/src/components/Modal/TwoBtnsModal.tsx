@@ -8,6 +8,7 @@ type Props = {
   onRightFn: MouseEventHandler<HTMLButtonElement>;
   closeBtnName?: string;
   okBtnName?: string;
+  isOpen: boolean;
 };
 
 const TwoBtnsModal: React.FC<Props> = ({
@@ -17,8 +18,9 @@ const TwoBtnsModal: React.FC<Props> = ({
   onRightFn,
   closeBtnName = '취소',
   okBtnName = '확인',
+  isOpen,
 }) => {
-  return (
+  return isOpen ? (
     <Modal onClose={onClose}>
       <div className="p-6">{content}</div>
       <div className="w-full flex justify-end border-t">
@@ -30,7 +32,7 @@ const TwoBtnsModal: React.FC<Props> = ({
         </button>
       </div>
     </Modal>
-  );
+  ) : null;
 };
 
 export default TwoBtnsModal;

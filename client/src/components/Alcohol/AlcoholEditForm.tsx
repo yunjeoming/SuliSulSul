@@ -137,12 +137,17 @@ const AlcoholEditForm: React.FC<Props> = ({ alcohol }) => {
           </button>
         </div>
       )}
-      {isOpenModal &&
-        (showOneBtn ? (
-          <OneBtnModal content={content} onClose={onCloseModal} />
-        ) : (
-          <TwoBtnsModal content={content} onClose={onCloseModal} onLeftFn={onCloseModal} onRightFn={onSubmit} />
-        ))}
+      {showOneBtn ? (
+        <OneBtnModal isOpen={isOpenModal} content={content} onClose={onCloseModal} />
+      ) : (
+        <TwoBtnsModal
+          isOpen={isOpenModal}
+          content={content}
+          onClose={onCloseModal}
+          onLeftFn={onCloseModal}
+          onRightFn={onSubmit}
+        />
+      )}
     </>
   );
 };

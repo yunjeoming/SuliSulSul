@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect, useRef } from 'react';
+import { FC, FormEvent, useCallback, useEffect, useRef } from 'react';
 import AddLayout from '../../../layout/AddLayout';
 import AlcoholForm from '../../../components/Alcohol/AlcoholForm';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ type Props = {
   onClose: () => void;
 };
 
-const AddAlcohol: React.FC<Props> = ({ onClose }) => {
+const AddAlcohol: FC<Props> = ({ onClose }) => {
   const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
   const { modal, setModal, initModalState, onCloseModal } = useModal();
@@ -125,21 +125,27 @@ const AddAlcohol: React.FC<Props> = ({ onClose }) => {
     <AddLayout headerText="술 등록" onClose={onClose} onSave={handleClickSave} ref={ref}>
       <div className="p-4">
         <AlcoholForm ref={refObj} />
-        {isOpenModal &&
-          (isAdded ? (
-            <TwoBtnsModal
-              content={content}
-              onClose={onCloseModal}
-              onLeftFn={addAnotherOne}
-              onRightFn={goHome}
-              closeBtnName="계속 추가"
-              okBtnName="홈으로"
-            />
-          ) : showOneBtn ? (
-            <OneBtnModal content={content} onClose={onCloseModal} />
-          ) : (
-            <TwoBtnsModal content={content} onClose={onCloseModal} onLeftFn={onCloseModal} onRightFn={onSubmit} />
-          ))}
+        {isAdded ? (
+          <TwoBtnsModal
+            isOpen={isOpenModal}
+            content={content}
+            onClose={onCloseModal}
+            onLeftFn={addAnotherOne}
+            onRightFn={goHome}
+            closeBtnName="계속 추가"
+            okBtnName="홈으로"
+          />
+        ) : showOneBtn ? (
+          <OneBtnModal isOpen={isOpenModal} content={content} onClose={onCloseModal} />
+        ) : (
+          <TwoBtnsModal
+            isOpen={isOpenModal}
+            content={content}
+            onClose={onCloseModal}
+            onLeftFn={onCloseModal}
+            onRightFn={onSubmit}
+          />
+        )}
       </div>
     </AddLayout>
   );
