@@ -20,9 +20,17 @@ const TwoBtnsModal: React.FC<Props> = ({
   okBtnName = '확인',
   isOpen,
 }) => {
+  const lines = content.split('\n');
   return isOpen ? (
     <Modal onClose={onClose}>
-      <div className="p-6">{content}</div>
+      <div className="p-6">
+        {lines.map((line, index) => (
+          <React.Fragment key={line + index}>
+            {line}
+            <br />
+          </React.Fragment>
+        ))}
+      </div>
       <div className="w-full flex justify-end border-t">
         <button className="p-2 w-1/2 border-r hover:bg-gray-200" onClick={onLeftFn}>
           {closeBtnName}
