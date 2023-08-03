@@ -7,7 +7,7 @@ import AlcoholAPI from '../../../api/alcohol';
 const AdminAlcoholListPage = () => {
   const { data: alcohols = [] } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL],
-    queryFn: AlcoholAPI.getAlcohols,
+    queryFn: () => AlcoholAPI.getAlcohols(),
   });
 
   return <AlcoholList alcohols={alcohols} styles="py-2" isAdmin />;

@@ -13,7 +13,7 @@ type Props = {
 const HomePage: FC<Props> = ({ initSidebar }) => {
   const { data: alcohols } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL],
-    queryFn: AlcoholAPI.getAlcohols,
+    queryFn: () => AlcoholAPI.getAlcohols(),
   });
 
   useEffect(() => {

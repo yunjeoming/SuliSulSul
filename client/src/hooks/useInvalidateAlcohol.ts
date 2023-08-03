@@ -13,7 +13,7 @@ const useInvalidateAlcohol = (otherKeys?: QueryKey) => {
 
   useQuery<Alcohol[]>({
     queryKey,
-    queryFn: AlcoholAPI.getAlcohols,
+    queryFn: () => AlcoholAPI.getAlcohols(),
   });
 
   const invalidateAlcohol = useCallback(() => {

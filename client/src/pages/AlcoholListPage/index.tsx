@@ -6,7 +6,7 @@ import { RxGrid } from 'react-icons/rx';
 import AlcoholList from '../../components/Alcohol/AlcoholList';
 import MainLayout from '../../layout/MainLayout';
 import SubHeader from '../../components/Header/SubHeader';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../queryClient';
 import AlcoholAPI from '../../api/alcohol';
 import { Alcohol } from '../../types/alcohol';
@@ -23,6 +23,21 @@ const AlcoholListPage = () => {
   const { data: alcohols = [] } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL, categoryInfo?.cateNm || ''],
     queryFn: () => AlcoholAPI.getAlcoholByCategory(categoryInfo),
+  });
+
+  const {
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    ...result
+  } = useInfiniteQuery({
+    queryKey: [queryKeys.ALCOHOL, categoryInfo?.cateNm || ''],
+    queryFn: ({ pageParam = 1 }) => AlcoholAPI.getAlcoholByCategory(categoryInfo),
+    getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
+    getPreviousPageParam: (firstPage, allPages) => firstPage.prevCursor,
   });
 
   const handleClickShowingType = (type: ShowingType) => {
