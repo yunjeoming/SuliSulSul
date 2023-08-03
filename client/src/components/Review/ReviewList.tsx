@@ -12,9 +12,7 @@ const ReviewList: FC<Props> = ({ reviews }) => {
   return reviews.length ? (
     <ul>
       {ReviewUtil.sortDescReviews(reviews).map((r) => (
-        <li key={r.reviewNo + r.regDt} className="p-4 border-b">
-          <ReviewItem review={r} />
-        </li>
+        <ReviewItem key={r.reviewNo + r.regDt} review={r} />
       ))}
     </ul>
   ) : (

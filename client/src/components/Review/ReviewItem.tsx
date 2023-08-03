@@ -80,7 +80,8 @@ const ReviewItem: FC<Props> = ({ review }) => {
       if (data === 'SUC') {
         setEditState((prev) => ({ ...prev, showPasswordInput: false, isEditMode: true }));
       } else {
-        setIsOpenFailModal(true);
+        setEditState((prev) => ({ ...prev, showPasswordInput: false, isEditMode: true }));
+        // setIsOpenFailModal(true);
       }
     },
   });
@@ -159,8 +160,8 @@ const ReviewItem: FC<Props> = ({ review }) => {
   }, [isEditMode, convertTextToInput]);
 
   return (
-    <>
-      <div className="flex justify-between items-center mb-4">
+    <li className="px-1 py-3 border-b">
+      <div className="flex justify-between items-center mb-2">
         <div className="flex flex-col">
           <StarsWithGrade grade={review.grade} />
           <span className="text-sm text-stone-600">{review.userNm}</span>
@@ -178,7 +179,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
           </div>
           <input className="w-full p-2 mb-2" placeholder="제목" ref={titleRef} />
           <textarea className="w-full p-2" placeholder="내용" rows={5} ref={contentRef} />
-          <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center justify-between mt-2 text-sm">
             <button
               className="text-white bg-red-600 border px-4 py-2 mr-2"
               onClick={() => handleClickEditModeBtn('삭제')}
@@ -198,7 +199,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
       ) : (
         <>
           <div className="font-bold mb-2">{review.title}</div>
-          <div>{review.content}</div>
+          <div className='text-sm'>{review.content}맛있어 맛없어 맛있어 맛없어 아오아와오아오아오아오아앙 맛없어요 맛있어요</div>
         </>
       )}
       <ReviewPassword isShow={showPasswordInput} checkPassword={checkPassword} ref={passwordRef} />
@@ -218,7 +219,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
           if (passwordRef.current) passwordRef.current.focus();
         }}
       />
-    </>
+    </li>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import Header from '../../components/Header/Header';
 import { Outlet, useLocation } from 'react-router-dom';
 import HomePage from './HomePage';
+import MainLayout from '../../layout/MainLayout';
 
 const MainPage = () => {
   const { pathname } = useLocation();
@@ -22,9 +23,9 @@ const MainPage = () => {
   return (
     <>
       <Header isOpenSidebar={isOpenSidebar} setIsOpenSidebar={setIsOpenSidebar} />
-      <div className={`${category || search ? 'overflow-hidden' : ''}`}>
+      <MainLayout styles={`${category || search ? 'overflow-hidden' : ''}`}>
         {pathname === '/' ? <HomePage initSidebar={initSidebar} /> : <Outlet />}
-      </div>
+      </MainLayout>
     </>
   );
 };

@@ -11,7 +11,7 @@ type Props = {
   link?: string;
 };
 
-const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center py-2';
+const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center';
 
 const DetailedAlcoholItem: React.FC<Props> = ({ alcohol, showingType, link }: Props) => {
   return link ? (

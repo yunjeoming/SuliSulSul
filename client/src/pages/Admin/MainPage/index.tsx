@@ -8,21 +8,19 @@ import useAddPage from '../../../hooks/useAddPage';
 import MainLayout from '../../../layout/MainLayout';
 
 const AdminMainPage = () => {
-  const { isOpenAddPage, openAddPage, closeAddPage, ref } = useAddPage();
+  const { isOpenAddPage, openAddPage, closeAddPage } = useAddPage();
 
   return (
     <>
-      <div ref={ref}>
-        <AdminHeader handleClickNewAlcohol={openAddPage} />
-        <MainLayout>
-          <Routes>
-            <Route path="" element={<AdminAlcoholListPage />} />
-            <Route path="login" element={<AdminAlcoholListPage />} />
-            <Route path="alcs/:no" element={<AdminAlcoholDetailPage />} />
-            <Route path="search" element={<AdminSearchListPage />} />
-          </Routes>
-        </MainLayout>
-      </div>
+      <AdminHeader handleClickNewAlcohol={openAddPage} />
+      <MainLayout>
+        <Routes>
+          <Route path="" element={<AdminAlcoholListPage />} />
+          <Route path="login" element={<AdminAlcoholListPage />} />
+          <Route path="alcs/:no" element={<AdminAlcoholDetailPage />} />
+          <Route path="search" element={<AdminSearchListPage />} />
+        </Routes>
+      </MainLayout>
       {isOpenAddPage && <AddAlcohol onClose={closeAddPage} />}
     </>
   );

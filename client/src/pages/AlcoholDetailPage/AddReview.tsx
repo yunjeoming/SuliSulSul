@@ -193,7 +193,7 @@ const AddReview = ({ alcohol, onClose: closeAddReview, invalidateFn }: Props) =>
   return (
     <>
       <AddLayout headerText="리뷰작성" onClose={openCautionModal} onSave={handleClickSave}>
-        <div className="px-2 border-b mb-2">
+        <div className="p-2 border-b mb-2">
           <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
         </div>
         <div className="flex-grow">

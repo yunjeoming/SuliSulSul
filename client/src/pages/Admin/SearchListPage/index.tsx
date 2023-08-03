@@ -4,6 +4,7 @@ import AlcoholAPI from '../../../api/alcohol';
 import AlcoholList from '../../../components/Alcohol/AlcoholList';
 import { Alcohol } from '../../../types/alcohol';
 import { queryKeys } from '../../../queryClient';
+import SearchTitle from '../../../components/SearchTitle';
 
 const AdminSearchListPage = () => {
   const location = useLocation();
@@ -15,10 +16,10 @@ const AdminSearchListPage = () => {
   });
 
   return (
-    <div className="p-4">
-      <div className="mb-4">"{searchWord}" 검색 결과입니다.</div>
+    <>
+      <SearchTitle searchWord={searchWord} />
       <AlcoholList alcohols={searchResults} showingType="listType" isAdmin />
-    </div>
+    </>
   );
 };
 
