@@ -23,19 +23,13 @@ const HomePage: FC<Props> = ({ initSidebar }) => {
     <div>
       {alcohols ? (
         <section className="flex flex-col mb-8">
-          <span>🍹 리뷰 많은 술</span>
+          <span>🍷 리뷰 많은 술</span>
           <SimpleAlcoholList alcohols={alcohols} />
         </section>
       ) : null}
       {alcohols ? (
         <section className="flex flex-col mb-8">
           <span>🍺 별점 높은 술</span>
-          <SimpleAlcoholList alcohols={alcohols} />
-        </section>
-      ) : null}
-      {alcohols ? (
-        <section className="flex flex-col mb-8">
-          <span>🍷 최근 등록된 술</span>
           <SimpleAlcoholList alcohols={alcohols} />
         </section>
       ) : null}

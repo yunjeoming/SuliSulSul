@@ -17,7 +17,9 @@ const DetailedAlcoholItem: React.FC<Props> = ({ alcohol, showingType, link }: Pr
   return link ? (
     <Link
       to={link}
-      className={`${DETAILED_WRAPPER_STYLES} cursor-pointer ${showingType === 'listType' ? 'w-full' : 'flex-col'}`}
+      className={`${DETAILED_WRAPPER_STYLES} cursor-pointer ${
+        showingType === 'listType' ? 'w-full' : 'flex-col flex-1'
+      }`}
     >
       <DetailedAlcohol alcohol={alcohol} showingType={showingType} />
     </Link>

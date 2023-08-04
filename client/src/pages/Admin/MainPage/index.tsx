@@ -16,6 +16,7 @@ const AdminMainPage = () => {
     <>
       <AdminHeader handleClickNewAlcohol={openAddPage} />
       <MainLayout>
+        {isOpenAddPage && <AddAlcohol ref={targetRef} onClose={closeAddPage} />}
         <Suspense>
           <Routes>
             <Route path="" element={<AdminAlcoholListPage />} />
@@ -25,7 +26,6 @@ const AdminMainPage = () => {
           </Routes>
         </Suspense>
       </MainLayout>
-      {isOpenAddPage && <AddAlcohol ref={targetRef} onClose={closeAddPage} />}
     </>
   );
 };
