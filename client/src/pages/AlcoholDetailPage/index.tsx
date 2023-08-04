@@ -10,11 +10,13 @@ import useAddPage from '../../hooks/useAddPage';
 const AlcoholDetailPage = () => {
   const { no } = useParams<{ no: string }>();
   const { alcohol, reviews, invalidateQuery } = useAlcoholAndReviews(no);
-  const { isOpenAddPage, openAddPage, closeAddPage } = useAddPage();
+  const { isOpenAddPage, openAddPage, closeAddPage, addRef } = useAddPage();
 
   return alcohol ? (
     <>
-      {isOpenAddPage && <AddReview alcohol={alcohol} onClose={closeAddPage} invalidateFn={invalidateQuery} />}
+      {isOpenAddPage && (
+        <AddReview ref={addRef} alcohol={alcohol} onClose={closeAddPage} invalidateFn={invalidateQuery} />
+      )}
       <SubHeader headerName={alcohol.alcNm}>
         <StarsWithGrade grade={alcohol.avgGrade || 0} showLabel={false} />
         <span className="text-stone-400 text-xs pr-2">(리뷰 {reviews?.length || 0})</span>

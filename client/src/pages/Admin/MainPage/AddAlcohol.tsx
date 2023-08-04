@@ -1,4 +1,4 @@
-import { FC, FormEvent, useCallback } from 'react';
+import { FormEvent, forwardRef, useCallback } from 'react';
 import AddLayout from '../../../layout/AddLayout';
 import AlcoholForm from '../../../components/Alcohol/AlcoholForm';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ type Props = {
   onClose: () => void;
 };
 
-const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
+const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol }, ref) => {
   const navigate = useNavigate();
   const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
   const { modal, setModal, initModalState, onCloseModal } = useModal();
@@ -118,7 +118,7 @@ const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
   }, [onCloseModal, initModalState, refObj, setModal, resetRefs]);
 
   return (
-    <AddLayout headerText="술 등록" onClose={openCautionModal} onSave={handleClickSave}>
+    <AddLayout ref={ref} headerText="술 등록" onClose={openCautionModal} onSave={handleClickSave}>
       <div className="p-4">
         <AlcoholForm ref={refObj} />
         {isAdded ? (
@@ -152,6 +152,6 @@ const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
       />
     </AddLayout>
   );
-};
+});
 
 export default AddAlcohol;

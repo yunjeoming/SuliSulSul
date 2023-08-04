@@ -10,7 +10,7 @@ const AdminAlcoholDetailPage = lazy(() => import('../AlcoholDetailPage'));
 const AdminSearchListPage = lazy(() => import('../SearchListPage'));
 
 const AdminMainPage = () => {
-  const { isOpenAddPage, openAddPage, closeAddPage } = useAddPage();
+  const { isOpenAddPage, openAddPage, closeAddPage, targetRef } = useAddPage();
 
   return (
     <>
@@ -25,7 +25,7 @@ const AdminMainPage = () => {
           </Routes>
         </Suspense>
       </MainLayout>
-      {isOpenAddPage && <AddAlcohol onClose={closeAddPage} />}
+      {isOpenAddPage && <AddAlcohol ref={targetRef} onClose={closeAddPage} />}
     </>
   );
 };
