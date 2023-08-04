@@ -46,3 +46,8 @@ export type Grade = {
   averageGrade: number;
   updatedDate: string;
 };
+
+export type AllType = {
+  alcData: Alcohol,
+  reviewData: Review[]
+}

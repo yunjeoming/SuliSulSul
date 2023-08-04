@@ -13,3 +13,8 @@ export type RefObjType = {
   expRef: HTMLSelectElement | null;
   descriptionRef: HTMLTextAreaElement | null;
 };
+
+export type SidebarType = {
+  category: boolean;
+  search: boolean;
+}
