@@ -5,9 +5,10 @@ const AlcoholAPI = {
   getAlcohols: (pageNo?: number) => {
     return requestAxios({ method: 'get', url: `/selectAlcList?pageNo=${pageNo ?? 0}` });
   },
-  getAlcoholByNo: (no: string) => {
+  getAlcoholByNo: (no: string, pageNo?: number) => {
     const data = new FormData();
     data.append('alcNo', no);
+    data.append('pageNo', (pageNo || 0).toString());
     return requestAxios({ method: 'post', url: `/selectAlcDetail`, data });
   },
   getAlcoholByCategory: (category: Category | undefined, pageNo?: number) => {
@@ -29,6 +30,12 @@ const AlcoholAPI = {
     data.append('cateNo', '0');
     data.append('pageNo', (pageNo || 0).toString());
     return requestAxios({ method: 'post', url: `/selectAlcList`, data });
+  },
+  getAlcoholsWithManyReviews: () => {
+    return requestAxios({ method: 'get', url: `/` });
+  },
+  getAlcoholsWithHighGrade: () => {
+    return requestAxios({ method: 'get', url: `/` });
   },
   addAlcohol: (data: FormData) => {
     return requestAxios({ method: 'post', url: `/insertAlcInfo`, data });

@@ -1,16 +1,25 @@
 import AlcoholList from '../../../components/Alcohol/AlcoholList';
-import { Alcohol } from '../../../types/alcohol';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../../queryClient';
 import AlcoholAPI from '../../../api/alcohol';
 
 const AdminAlcoholListPage = () => {
-  const { data: alcohols = [] } = useQuery<Alcohol[]>({
-    queryKey: [queryKeys.ALCOHOL],
-    queryFn: () => AlcoholAPI.getAlcohols(),
+  const { data, isLoading, hasNextPage, isFetchingNextPage, isSuccess, fetchNextPage } = useInfiniteQuery({
+    queryKey: [queryKeys.ALCOHOL, 'admin'],
+    queryFn: ({ pageParam = 0 }) => AlcoholAPI.getAlcohols(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.length < 10 ? undefined : allPages.length;
+    },
   });
 
-  return <AlcoholList alcohols={alcohols} styles="py-2" isAdmin />;
+  return (
+    <AlcoholList
+      alcohols={data?.pages}
+      styles="py-2"
+      isAdmin
+      infiniteScrollOptions={{ isLoading, hasNextPage, isFetchingNextPage, isSuccess, fetchNextPage }}
+    />
+  );
 };
 
 export default AdminAlcoholListPage;

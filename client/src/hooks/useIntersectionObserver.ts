@@ -14,7 +14,6 @@ const useIntersectionObserver = (infiniteScrollOptions?: InfiniteScrollOptionsTy
         return;
       }
       if (entry.isIntersecting) {
-        console.log('got!');
         infiniteScrollOptions && infiniteScrollOptions.fetchNextPage();
       }
     },
