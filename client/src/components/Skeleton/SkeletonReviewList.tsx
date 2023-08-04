@@ -1,9 +1,12 @@
+import SkeletonAlcoholItem from "./SkeletonAlcoholItem"
+import SkeletonGrade from "./SkeletonGrade"
 import SkeletonReviewItem from "./SkeletonReviewItem"
 
 const SkeletonReviewList = () => {
   return (
-    <div>
-      <SkeletonReviewItem />
+    <div className="flex flex-col gap-8">
+      <SkeletonAlcoholItem />
+      <SkeletonGrade />
       <SkeletonReviewItem />
       <SkeletonReviewItem />
       <SkeletonReviewItem />
