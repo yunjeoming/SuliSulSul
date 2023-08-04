@@ -13,15 +13,20 @@ import useCautionModal from '../../../hooks/useCautionModal';
 
 type Props = {
   onClose: () => void;
+  invalidateFn?: () => void;
 };
 
-const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol }, ref) => {
+const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol, invalidateFn }, ref) => {
   const navigate = useNavigate();
   const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
-  const { modal, setModal, initModalState, onCloseModal } = useModal();
+  const {
+    modal: { content, isOpenModal, showOneBtn, isAdded },
+    setModal,
+    initModalState,
+    onCloseModal,
+  } = useModal();
   const { refObj, resetRefs, getFormDataByRefObj } = useAlcoholFormRef();
-  const { content, isOpenModal, showOneBtn, isAdded } = modal;
-  const { invalidateAlcohol } = useInvalidateAlcohol();
+  const { invalidateAlcohol } = useInvalidateAlcohol(['admin']);
 
   const { mutate: addAlcohol } = useMutation({
     mutationFn: (data: FormData) => AlcoholAPI.addAlcohol(data),
@@ -34,6 +39,8 @@ const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol
         isAdded: true,
         targetRef: null,
       }));
+      invalidateAlcohol();
+      invalidateFn && invalidateFn();
     },
   });
 
@@ -104,11 +111,8 @@ const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol
   const goHome = useCallback(() => {
     onCloseModal();
     closeAddAlcohol();
-
-    // 메인 새로 불러오기
-    invalidateAlcohol();
     navigate('/admin', { replace: true });
-  }, [navigate, onCloseModal, closeAddAlcohol, invalidateAlcohol]);
+  }, [navigate, onCloseModal, closeAddAlcohol]);
 
   // 술 추가 완료 후 '계속 추가'
   const addAnotherOne = useCallback(() => {

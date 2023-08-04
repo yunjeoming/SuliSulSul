@@ -8,7 +8,7 @@ const useInvalidateAlcohol = (otherKeys?: QueryKey) => {
   const queryClient = useQueryClient();
   const queryKey = useMemo(() => {
     const defaultKey = [queryKeys.ALCOHOL];
-    return otherKeys ? [...defaultKey, otherKeys] : defaultKey;
+    return otherKeys ? [...defaultKey, ...otherKeys] : defaultKey;
   }, [otherKeys]);
 
   useQuery<Alcohol[]>({

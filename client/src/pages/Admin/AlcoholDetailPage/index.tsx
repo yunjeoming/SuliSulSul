@@ -5,13 +5,13 @@ import useAlcoholAndReviews from '../../../hooks/useAlcoholAndReviews';
 
 const AdminAlcoholDetailPage = () => {
   const { no } = useParams();
-  const { alcohol } = useAlcoholAndReviews(no);
+  const { alcohol, invalidateQuery } = useAlcoholAndReviews(no);
 
   return alcohol ? (
     <>
       <SubHeader headerName={alcohol.alcNm} />
       <div>
-        <AlcoholEditForm alcohol={alcohol} />
+        <AlcoholEditForm alcohol={alcohol} invalidateFn={invalidateQuery} />
       </div>
     </>
   ) : null;
