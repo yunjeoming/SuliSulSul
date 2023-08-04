@@ -16,7 +16,7 @@ const AdminMainPage = () => {
     <>
       <AdminHeader handleClickNewAlcohol={openAddPage} />
       <MainLayout>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense>
           <Routes>
             <Route path="" element={<AdminAlcoholListPage />} />
             <Route path="login" element={<AdminAlcoholListPage />} />
