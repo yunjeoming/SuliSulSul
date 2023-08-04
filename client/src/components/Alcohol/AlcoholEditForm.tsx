@@ -13,14 +13,18 @@ import useInvalidateAlcohol from '../../hooks/useInvalidateAlcohol';
 
 type Props = {
   alcohol: Alcohol;
+  invalidateFn?: () => void;
 };
 
-const AlcoholEditForm: FC<Props> = ({ alcohol }) => {
+const AlcoholEditForm: FC<Props> = ({ alcohol, invalidateFn }) => {
   const navigate = useNavigate();
-  const { invalidateAlcohol } = useInvalidateAlcohol();
+  const { invalidateAlcohol } = useInvalidateAlcohol(['admin']);
   const { refObj, getFormDataByRefObj } = useAlcoholFormRef();
-  const { modal, setModal, onCloseModal } = useModal();
-  const { content, isOpenModal, showOneBtn } = modal;
+  const {
+    modal: { content, isOpenModal, showOneBtn },
+    setModal,
+    onCloseModal,
+  } = useModal();
 
   const handleClickSave = useCallback(() => {
     const { alcoholNmRef, descriptionRef, categoryNmRef, volRef } = refObj.current;
@@ -93,6 +97,7 @@ const AlcoholEditForm: FC<Props> = ({ alcohol }) => {
         targetRef: null,
       }));
       invalidateAlcohol();
+      invalidateFn && invalidateFn();
     },
   });
 

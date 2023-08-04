@@ -1,4 +1,4 @@
-import { FC, FormEvent, useCallback } from 'react';
+import { FormEvent, forwardRef, useCallback } from 'react';
 import AddLayout from '../../../layout/AddLayout';
 import AlcoholForm from '../../../components/Alcohol/AlcoholForm';
 import { useNavigate } from 'react-router-dom';
@@ -13,15 +13,20 @@ import useCautionModal from '../../../hooks/useCautionModal';
 
 type Props = {
   onClose: () => void;
+  invalidateFn?: () => void;
 };
 
-const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
+const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol, invalidateFn }, ref) => {
   const navigate = useNavigate();
   const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
-  const { modal, setModal, initModalState, onCloseModal } = useModal();
+  const {
+    modal: { content, isOpenModal, showOneBtn, isAdded },
+    setModal,
+    initModalState,
+    onCloseModal,
+  } = useModal();
   const { refObj, resetRefs, getFormDataByRefObj } = useAlcoholFormRef();
-  const { content, isOpenModal, showOneBtn, isAdded } = modal;
-  const { invalidateAlcohol } = useInvalidateAlcohol();
+  const { invalidateAlcohol } = useInvalidateAlcohol(['admin']);
 
   const { mutate: addAlcohol } = useMutation({
     mutationFn: (data: FormData) => AlcoholAPI.addAlcohol(data),
@@ -34,6 +39,8 @@ const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
         isAdded: true,
         targetRef: null,
       }));
+      invalidateAlcohol();
+      invalidateFn && invalidateFn();
     },
   });
 
@@ -104,11 +111,8 @@ const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
   const goHome = useCallback(() => {
     onCloseModal();
     closeAddAlcohol();
-
-    // 메인 새로 불러오기
-    invalidateAlcohol();
     navigate('/admin', { replace: true });
-  }, [navigate, onCloseModal, closeAddAlcohol, invalidateAlcohol]);
+  }, [navigate, onCloseModal, closeAddAlcohol]);
 
   // 술 추가 완료 후 '계속 추가'
   const addAnotherOne = useCallback(() => {
@@ -118,7 +122,7 @@ const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
   }, [onCloseModal, initModalState, refObj, setModal, resetRefs]);
 
   return (
-    <AddLayout headerText="술 등록" onClose={openCautionModal} onSave={handleClickSave}>
+    <AddLayout ref={ref} headerText="술 등록" onClose={openCautionModal} onSave={handleClickSave}>
       <div className="p-4">
         <AlcoholForm ref={refObj} />
         {isAdded ? (
@@ -152,6 +156,6 @@ const AddAlcohol: FC<Props> = ({ onClose: closeAddAlcohol }) => {
       />
     </AddLayout>
   );
-};
+});
 
 export default AddAlcohol;

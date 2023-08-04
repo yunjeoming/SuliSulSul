@@ -1,24 +1,32 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 import AlcoholAPI from '../../../api/alcohol';
 import AlcoholList from '../../../components/Alcohol/AlcoholList';
-import { Alcohol } from '../../../types/alcohol';
 import { queryKeys } from '../../../queryClient';
+import SearchTitle from '../../../components/SearchTitle';
 
 const AdminSearchListPage = () => {
   const location = useLocation();
   const { searchWord } = location.state;
 
-  const { data: searchResults = [] } = useQuery<Alcohol[]>({
+  const { data, isLoading, isFetchingNextPage, hasNextPage, isSuccess, fetchNextPage } = useInfiniteQuery({
     queryKey: [queryKeys.ALCOHOL, searchWord],
-    queryFn: () => AlcoholAPI.getAlcoholsBySearchWord(searchWord),
+    queryFn: ({ pageParam = 0 }) => AlcoholAPI.getAlcoholsBySearchWord(searchWord, pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage?.length < 10 ? undefined : allPages.length;
+    },
   });
 
   return (
-    <div className="p-4">
-      <div className="mb-4">"{searchWord}" 검색 결과입니다.</div>
-      <AlcoholList alcohols={searchResults} showingType="listType" isAdmin />
-    </div>
+    <>
+      <SearchTitle searchWord={searchWord} />
+      <AlcoholList
+        alcohols={data?.pages}
+        showingType="listType"
+        isAdmin
+        infiniteScrollOptions={{ isLoading, isFetchingNextPage, hasNextPage, isSuccess, fetchNextPage }}
+      />
+    </>
   );
 };
 

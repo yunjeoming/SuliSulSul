@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { RefObjType } from '../types/ref';
+import { RefObjType } from '../types/common';
 
 const useAlcoholFormRef = () => {
   const refObj = useRef<RefObjType>({

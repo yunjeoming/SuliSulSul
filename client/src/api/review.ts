@@ -1,9 +1,10 @@
 import requestAxios from './axios';
 
 const ReviewAPI = {
-  getReviewsByNo: (no: string) => {
+  getReviewsByNo: (no: string, pageNo?: number) => {
     const data = new FormData();
     data.append('alcNo', no);
+    data.append('pageNo', (pageNo ?? 0).toString());
     return requestAxios({ method: 'post', url: `/selectReviewList`, data });
   },
   addReview: (data: FormData) => {

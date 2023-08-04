@@ -6,11 +6,10 @@ const requestAxios = async (config: AxiosRequestConfig) => {
     if (!response.status.toString().startsWith('2')) {
       throw Error('status num is not 200+');
     }
-
-    console.log(response);
     return response.data;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 

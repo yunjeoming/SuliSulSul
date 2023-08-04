@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
 import DynamicStars from '../../components/Stars/DynamicStars';
 import AddLayout from '../../layout/AddLayout';
@@ -15,7 +15,7 @@ type Props = {
   invalidateFn?: () => void;
 };
 
-const AddReview = ({ alcohol, onClose: closeAddReview, invalidateFn }: Props) => {
+const AddReview = forwardRef<HTMLDivElement, Props>(({ alcohol, onClose: closeAddReview, invalidateFn }, addRef) => {
   const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
   const gradeRef = useRef<HTMLSpanElement | null>(null);
   const titleRef = useRef<HTMLInputElement | null>(null);
@@ -192,8 +192,8 @@ const AddReview = ({ alcohol, onClose: closeAddReview, invalidateFn }: Props) =>
 
   return (
     <>
-      <AddLayout headerText="리뷰작성" onClose={openCautionModal} onSave={handleClickSave}>
-        <div className="px-2 border-b mb-2">
+      <AddLayout ref={addRef} headerText="리뷰작성" onClose={openCautionModal} onSave={handleClickSave}>
+        <div className="p-2 border-b mb-2">
           <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
         </div>
         <div className="flex-grow">
@@ -225,6 +225,6 @@ const AddReview = ({ alcohol, onClose: closeAddReview, invalidateFn }: Props) =>
       />
     </>
   );
-};
+});
 
 export default AddReview;

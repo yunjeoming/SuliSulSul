@@ -1,6 +1,6 @@
-import React, { forwardRef, useEffect } from 'react';
-import { RefObjType } from '../../types/ref';
+import { MutableRefObject, forwardRef, useEffect } from 'react';
 import useCategory from '../../hooks/useCategory';
+import { RefObjType } from '../../types/common';
 
 type Props = {
   selectedCategory?: string;
@@ -8,7 +8,7 @@ type Props = {
 
 const AlcoholForm = forwardRef<RefObjType, Props>(({ selectedCategory }, ref) => {
   const { category } = useCategory();
-  const { current } = ref as React.MutableRefObject<RefObjType>;
+  const { current } = ref as MutableRefObject<RefObjType>;
 
   useEffect(() => {
     const { categoryNmRef } = current;

@@ -11,13 +11,15 @@ type Props = {
   link?: string;
 };
 
-const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center py-2';
+const DETAILED_WRAPPER_STYLES = 'flex justify-center items-center';
 
 const DetailedAlcoholItem: React.FC<Props> = ({ alcohol, showingType, link }: Props) => {
   return link ? (
     <Link
       to={link}
-      className={`${DETAILED_WRAPPER_STYLES} cursor-pointer ${showingType === 'listType' ? 'w-full' : 'flex-col'}`}
+      className={`${DETAILED_WRAPPER_STYLES} cursor-pointer ${
+        showingType === 'listType' ? 'w-full' : 'flex-col flex-1'
+      }`}
     >
       <DetailedAlcohol alcohol={alcohol} showingType={showingType} />
     </Link>

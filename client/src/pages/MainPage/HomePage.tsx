@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { FC, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Alcohol } from '../../types/alcohol';
 import { queryKeys } from '../../queryClient';
 import AlcoholAPI from '../../api/alcohol';
-import MainLayout from '../../layout/MainLayout';
-import AlcoholList from '../../components/Alcohol/AlcoholList';
+import SimpleAlcoholList from '../../components/Alcohol/SimpleAlcoholList';
 
 type Props = {
   initSidebar: () => void;
@@ -13,7 +12,7 @@ type Props = {
 const HomePage: FC<Props> = ({ initSidebar }) => {
   const { data: alcohols } = useQuery<Alcohol[]>({
     queryKey: [queryKeys.ALCOHOL],
-    queryFn: AlcoholAPI.getAlcohols,
+    queryFn: () => AlcoholAPI.getAlcohols(),
   });
 
   useEffect(() => {
@@ -21,22 +20,20 @@ const HomePage: FC<Props> = ({ initSidebar }) => {
   }, [initSidebar]);
 
   return (
-    <MainLayout>
-      <div>
-        {alcohols ? (
-          <section className="flex flex-col mb-12">
-            <span>카테고리별 인기 아이템</span>
-            <AlcoholList alcohols={alcohols} isSimple styles="py-2" />
-          </section>
-        ) : null}
-        {alcohols ? (
-          <section className="flex flex-col mb-12">
-            <span>추천 아이템</span>
-            <AlcoholList alcohols={alcohols} isSimple styles="py-2" />
-          </section>
-        ) : null}
-      </div>
-    </MainLayout>
+    <div>
+      {alcohols ? (
+        <section className="flex flex-col mb-8">
+          <span>🍷 리뷰 많은 술</span>
+          <SimpleAlcoholList alcohols={alcohols} />
+        </section>
+      ) : null}
+      {alcohols ? (
+        <section className="flex flex-col mb-8">
+          <span>🍺 별점 높은 술</span>
+          <SimpleAlcoholList alcohols={alcohols} />
+        </section>
+      ) : null}
+    </div>
   );
 };
 

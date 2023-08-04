@@ -1,8 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 
 const useAddPage = () => {
   const [isOpenAddPage, setIsOpenAddPage] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const addRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const updateOverflowStyle = useCallback((targetRef: RefObject<HTMLDivElement>, targetStyle: string) => {
+    const targetElem = targetRef.current;
+    const parentElem = targetElem?.parentElement;
+    if (parentElem) {
+      parentElem.style.overflow = targetStyle;
+    }
+  }, []);
 
   const openAddPage = useCallback(() => {
     setIsOpenAddPage(true);
@@ -10,23 +19,18 @@ const useAddPage = () => {
 
   const closeAddPage = useCallback(() => {
     setIsOpenAddPage(false);
-  }, []);
+    updateOverflowStyle(addRef, 'unset');
+    updateOverflowStyle(targetRef, 'auto');
+  }, [updateOverflowStyle]);
 
   useEffect(() => {
-    const targetElem = ref.current;
-    const parentElem = targetElem?.parentElement;
-    if (!parentElem) return;
-
     if (isOpenAddPage) {
-      targetElem.style.overflow = 'hidden';
-      parentElem.style.overflow = 'hidden';
-    } else {
-      targetElem.style.overflow = 'auto';
-      parentElem.style.overflow = 'auto';
+      updateOverflowStyle(addRef, 'hidden');
+      updateOverflowStyle(targetRef, 'hidden');
     }
-  }, [isOpenAddPage, ref]);
+  }, [isOpenAddPage, updateOverflowStyle]);
 
-  return { isOpenAddPage, openAddPage, closeAddPage, ref };
+  return { isOpenAddPage, openAddPage, closeAddPage, addRef, targetRef };
 };
 
 export default useAddPage;
