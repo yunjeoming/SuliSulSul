@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react';
-import { Styles } from '../constants/Styles';
 
 type Props = {
   styles?: string;
@@ -8,7 +7,7 @@ type Props = {
 
 const MainLayout: FC<Props> = ({ styles = '', children }) => {
   return (
-    <div className={`flex flex-col ${Styles.MAIN_AREA_HEIGHT} ${styles ?? ''} overflow-auto [&>*:last-child]:p-4`}>
+    <div className={`flex flex-col flex-grow ${styles ?? ''} [&>*:last-child]:p-4`}>
       {children}
     </div>
   );

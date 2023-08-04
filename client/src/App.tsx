@@ -17,7 +17,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="h-screen bg-gray-200 flex justify-center items-stretch">
-        <div className={`relative ${Styles.MAIN_BACKGROUND_COLOR} w-96 overflow-auto`}>
+        <div className={`flex flex-col relative ${Styles.MAIN_BACKGROUND_COLOR} w-[26rem] overflow-auto`}>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/" element={<MainPage />}>
