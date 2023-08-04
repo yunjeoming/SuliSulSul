@@ -1,7 +1,6 @@
 package com.sul.server.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -34,6 +33,13 @@ public class AlcController {
 	
 	@Value("${part4.upload.path}")
 	private String uploadPath;
+	
+	// 메인 표출 술 목록
+	@ResponseBody
+	@RequestMapping("/selectMainAlcList")
+	public List<AlcVo> selectMainAlcList(@RequestParam(value="flag") String flag, Model model){
+		return service.selectMainAlcList(flag);
+	}
 	
 	// 술 목록
 	@ResponseBody

@@ -11,6 +11,8 @@ import com.sul.server.vo.CategoryVo;
 @Repository
 @Mapper
 public interface AlcMapper {
+	public List<AlcVo> selectMainAlcList(String flag);
+	
 	public List<AlcVo> selectTotalAlcList(AlcVo vo);
 	
 	public AlcVo selectAlcDetail(AlcVo vo);

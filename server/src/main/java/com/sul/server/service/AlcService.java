@@ -16,6 +16,11 @@ public class AlcService {
 	@Autowired
 	AlcMapper mapper;
 	
+	// 술 메인 표출 목록
+	public List<AlcVo> selectMainAlcList(String flag){
+		return mapper.selectMainAlcList(flag);
+	}
+	
 	// 술 전체 목록
 	public List<AlcVo> selectTotalAlcList(AlcVo vo){
 		// 페이지 설정

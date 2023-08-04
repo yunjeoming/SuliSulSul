@@ -1,19 +1,14 @@
 package com.sul.server.service;
 
-import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sul.server.mapper.AlcMapper;
 import com.sul.server.mapper.ReviewMapper;
-import com.sul.server.vo.AlcVo;
 import com.sul.server.vo.ReviewVo;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
@@ -36,40 +31,28 @@ public class ReviewService {
 	
 	// 리뷰 등록
 	public void insertAlcReview(ReviewVo vo){
+		// 비밀번호 암호화
+		String pwd = Base64.getEncoder().encodeToString(vo.getReviewPwd().getBytes());
+		vo.setReviewPwd(pwd);
+		
 		mapper.insertAlcReview(vo);
 		updateAvgGrade(vo);
 	}
 	
 	// 리뷰 수정
-	public String updateAlcReview(ReviewVo vo){
-		String rtnMsg = "";
-		if(checkAuth(vo) == 1) {
-			mapper.updateAlcReview(vo);
-			updateAvgGrade(vo);
-			rtnMsg = "SUC";
-		} else {
-			rtnMsg = "FAIL";
-		}
-		
-		return rtnMsg;
+	public void updateAlcReview(ReviewVo vo){
+		mapper.updateAlcReview(vo);
+		updateAvgGrade(vo);
 	}
 	
 	// 리뷰 삭제
-	public String deleteAlcReview(ReviewVo vo){
-		String rtnMsg = "";
-		if(checkAuth(vo) == 1) {
-			mapper.deleteAlcReview(vo);
-			updateAvgGrade(vo);
-			rtnMsg = "SUC";
-		} else {
-			rtnMsg = "FAIL";
-		}
-		
-		return rtnMsg;
+	public void deleteAlcReview(ReviewVo vo){
+		mapper.deleteAlcReview(vo);
+		updateAvgGrade(vo);
 	}
 	
 	// 리뷰 수정 및 삭제할 때 관리자 권한이거나, 비밀번호 체킹
-	private int checkAuth(ReviewVo vo) {
+	public int checkAuth(ReviewVo vo) {
 		// result가 0이면 권한 없음, 1이면 권한 있음
 		int result = 0;
 		

@@ -21,4 +21,5 @@ public class ReviewVo {
 	private int pageNo;
 	private int startPage;
 	private int lastPage;
+	private int totPage;
 }

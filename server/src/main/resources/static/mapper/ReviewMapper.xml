@@ -4,7 +4,8 @@
 	<!-- 조회 -->
 	<select id="selectAlcReviewList" parameterType="java.util.Map" resultType="com.sul.server.vo.ReviewVo">
 	    /* selectAlcReviewList - 특정 술의 전체 리뷰 조회 */
-	    SELECT A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.GRADE, B.REG_DT, B.MODI_DT
+	    SELECT CEIL(COUNT(B.REVIEW_NO) OVER(PARTITION BY A.ALC_NO) / 10) TOT_PAGE, A.ALC_NO, A.ALC_NM, B.REVIEW_NO, B.TITLE, B.CONTENT
+	         , B.GRADE, B.REG_DT, B.MODI_DT
 	      FROM INFORMATION A
 	      LEFT JOIN REVIEW B
 	        ON A.ALC_NO = B.ALC_NO
@@ -14,7 +15,7 @@
 	                     FROM REVIEW BB
 	                    WHERE A.ALC_NO = BB.ALC_NO
 	                  )
-	     ORDER BY B.REG_DT
+	     ORDER BY B.REG_DT DESC
 	     LIMIT #{startPage}, 10
 	</select>
 	
@@ -35,16 +36,16 @@
 	
 	<select id="selectCheckPwd" parameterType="java.util.Map" resultType="int">
 	    /* selectCheckPwd - 리뷰 수정 삭제용 패스워드 매칭 */
-	    SELECT CASE WHEN PASSWORD(${reviewPwd}) = REVIEW_PWD THEN 1 ELSE 0 END
+	    SELECT CASE WHEN PASSWORD(#{reviewPwd}) = REVIEW_PWD THEN 1 ELSE 0 END
 	      FROM REVIEW
-	     WHERE REVIEW_NO = ${reviewNo}
+	     WHERE REVIEW_NO = #{reviewNo}
 	</select>
 	
 	<select id="selectAlcNo" parameterType="int" resultType="int">
 	    /* selectAlcNo - 리뷰넘버에서 술넘버 가져오기 */
 	    SELECT ALC_NO
 	      FROM REVIEW
-	     WHERE REVIEW_NO = ${reviewNo}
+	     WHERE REVIEW_NO = #{reviewNo}
 	</select>
 	
 	<!-- 등록 수정 삭제 -->
@@ -52,7 +53,7 @@
 	    /* insertReviewFile - 리뷰 파일 등록 */
 	    INSERT INTO ALC_FILE
 	           (FILE_PATH, FILE_NM, FILE_EXT)
-	    VALUES (${filePath}, ${fileNm}, ${fileExt})
+	    VALUES (#{filePath}, #{fileNm}, #{fileExt})
 	</insert>
 	
 	<insert id="insertAlcReview" parameterType="java.util.Map">
@@ -65,14 +66,14 @@
 	<insert id="mergeAlcReviewGrade" parameterType="java.util.Map">
 	    /* mergeAlcReviewGrade - 술 평점 수정 또는 등록: 리뷰 등록 시마다 실행 */
 	    INSERT INTO GRADE
-	     SELECT ${alcNo}, ROUND((GRADE_SUM / ALC_COUNT), 1), NOW()
-	       FROM (SELECT SUM(GRADE) GRADE_SUM, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo} GROUP BY ALC_NO) A
-	          , (SELECT COUNT(*) ALC_COUNT, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo}) B
+	     SELECT #{alcNo}, ROUND((GRADE_SUM / ALC_COUNT), 1), NOW()
+	       FROM (SELECT SUM(GRADE) GRADE_SUM, ALC_NO FROM REVIEW WHERE ALC_NO = #{alcNo} GROUP BY ALC_NO) A
+	          , (SELECT COUNT(*) ALC_COUNT, ALC_NO FROM REVIEW WHERE ALC_NO = #{alcNo}) B
 	      WHERE A.ALC_NO = B.ALC_NO
 	      ON DUPLICATE KEY UPDATE
 	         AVG_GRADE = (SELECT ROUND((GRADE_SUM / ALC_COUNT), 1) GRADE
-	                        FROM (SELECT SUM(GRADE) GRADE_SUM, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo} GROUP BY ALC_NO) A
-	                           , (SELECT COUNT(*) ALC_COUNT, ALC_NO FROM REVIEW WHERE ALC_NO = ${alcNo} ) B
+	                        FROM (SELECT SUM(GRADE) GRADE_SUM, ALC_NO FROM REVIEW WHERE ALC_NO = #{alcNo} GROUP BY ALC_NO) A
+	                           , (SELECT COUNT(*) ALC_COUNT, ALC_NO FROM REVIEW WHERE ALC_NO = #{alcNo} ) B
 	                       WHERE A.ALC_NO = B.ALC_NO)
 	       , UPDT_DT = NOW()
 	</insert>
@@ -80,11 +81,11 @@
 	<update id="updateAlcReview" parameterType="java.util.Map">
 	    /* updateAlcReview - 리뷰 수정 */
 	    UPDATE REVIEW
-	       SET TITLE = ${title}
-	         , GRADE = ${grade}
-	         , CONTENT = ${content}
+	       SET TITLE = #{title}
+	         , GRADE = #{grade}
+	         , CONTENT = #{content}
 	         , MODI_DT = NOW()
-	     WHERE REVIEW_NO = ${reviewNo}
+	     WHERE REVIEW_NO = #{reviewNo}
 	</update>
 	
 	<delete id="deleteAlcReview" parameterType="java.util.Map">
