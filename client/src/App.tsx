@@ -6,6 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import Header from './components/Header/Header';
 import useSidebar from './hooks/useSidebar';
 import MainPage from './pages/MainPage';
+import Sidebar from './components/Sidebar/Sidebar';
 
 const AlcoholListPage = lazy(() => import('./pages/AlcoholListPage'));
 const AlcoholDetailPage = lazy(() => import('./pages/AlcoholDetailPage'));
@@ -26,66 +27,64 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="h-screen bg-gray-200 flex justify-center items-stretch">
-        <div className={`flex flex-col relative ${Styles.MAIN_BACKGROUND_COLOR} w-[26rem] overflow-auto`}>
-          {!pathname.startsWith('/admin') ? (
-            <Header
-              isOpenSidebar={isOpenSidebar}
-              clickTargetBtn={clickTargetBtn}
-              closeTargetSidebar={closeTargetSidebar}
-            />
-          ) : null}
-          <Routes>
-            <Route path="/" element={<MainPage initSidebar={initSidebar} isOpenSidebar={isOpenSidebar} />}>
+        <div className="h-full relative w-[26rem]">
+          <div className={`h-full flex flex-col ${Styles.MAIN_BACKGROUND_COLOR} overflow-auto`}>
+            {!pathname.startsWith('/admin') ? <Header clickTargetBtn={clickTargetBtn} /> : null}
+            <Routes>
+              <Route path="/" element={<MainPage initSidebar={initSidebar} isOpenSidebar={isOpenSidebar} />}>
+                <Route
+                  path="c/:no"
+                  element={
+                    <Suspense fallback={<SkeletonAlcoholList />}>
+                      <AlcoholListPage />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="alcs/:no"
+                  element={
+                    <Suspense fallback={<SkeletonAlcoholDetail />}>
+                      <AlcoholDetailPage />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="search"
+                  element={
+                    <Suspense fallback={<SkeletonAlcoholList />}>
+                      <SearchListPage />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="reviews/:no"
+                  element={
+                    <Suspense fallback={<SkeletonReviewList />}>
+                      <ReviewListPage />
+                    </Suspense>
+                  }
+                />
+              </Route>
               <Route
-                path="c/:no"
+                path="/admin/*"
                 element={
-                  <Suspense fallback={<SkeletonAlcoholList />}>
-                    <AlcoholListPage />
+                  <Suspense fallback={<></>}>
+                    <AdminMainPage />
                   </Suspense>
                 }
               />
               <Route
-                path="alcs/:no"
+                path="/*"
                 element={
-                  <Suspense fallback={<SkeletonAlcoholDetail />}>
-                    <AlcoholDetailPage />
+                  <Suspense>
+                    <NotFoundPage />
                   </Suspense>
                 }
               />
-              <Route
-                path="search"
-                element={
-                  <Suspense fallback={<SkeletonAlcoholList />}>
-                    <SearchListPage />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="reviews/:no"
-                element={
-                  <Suspense fallback={<SkeletonReviewList />}>
-                    <ReviewListPage />
-                  </Suspense>
-                }
-              />
-            </Route>
-            <Route
-              path="/admin/*"
-              element={
-                <Suspense fallback={<></>}>
-                  <AdminMainPage />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/*"
-              element={
-                <Suspense>
-                  <NotFoundPage />
-                </Suspense>
-              }
-            />
-          </Routes>
+            </Routes>
+          </div>
+          {isOpenSidebar.category && <Sidebar type="category" onClose={() => closeTargetSidebar('category')} />}
+          {isOpenSidebar.search && <Sidebar type="search" onClose={() => closeTargetSidebar('search')} />}
         </div>
       </div>
     </QueryClientProvider>
