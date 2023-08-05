@@ -32,10 +32,10 @@ const AlcoholAPI = {
     return requestAxios({ method: 'post', url: `/selectAlcList`, data });
   },
   getAlcoholsWithManyReviews: () => {
-    return requestAxios({ method: 'get', url: `/` });
+    return requestAxios({ method: 'get', url: `/selectMainAlcList?flag=R` });
   },
   getAlcoholsWithHighGrade: () => {
-    return requestAxios({ method: 'get', url: `/` });
+    return requestAxios({ method: 'get', url: `/selectMainAlcList?flag=G` });
   },
   addAlcohol: (data: FormData) => {
     return requestAxios({ method: 'post', url: `/insertAlcInfo`, data });

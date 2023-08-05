@@ -35,81 +35,64 @@ const AddReview = forwardRef<HTMLDivElement, Props>(({ alcohol, onClose: closeAd
     onCloseModal: () => {},
   });
 
-  const { content, isOpenModal, targetRef } = modal;
+  const { content, isOpenModal, targetRef, onCloseModal } = modal;
 
-  const handleClickSave = () => {
+  const openModal = useCallback(
+    (content: string, targetRef: RefObject<HTMLElement> | null, onCloseModal?: () => void) => {
+      setModal((prevState) => {
+        const returnState = {
+          ...prevState,
+          isOpenModal: true,
+          content,
+          targetRef,
+        };
+        if (onCloseModal) {
+          returnState.onCloseModal = onCloseModal;
+        }
+
+        return returnState;
+      });
+    },
+    [],
+  );
+
+  const validateForm = useCallback(() => {
     if (!gradeRef.current?.textContent) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '별점을 선택해주세요',
-        isOpenModal: true,
-        targetRef: gradeRef,
-      }));
-      return;
+      openModal('별점을 선택해주세요', gradeRef);
+      return false;
     }
 
     if (!titleRef.current?.value) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '제목을 입력해주세요',
-        isOpenModal: true,
-        targetRef: titleRef,
-      }));
-      return;
+      openModal('제목을 입력해주세요', titleRef);
+      return false;
     }
 
     if (!contentRef.current?.value) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '내용을 입력해주세요',
-        isOpenModal: true,
-        targetRef: contentRef,
-      }));
-      return;
+      openModal('내용을 입력해주세요', contentRef);
+      return false;
     }
 
     if (contentRef.current?.value.length > 100) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '내용은 최대 100자까지 입력해주세요',
-        isOpenModal: true,
-        targetRef: contentRef,
-      }));
-      return;
+      openModal('내용은 최대 100자까지 입력해주세요', contentRef);
+      return false;
     }
 
     if (!userNmRef.current?.value) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '작성자를 입력해주세요',
-        isOpenModal: true,
-        targetRef: userNmRef,
-      }));
-      return;
+      openModal('작성자를 입력해주세요', userNmRef);
+      return false;
     }
 
     if (userNmRef.current?.value.length > 10) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '작성자는 최대 10자까지 입력해주세요',
-        isOpenModal: true,
-        targetRef: userNmRef,
-      }));
-      return;
+      openModal('작성자는 최대 10자까지 입력해주세요', userNmRef);
+      return false;
     }
 
     if (!reviewPwdRef.current?.value) {
-      setModal((prevState) => ({
-        ...prevState,
-        content: '비밀번호를 입력해주세요',
-        isOpenModal: true,
-        targetRef: reviewPwdRef,
-      }));
-      return;
+      openModal('비밀번호를 입력해주세요', reviewPwdRef);
+      return false;
     }
-
-    addReview();
-  };
+    return true;
+  }, [openModal]);
 
   const closeModalByDefault = useCallback(() => {
     setModal((prevState) => ({
@@ -155,33 +138,22 @@ const AddReview = forwardRef<HTMLDivElement, Props>(({ alcohol, onClose: closeAd
     },
     onSuccess: (data) => {
       if (data === 'SUC') {
-        // onClose();
-        // invalidateFn && invalidateFn();
-        setModal((prevState) => ({
-          ...prevState,
-          content: '리뷰가 등록되었습니다.',
-          isOpenModal: true,
-          onCloseModal: closeModalBySuccess,
-        }));
+        openModal('리뷰가 등록되었어요', null, closeModalBySuccess);
       } else {
-        setModal((prevState) => ({
-          ...prevState,
-          content: '등록에 실패했어요',
-          isOpenModal: true,
-          targetRef: contentRef,
-        }));
+        openModal('등록에 실패했어요 \n\n ⚠️ 이모티콘은 등록이 되지 않아요 ⚠️', contentRef);
       }
     },
     onError: (err) => {
       console.error(err);
-      setModal((prevState) => ({
-        ...prevState,
-        content: '등록에 실패했어요',
-        isOpenModal: true,
-        targetRef: contentRef,
-      }));
+      openModal('등록에 실패했어요 \n\n ⚠️ 이모티콘은 등록이 되지 않아요 ⚠️', contentRef);
     },
   });
+
+  const handleClickSave = useCallback(() => {
+    if (validateForm()) {
+      addReview();
+    }
+  }, [validateForm, addReview]);
 
   useEffect(() => {
     setModal((prevState) => ({
@@ -215,7 +187,7 @@ const AddReview = forwardRef<HTMLDivElement, Props>(({ alcohol, onClose: closeAd
           </section>
         </div>
       </AddLayout>
-      <OneBtnModal isOpen={isOpenModal} content={content} onClose={modal.onCloseModal} />
+      <OneBtnModal isOpen={isOpenModal} content={content} onClose={onCloseModal} />
       <TwoBtnsModal
         isOpen={isOpenCaution}
         content={cautionContent}

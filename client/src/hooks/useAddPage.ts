@@ -13,15 +13,23 @@ const useAddPage = () => {
     }
   }, []);
 
+  const deleteOverflowStyle = useCallback((targetRef: RefObject<HTMLDivElement>) => {
+    const targetElem = targetRef.current;
+    const parentElem = targetElem?.parentElement;
+    if (parentElem) {
+      parentElem.style.removeProperty('overflow');
+    }
+  }, []);
+
   const openAddPage = useCallback(() => {
     setIsOpenAddPage(true);
   }, []);
 
   const closeAddPage = useCallback(() => {
     setIsOpenAddPage(false);
-    updateOverflowStyle(addRef, 'unset');
+    deleteOverflowStyle(addRef);
     updateOverflowStyle(targetRef, 'auto');
-  }, [updateOverflowStyle]);
+  }, [updateOverflowStyle, deleteOverflowStyle]);
 
   useEffect(() => {
     if (isOpenAddPage) {

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import SubHeader from '../../../components/Header/SubHeader';
+import SubHeaderLayout from '../../../layout/SubHeaderLayout';
 import AlcoholEditForm from '../../../components/Alcohol/AlcoholEditForm';
 import useAlcoholAndReviews from '../../../hooks/useAlcoholAndReviews';
 
@@ -9,7 +9,7 @@ const AdminAlcoholDetailPage = () => {
 
   return alcohol ? (
     <>
-      <SubHeader headerName={alcohol.alcNm} />
+      <SubHeaderLayout headerName={alcohol.alcNm} />
       <div>
         <AlcoholEditForm alcohol={alcohol} invalidateFn={invalidateQuery} />
       </div>

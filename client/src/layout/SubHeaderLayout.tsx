@@ -5,7 +5,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const SubHeader: FC<Props> = ({ headerName = '', children }) => {
+const SubHeaderLayout: FC<Props> = ({ headerName = '', children }) => {
   return (
     <div className="flex justify-between items-center h-10 border-t border-b child border-stone-950">
       <span className="text-2xl flex-grow pl-4">{headerName}</span>
@@ -14,4 +14,4 @@ const SubHeader: FC<Props> = ({ headerName = '', children }) => {
   );
 };
 
-export default SubHeader;
+export default SubHeaderLayout;

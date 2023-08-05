@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, memo, useRef } from 'react';
 import Thumbnail from '../Thumbnail';
 import { Alcohol } from '../../types/alcohol';
 import useShowMore from '../../hooks/useShowMore';
@@ -29,4 +29,4 @@ const AlcoholDetailContent: FC<Props> = ({ alcohol }) => {
   );
 };
 
-export default AlcoholDetailContent;
+export default memo(AlcoholDetailContent);
