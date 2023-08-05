@@ -36,7 +36,7 @@ const SimpleReviewList: FC<Props> = ({ alcohol, reviews, addReview }) => {
               <li key={r.reviewNo.toString() + r.grade.toString()} className="border-b last:border-none p-2">
                 <div className="flex items-center justify-between mb-2">
                   <StarsWithGrade grade={r.grade || 0} />
-                  <span className="text-sm text-stone-600">{r.userNm}</span>
+                  <span className="text-xs text-stone-500">{r.userNm || 'Anonymous'}</span>
                 </div>
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap">{r.title}</div>
               </li>

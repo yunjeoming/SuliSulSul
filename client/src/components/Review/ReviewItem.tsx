@@ -9,6 +9,7 @@ import OneBtnModal from '../Modal/OneBtnModal';
 import ReviewPassword from './ReviewPassword';
 import ReviewEditForm from './ReviewEditForm';
 import { ModalStateType, ModalType } from '../../types/common';
+import ReviewUtil from '../../utils/Review';
 
 type Props = {
   review: Review;
@@ -88,7 +89,10 @@ const ReviewItem: FC<Props> = ({ review, invalidateFn }) => {
       <div className="flex justify-between items-center mb-2">
         <div className="flex flex-col">
           <StarsWithGrade grade={review.grade} />
-          <span className="text-sm text-stone-600">{review.userNm}</span>
+          <div className="text-xs text-stone-500 flex gap-2">
+            <span>{review.userNm || 'Anonymous'}</span>
+            <span>{ReviewUtil.getReviewDate(review.regDt)}</span>
+          </div>
         </div>
         <div className="flex text-stone-400">
           <IconButton styles="p-1 hover:text-stone-700" onClick={handleClickShowPasswordInput} disabled={isEditMode}>
