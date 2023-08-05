@@ -13,6 +13,15 @@ export type Alcohol = CommonType & {
   fileExt?: string;
   productor?: string;
   vol?: number;
+  grade1: number;
+  grade2: number;
+  grade3: number;
+  grade4: number;
+  grade5: number;
+  grade15: number;
+  grade25: number;
+  grade35: number;
+  grade45: number;
 };
 
 export type Category = {
@@ -26,7 +35,7 @@ export type Review = CommonType & {
   reviewNo: number;
   title: string;
   grade: number;
-  regDt: string; 
+  regDt: string;
   content?: string;
   fileNo?: string;
   fileExt?: string;
@@ -48,6 +57,6 @@ export type Grade = {
 };
 
 export type AllType = {
-  alcData: Alcohol,
-  reviewData: Review[]
-}
+  alcData: Alcohol;
+  reviewData: Review[];
+};
