@@ -10,9 +10,14 @@ type Props = {
 };
 
 const HomePage: FC<Props> = ({ initSidebar }) => {
-  const { data: alcohols } = useQuery<Alcohol[]>({
-    queryKey: [queryKeys.ALCOHOL],
-    queryFn: () => AlcoholAPI.getAlcohols(),
+  const { data: alcoholsWithReview } = useQuery<Alcohol[]>({
+    queryKey: [queryKeys.ALCOHOL, 'main', 'reviews'],
+    queryFn: () => AlcoholAPI.getAlcoholsWithManyReviews(),
+  });
+
+  const { data: alcoholsWithGrades } = useQuery<Alcohol[]>({
+    queryKey: [queryKeys.ALCOHOL, 'main', 'grades'],
+    queryFn: () => AlcoholAPI.getAlcoholsWithHighGrade(),
   });
 
   useEffect(() => {
@@ -21,16 +26,16 @@ const HomePage: FC<Props> = ({ initSidebar }) => {
 
   return (
     <div>
-      {alcohols ? (
-        <section className="flex flex-col mb-8">
+      {alcoholsWithReview ? (
+        <section className="flex flex-col mt-4 mb-8">
           <span>🍷 리뷰 많은 술</span>
-          <SimpleAlcoholList alcohols={alcohols} />
+          <SimpleAlcoholList alcohols={alcoholsWithReview} />
         </section>
       ) : null}
-      {alcohols ? (
-        <section className="flex flex-col mb-8">
+      {alcoholsWithGrades ? (
+        <section className="flex flex-col mt-4 mb-8">
           <span>🍺 별점 높은 술</span>
-          <SimpleAlcoholList alcohols={alcohols} />
+          <SimpleAlcoholList alcohols={alcoholsWithGrades} />
         </section>
       ) : null}
     </div>
