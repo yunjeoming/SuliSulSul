@@ -65,6 +65,7 @@ const ReviewEditForm: FC<Props> = ({ review, updateInitState, openOneBtnModal })
       data.append('grade', grade);
       data.append('content', content);
       data.append('reviewNo', review.reviewNo.toString());
+      data.append('alcNo', review.alcNo.toString());
 
       return ReviewAPI.updateReview(data);
     },
