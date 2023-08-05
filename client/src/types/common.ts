@@ -19,7 +19,7 @@ export type SidebarType = {
   search: boolean;
 };
 
-export type ModalType = 'password' | 'fail' | 'suc' | 'edit' | 'delete';
+export type ModalType = 'password' | 'fail' | 'suc' | 'edit' | 'delete' | 'caution' | 'add';
 
 export type ModalStateType = {
   isOpen: boolean;
