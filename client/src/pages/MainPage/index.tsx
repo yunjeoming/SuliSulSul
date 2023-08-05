@@ -14,7 +14,7 @@ const MainPage: FC<Props> = ({ initSidebar, isOpenSidebar }) => {
   const { pathname } = useLocation();
 
   return (
-    <MainLayout styles={`${isOpenSidebar.category || isOpenSidebar.search ? 'overflow-hidden' : ''}`}>
+    <MainLayout>
       {pathname === '/' ? (
         <Suspense fallback={<SkeletonMain />}>
           <HomePage initSidebar={initSidebar} />

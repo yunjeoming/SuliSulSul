@@ -4,7 +4,7 @@ import IconButton from '../../components/IconButton';
 import { BsListUl } from 'react-icons/bs';
 import { RxGrid } from 'react-icons/rx';
 import AlcoholList from '../../components/Alcohol/AlcoholList';
-import SubHeader from '../../components/Header/SubHeader';
+import SubHeaderLayout from '../../layout/SubHeaderLayout';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../queryClient';
 import AlcoholAPI from '../../api/alcohol';
@@ -31,7 +31,7 @@ const AlcoholListPage = () => {
 
   return categoryInfo ? (
     <>
-      <SubHeader headerName={categoryInfo.cateNm}>
+      <SubHeaderLayout headerName={categoryInfo.cateNm}>
         <IconButton
           styles={`border-l border-r border-stone-950 p-3 hover:bg-gray-100`}
           onClick={() => handleClickShowingType('listType')}
@@ -46,7 +46,7 @@ const AlcoholListPage = () => {
         >
           <RxGrid color={`${showingType === 'gridType' ? '#000' : '#adadad'}`} />
         </IconButton>
-      </SubHeader>
+      </SubHeaderLayout>
       <AlcoholList
         alcohols={data?.pages}
         showingType={showingType}
