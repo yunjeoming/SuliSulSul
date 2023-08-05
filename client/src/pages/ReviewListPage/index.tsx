@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import AlcoholListItem from '../../components/Alcohol/AlcoholListItem';
-import StarsWithGrade from '../../components/Stars/StarsWithGrade';
 import ReviewList from '../../components/Review/ReviewList';
 import AddReview from '../AlcoholDetailPage/AddReview';
 import ReviewUtil from '../../utils/Review';
@@ -11,6 +10,7 @@ import { AllType } from '../../types/alcohol';
 import { queryKeys } from '../../queryClient';
 import AlcoholAPI from '../../api/alcohol';
 import SkeletonReviewList from '../../components/Skeleton/SkeletonReviewList';
+import ReviewGrade from '../../components/Review/ReviewGrade';
 
 const ReviewListPage = () => {
   const { no } = useParams();
@@ -40,7 +40,7 @@ const ReviewListPage = () => {
   }
 
   const { alcData: alcohol } = data.pages[0];
-  const { star1, star2, star3, star4, star5 } = ReviewUtil.getGradesFromAlcohol(alcohol);
+  const stars = ReviewUtil.getGradesFromAlcohol(alcohol);
   return (
     <>
       {isOpenAddPage && (
@@ -49,16 +49,7 @@ const ReviewListPage = () => {
       <div className="p-2 border-b">
         <AlcoholListItem alcohol={alcohol} showingType="listType" isNotLink />
       </div>
-      <div className="flex items-center justify-evenly  border-b py-4">
-        <StarsWithGrade grade={alcohol.avgGrade || 0} styles="text-2xl flex-col-reverse" />
-        <div className="text-sm">
-          <StarsWithGrade grade={5} text={`(${star5})`} />
-          <StarsWithGrade grade={4} text={`(${star4})`} />
-          <StarsWithGrade grade={3} text={`(${star3})`} />
-          <StarsWithGrade grade={2} text={`(${star2})`} />
-          <StarsWithGrade grade={1} text={`(${star1})`} />
-        </div>
-      </div>
+      <ReviewGrade avgGrade={alcohol.avgGrade || 0} {...stars} />
       <div className="border-b py-4 text-center">
         <span className="text-sm cursor-pointer hover:text-stone-600" onClick={openAddPage}>
           리뷰 등록하기

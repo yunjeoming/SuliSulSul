@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { ShowingType } from '../../pages/AlcoholListPage';
 import { Alcohol } from '../../types/alcohol';
 import DetailedAlcoholItem from './DetailedAlcoholItem';
@@ -16,4 +16,4 @@ const AlcoholListItem: FC<Props> = ({ alcohol, showingType, isNotLink = false, i
   return <DetailedAlcoholItem alcohol={alcohol} showingType={showingType} link={link} />;
 };
 
-export default AlcoholListItem;
+export default memo(AlcoholListItem);
