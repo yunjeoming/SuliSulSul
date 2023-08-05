@@ -17,4 +17,12 @@ export type RefObjType = {
 export type SidebarType = {
   category: boolean;
   search: boolean;
-}
+};
+
+export type ModalType = 'password' | 'fail' | 'suc' | 'edit' | 'delete';
+
+export type ModalStateType = {
+  isOpen: boolean;
+  content: string;
+  type: ModalType | null;
+};
