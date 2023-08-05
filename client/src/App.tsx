@@ -7,6 +7,7 @@ import Header from './components/Header/Header';
 import useSidebar from './hooks/useSidebar';
 import MainPage from './pages/MainPage';
 import Sidebar from './components/Sidebar/Sidebar';
+import AuthProvider from './context/AuthProvider';
 
 const AlcoholListPage = lazy(() => import('./pages/AlcoholListPage'));
 const AlcoholDetailPage = lazy(() => import('./pages/AlcoholDetailPage'));
@@ -69,7 +70,9 @@ function App() {
                 path="/admin/*"
                 element={
                   <Suspense fallback={<></>}>
-                    <AdminMainPage />
+                    <AuthProvider>
+                      <AdminMainPage />
+                    </AuthProvider>
                   </Suspense>
                 }
               />
