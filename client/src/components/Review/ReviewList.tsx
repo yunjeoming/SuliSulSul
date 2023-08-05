@@ -9,9 +9,10 @@ import SkeletonReviewList from '../Skeleton/SkeletonReviewList';
 type Props = {
   reviews: Review[][] | undefined;
   infiniteScrollOptions?: InfiniteScrollOptionsType;
+  invalidateFn?: () => void;
 };
 
-const ReviewList: FC<Props> = ({ reviews, infiniteScrollOptions }) => {
+const ReviewList: FC<Props> = ({ reviews, infiniteScrollOptions, invalidateFn }) => {
   const { targetRef } = useIntersectionObserver(infiniteScrollOptions);
 
   if (infiniteScrollOptions?.isLoading) {
@@ -26,7 +27,7 @@ const ReviewList: FC<Props> = ({ reviews, infiniteScrollOptions }) => {
     <>
       <ul className="p-4">
         {reviews.flat().map((r) => (
-          <ReviewItem key={r.reviewNo + r.regDt} review={r} />
+          <ReviewItem key={r.reviewNo + r.regDt} review={r} invalidateFn={invalidateFn} />
         ))}
       </ul>
       <div ref={targetRef}></div>

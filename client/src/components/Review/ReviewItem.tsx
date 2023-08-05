@@ -13,6 +13,7 @@ import ReviewPassword from './ReviewPassword';
 
 type Props = {
   review: Review;
+  invalidateFn?: () => void;
 };
 
 const initEditState = {
@@ -20,7 +21,7 @@ const initEditState = {
   isEditMode: false,
 };
 
-const ReviewItem: FC<Props> = ({ review }) => {
+const ReviewItem: FC<Props> = ({ review, invalidateFn }) => {
   const [editState, setEditState] = useState<{
     showPasswordInput: boolean;
     isEditMode: boolean;
@@ -59,6 +60,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
   };
 
   const updateInitState = () => {
+    invalidateFn && invalidateFn();
     setEditState(initEditState);
     updateInitModalState();
     updateInitPasswordRef();
@@ -75,13 +77,10 @@ const ReviewItem: FC<Props> = ({ review }) => {
       return ReviewAPI.checkPassword(data);
     },
     onSuccess: (data) => {
-      console.log(data);
-      console.log('password 확인 api');
       if (data === 'SUC') {
         setEditState((prev) => ({ ...prev, showPasswordInput: false, isEditMode: true }));
       } else {
-        setEditState((prev) => ({ ...prev, showPasswordInput: false, isEditMode: true }));
-        // setIsOpenFailModal(true);
+        setIsOpenFailModal(true);
       }
     },
   });
@@ -104,8 +103,6 @@ const ReviewItem: FC<Props> = ({ review }) => {
       return ReviewAPI.updateReview(data);
     },
     onSuccess: (data) => {
-      console.log(data);
-      console.log('reviewItem.tsx 수정 api');
       if (data === 'SUC') {
         updateInitState();
       }
@@ -123,8 +120,6 @@ const ReviewItem: FC<Props> = ({ review }) => {
       return ReviewAPI.deleteReview(data);
     },
     onSuccess: (data) => {
-      console.log(data);
-      console.log('reviewItem.tsx 삭제 api');
       if (data === 'SUC') {
         updateInitState();
       }
@@ -199,7 +194,7 @@ const ReviewItem: FC<Props> = ({ review }) => {
       ) : (
         <>
           <div className="font-bold mb-2">{review.title}</div>
-          <div className='text-sm'>{review.content}맛있어 맛없어 맛있어 맛없어 아오아와오아오아오아오아앙 맛없어요 맛있어요</div>
+          <div className="text-sm">{review.content}</div>
         </>
       )}
       <ReviewPassword isShow={showPasswordInput} checkPassword={checkPassword} ref={passwordRef} />

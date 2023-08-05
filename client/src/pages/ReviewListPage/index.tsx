@@ -67,6 +67,7 @@ const ReviewListPage = () => {
       <ReviewList
         reviews={data?.pages?.map((page) => page.reviewData)}
         infiniteScrollOptions={{ isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, isSuccess }}
+        invalidateFn={invalidateReviewQuery}
       />
     </>
   );

@@ -16,6 +16,7 @@ const AdminAlcoholListPage = () => {
     <AlcoholList
       alcohols={data?.pages}
       styles="py-2"
+      showingType='gridType'
       isAdmin
       infiniteScrollOptions={{ isLoading, hasNextPage, isFetchingNextPage, isSuccess, fetchNextPage }}
     />
