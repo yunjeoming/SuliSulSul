@@ -1,12 +1,13 @@
 import { Suspense, lazy } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Styles } from './constants/Styles';
+import { StyleConstants } from './constants/style';
 import { getClient } from './queryClient';
 import { QueryClientProvider } from '@tanstack/react-query';
 import Header from './components/Header/Header';
 import useSidebar from './hooks/useSidebar';
 import MainPage from './pages/MainPage';
 import Sidebar from './components/Sidebar/Sidebar';
+import AuthProvider from './context/AuthProvider';
 
 const AlcoholListPage = lazy(() => import('./pages/AlcoholListPage'));
 const AlcoholDetailPage = lazy(() => import('./pages/AlcoholDetailPage'));
@@ -28,7 +29,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="h-screen bg-gray-200 flex justify-center items-stretch">
         <div className="h-full relative w-[26rem]">
-          <div className={`h-full flex flex-col ${Styles.MAIN_BACKGROUND_COLOR} overflow-auto`}>
+          <div className={`h-full flex flex-col ${StyleConstants.MAIN_BACKGROUND_COLOR} overflow-auto`}>
             {!pathname.startsWith('/admin') ? <Header clickTargetBtn={clickTargetBtn} /> : null}
             <Routes>
               <Route path="/" element={<MainPage initSidebar={initSidebar} isOpenSidebar={isOpenSidebar} />}>
@@ -69,7 +70,9 @@ function App() {
                 path="/admin/*"
                 element={
                   <Suspense fallback={<></>}>
-                    <AdminMainPage />
+                    <AuthProvider>
+                      <AdminMainPage />
+                    </AuthProvider>
                   </Suspense>
                 }
               />

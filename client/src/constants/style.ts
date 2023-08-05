@@ -1,4 +1,4 @@
-export const Styles = {
+export const StyleConstants = {
   HEADER_HEIGHT: 'min-h-[4rem]', // 4rem
   HEADER_MARGIN_BOTTOM: 'mb-2',
   MAIN_BACKGROUND_COLOR: 'bg-zinc-50',

@@ -78,7 +78,7 @@ const ReviewItem: FC<Props> = ({ review, invalidateFn }) => {
       if (data === 'SUC') {
         setEditState((prev) => ({ ...prev, showPasswordInput: false, isEditMode: true }));
       } else {
-        openOneBtnModal('비밀번호가 일치하지 않습니다.', 'password');
+        openOneBtnModal('비밀번호가 일치하지 않아요', 'password');
       }
     },
   });

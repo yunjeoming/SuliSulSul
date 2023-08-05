@@ -8,6 +8,7 @@ import ReviewAPI from '../../api/review';
 import OneBtnModal from '../../components/Modal/OneBtnModal';
 import useCautionModal from '../../hooks/useCautionModal';
 import TwoBtnsModal from '../../components/Modal/TwoBtnsModal';
+import { TextConstants } from '../../constants/text';
 
 type Props = {
   alcohol: Alcohol;
@@ -138,14 +139,14 @@ const AddReview = forwardRef<HTMLDivElement, Props>(({ alcohol, onClose: closeAd
     },
     onSuccess: (data) => {
       if (data === 'SUC') {
-        openModal('리뷰가 등록되었어요', null, closeModalBySuccess);
+        openModal(TextConstants.SUC_ADD_REVIEW, null, closeModalBySuccess);
       } else {
-        openModal('등록에 실패했어요 \n\n ⚠️ 이모티콘은 등록이 되지 않아요 ⚠️', contentRef);
+        openModal(TextConstants.FAIL_ADD, contentRef);
       }
     },
     onError: (err) => {
       console.error(err);
-      openModal('등록에 실패했어요 \n\n ⚠️ 이모티콘은 등록이 되지 않아요 ⚠️', contentRef);
+      openModal(TextConstants.FAIL_ADD, contentRef);
     },
   });
 

@@ -1,15 +1,15 @@
-import { FormEvent, forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import AddLayout from '../../../layout/AddLayout';
 import AlcoholForm from '../../../components/Alcohol/AlcoholForm';
 import { useNavigate } from 'react-router-dom';
 import useAlcoholFormRef from '../../../hooks/useAlcoholFormRef';
-import useModal from '../../../hooks/useModal';
 import { useMutation } from '@tanstack/react-query';
 import AlcoholAPI from '../../../api/alcohol';
 import TwoBtnsModal from '../../../components/Modal/TwoBtnsModal';
 import OneBtnModal from '../../../components/Modal/OneBtnModal';
 import useInvalidateAlcohol from '../../../hooks/useInvalidateAlcohol';
-import useCautionModal from '../../../hooks/useCautionModal';
+import { TextConstants } from '../../../constants/text';
+import { ModalType } from '../../../types/common';
 
 type Props = {
   onClose: () => void;
@@ -18,141 +18,195 @@ type Props = {
 
 const AddAlcohol = forwardRef<HTMLDivElement, Props>(({ onClose: closeAddAlcohol, invalidateFn }, ref) => {
   const navigate = useNavigate();
-  const { cautionContent, closeCautionModal, isOpenCaution, openCautionModal } = useCautionModal();
-  const {
-    modal: { content, isOpenModal, showOneBtn, isAdded },
-    setModal,
-    initModalState,
-    onCloseModal,
-  } = useModal();
   const { refObj, resetRefs, getFormDataByRefObj } = useAlcoholFormRef();
   const { invalidateAlcohol } = useInvalidateAlcohol(['admin']);
+
+  const [oneBtnModalState, setOneBtnModalState] = useState<{
+    content: string;
+    isOpenModal: boolean;
+    targetRef: HTMLElement | null;
+  }>({
+    content: '',
+    isOpenModal: false,
+    targetRef: null,
+  });
+
+  const [twoBtnModalState, setTwoBtnModalState] = useState<{
+    content: string;
+    isOpenModal: boolean;
+    type: ModalType | null;
+    onLeftFn?: () => void;
+    onRightFn?: () => void;
+    closeBtnName?: string;
+    okBtnName?: string;
+  }>({
+    content: '',
+    isOpenModal: false,
+    type: null,
+  });
+
+  const openOneBtnModal = useCallback((content: string, targetRef: HTMLElement | null) => {
+    setOneBtnModalState((prev) => ({
+      ...prev,
+      isOpenModal: true,
+      content,
+      targetRef,
+    }));
+  }, []);
+
+  const openTwoBtnModal = useCallback(
+    (
+      content: string,
+      options?: {
+        type?: ModalType;
+        onLeftFn?: () => void;
+        onRightFn?: () => void;
+        closeBtnName?: string;
+        okBtnName?: string;
+      },
+    ) => {
+      setTwoBtnModalState((prev) => {
+        const returnState = {
+          ...prev,
+          isOpenModal: true,
+          content,
+        };
+        if (options?.type) {
+          returnState.type = options.type;
+        }
+        if (options?.closeBtnName) {
+          returnState.closeBtnName = options.closeBtnName;
+        }
+        if (options?.okBtnName) {
+          returnState.okBtnName = options.okBtnName;
+        }
+        if (options?.onLeftFn) {
+          returnState.onLeftFn = options.onLeftFn;
+        }
+        if (options?.onRightFn) {
+          returnState.onRightFn = options.onRightFn;
+        }
+        return returnState;
+      });
+    },
+    [],
+  );
+
+  const closeOneBtnModal = useCallback(() => {
+    setOneBtnModalState((prev) => ({
+      ...prev,
+      isOpenModal: false,
+    }));
+
+    if (oneBtnModalState.targetRef) {
+      oneBtnModalState.targetRef.focus();
+    }
+  }, [oneBtnModalState]);
+
+  const closeTwoBtnModal = useCallback(() => {
+    setTwoBtnModalState((prev) => ({
+      ...prev,
+      isOpenModal: false,
+      closeBtnName: undefined,
+      okBtnName: undefined,
+      onLeftFn: undefined,
+      onRightFn: () => {},
+    }));
+  }, []);
 
   const { mutate: addAlcohol } = useMutation({
     mutationFn: (data: FormData) => AlcoholAPI.addAlcohol(data),
     onSuccess: () => {
-      setModal((state) => ({
-        ...state,
-        content: '추가를 완료했습니다.',
-        showOneBtn: true,
-        isOpenModal: true,
-        isAdded: true,
-        targetRef: null,
-      }));
+      closeTwoBtnModal();
       invalidateAlcohol();
       invalidateFn && invalidateFn();
+
+      setTimeout(() => {
+        openTwoBtnModal(TextConstants.SUC_ADD, {
+          closeBtnName: '계속 추가',
+          okBtnName: '홈으로',
+          onLeftFn: addAnotherOne,
+          onRightFn: goHome,
+        });
+      }, 200);
+    },
+    onError: (err) => {
+      openOneBtnModal(TextConstants.FAIL_ADD, null);
     },
   });
 
-  // 모달 열기
-  const handleClickSave = useCallback(() => {
+  const validateForm = useCallback(() => {
     const { alcoholNmRef, descriptionRef, categoryNmRef, volRef } = refObj.current;
     if (!alcoholNmRef?.value) {
-      setModal((state) => ({
-        ...state,
-        content: '술 이름을 입력해주세요',
-        isOpenModal: true,
-        targetRef: alcoholNmRef,
-      }));
-      return;
+      openOneBtnModal('술 이름을 입력해주세요', alcoholNmRef);
+      return false;
     }
 
     if (!categoryNmRef?.value) {
-      setModal((state) => ({
-        ...state,
-        content: '카테고리를 선택해주세요',
-        isOpenModal: true,
-        targetRef: categoryNmRef,
-      }));
-      return;
+      openOneBtnModal('카테고리를 선택해주세요', categoryNmRef);
+      return false;
     }
 
     if (!volRef?.value) {
-      setModal((state) => ({
-        ...state,
-        content: '도수를 입력해주세요',
-        isOpenModal: true,
-        targetRef: volRef,
-      }));
-      return;
+      openOneBtnModal('도수를 입력해주세요', volRef);
+      return false;
     }
 
     if (!descriptionRef?.value) {
-      setModal((state) => ({
-        ...state,
-        content: '설명을 입력해주세요',
-        isOpenModal: true,
-        targetRef: descriptionRef,
-      }));
-      return;
+      openOneBtnModal('설명을 입력해주세요', descriptionRef);
+      return false;
     }
 
-    setModal((state) => ({
-      ...state,
-      content: `해당 내용을 등록하시겠습니까?`,
-      isOpenModal: true,
-      showOneBtn: false,
-      targetRef: null,
-    }));
-  }, [setModal, refObj]);
+    return true;
+  }, [refObj, openOneBtnModal]);
 
   // 최종 api 실행
-  const onSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      const data = getFormDataByRefObj(refObj);
-      addAlcohol(data);
-      onCloseModal();
-    },
-    [onCloseModal, addAlcohol, refObj, getFormDataByRefObj],
-  );
+  const onSubmit = useCallback(() => {
+    const data = getFormDataByRefObj(refObj);
+    addAlcohol(data);
+  }, [addAlcohol, refObj, getFormDataByRefObj]);
+
+  const handleClickSave = useCallback(() => {
+    if (validateForm()) {
+      openTwoBtnModal(TextConstants.ASK_ADD, { onRightFn: onSubmit });
+    }
+  }, [validateForm, openTwoBtnModal, onSubmit]);
 
   // 술 추가 완료 후 '홈으로'
   const goHome = useCallback(() => {
-    onCloseModal();
+    closeTwoBtnModal();
     closeAddAlcohol();
     navigate('/admin', { replace: true });
-  }, [navigate, onCloseModal, closeAddAlcohol]);
+  }, [navigate, closeTwoBtnModal, closeAddAlcohol]);
 
   // 술 추가 완료 후 '계속 추가'
   const addAnotherOne = useCallback(() => {
-    setModal(initModalState);
-    onCloseModal();
+    closeTwoBtnModal();
     resetRefs(refObj);
-  }, [onCloseModal, initModalState, refObj, setModal, resetRefs]);
+  }, [refObj, resetRefs, closeTwoBtnModal]);
+
+  const openCautionModal = useCallback(() => {
+    openTwoBtnModal(TextConstants.CAUTION, { onRightFn: goHome });
+  }, [openTwoBtnModal, goHome]);
 
   return (
     <AddLayout ref={ref} headerText="술 등록" onClose={openCautionModal} onSave={handleClickSave}>
       <div className="p-4">
         <AlcoholForm ref={refObj} />
-        {isAdded ? (
-          <TwoBtnsModal
-            isOpen={isOpenModal}
-            content={content}
-            onClose={onCloseModal}
-            onLeftFn={addAnotherOne}
-            onRightFn={goHome}
-            closeBtnName="계속 추가"
-            okBtnName="홈으로"
-          />
-        ) : showOneBtn ? (
-          <OneBtnModal isOpen={isOpenModal} content={content} onClose={onCloseModal} />
-        ) : (
-          <TwoBtnsModal
-            isOpen={isOpenModal}
-            content={content}
-            onClose={onCloseModal}
-            onLeftFn={onCloseModal}
-            onRightFn={onSubmit}
-          />
-        )}
       </div>
       <TwoBtnsModal
-        isOpen={isOpenCaution}
-        content={cautionContent}
-        onClose={closeCautionModal}
-        onLeftFn={closeCautionModal}
-        onRightFn={closeAddAlcohol}
+        isOpen={twoBtnModalState.isOpenModal}
+        content={twoBtnModalState.content}
+        onClose={closeTwoBtnModal}
+        onLeftFn={twoBtnModalState.onLeftFn || closeTwoBtnModal}
+        onRightFn={twoBtnModalState.onRightFn || onSubmit}
+        closeBtnName={twoBtnModalState.closeBtnName}
+        okBtnName={twoBtnModalState.okBtnName}
+      />
+      <OneBtnModal
+        isOpen={oneBtnModalState.isOpenModal}
+        content={oneBtnModalState.content}
+        onClose={closeOneBtnModal}
       />
     </AddLayout>
   );

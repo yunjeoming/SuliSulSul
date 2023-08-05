@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import ReviewAPI from '../../api/review';
 import TwoBtnsModal from '../Modal/TwoBtnsModal';
 import { ModalStateType, ModalType } from '../../types/common';
+import { TextConstants } from '../../constants/text';
 
 type Props = {
   review: Review;
@@ -73,7 +74,7 @@ const ReviewEditForm: FC<Props> = ({ review, updateInitState, openOneBtnModal })
       if (data === 'SUC') {
         updateInitState();
       } else {
-        openOneBtnModal('수정에 실패했어요 \n\n ⚠️ 이모티콘은 등록이 되지 않아요 ⚠️', 'fail');
+        openOneBtnModal(TextConstants.FAIL_EDIT, 'fail');
       }
       closeModal();
     },
@@ -89,7 +90,7 @@ const ReviewEditForm: FC<Props> = ({ review, updateInitState, openOneBtnModal })
       if (data === 'SUC') {
         updateInitState();
       } else {
-        openOneBtnModal('삭제에 실패했어요 \n 잠시 후 다시 시도해주세요', 'fail');
+        openOneBtnModal(TextConstants.FAIL_DELETE, 'fail');
       }
       closeModal();
     },

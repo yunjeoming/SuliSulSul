@@ -86,7 +86,7 @@ const AlcoholForm = forwardRef<RefObjType, Props>(({ selectedCategory }, ref) =>
         <div className="input-area flex items-center">
           <input id="alcohol-img" type="file" ref={imageRef} hidden />
           {imageName && <div className="mr-2 text-sm">{imageName}</div>}
-          <button type="button" className={`${Styles.BUTTON_DEFAULT} shrink-0`} onClick={handleClickFile}>
+          <button type="button" className={`${StyleConstants.BUTTON_DEFAULT} shrink-0`} onClick={handleClickFile}>
             {alcohol ? '수정' : '등록'}
           </button>
         </div>
