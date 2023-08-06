@@ -9,7 +9,7 @@ type Props = {
   imgStyles?: string;
 };
 
-const Thumbnail: FC<Props> = ({ imgSrc, size = '10rem', styles = '', imgStyles = '', isCenter = false }) => {
+const Thumbnail: FC<Props> = ({ imgSrc, size = '160px', styles = '', imgStyles = '', isCenter = false }) => {
   // 추후 실제 이미지 넣을 경우 img style 작업 필수
   return (
     <div className={`${isCenter ? `flex items-center justify-center bg-gray-100 ${styles}` : styles}`}>

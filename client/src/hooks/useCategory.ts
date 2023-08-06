@@ -8,7 +8,7 @@ const useCategory = () => {
   const { data: category } = useQuery<Category[]>({
     queryKey: [queryKeys.CATEGORY],
     queryFn: CategoryAPI.getCategories,
-    select: (data) => [{ cateNo: 999, cateNm: 'all' }, ...data],
+    select: (data) => [{ cateNo: 999, cateNm: '전체' }, ...data],
   });
 
   const getCategoryByName = useCallback(

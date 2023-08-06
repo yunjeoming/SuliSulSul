@@ -5,6 +5,7 @@ import { Alcohol } from '../../types/alcohol';
 import { InfiniteScrollOptionsType } from '../../types/common';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import SkeletonAlcoholList from '../Skeleton/SkeletonAlcoholList';
+import { TextConstants } from '../../constants/text';
 
 type AlcoholListType = {
   alcohols: Alcohol[][] | undefined;
@@ -28,7 +29,7 @@ const AlcoholList: FC<AlcoholListType> = ({
   }
 
   if (!alcohols || !alcohols[0].length) {
-    return <div className="flex justify-center">등록된 술이 없습니다.</div>;
+    return <div className="flex justify-center">{TextConstants.NO_ALCOHOL}</div>;
   }
 
   return (

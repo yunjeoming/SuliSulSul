@@ -28,8 +28,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="h-screen bg-gray-200 flex justify-center items-stretch">
-        <div className="h-full relative w-[26rem]">
-          <div className={`h-full flex flex-col ${StyleConstants.MAIN_BACKGROUND_COLOR} overflow-auto`}>
+        <div className="h-full relative w-full max-w-[26rem]">
+          <div className={`w-full h-full flex flex-col ${StyleConstants.MAIN_BACKGROUND_COLOR} overflow-auto`}>
             {!pathname.startsWith('/admin') ? <Header clickTargetBtn={clickTargetBtn} /> : null}
             <Routes>
               <Route path="/" element={<MainPage initSidebar={initSidebar} isOpenSidebar={isOpenSidebar} />}>

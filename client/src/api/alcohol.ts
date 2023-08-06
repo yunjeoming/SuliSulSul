@@ -18,7 +18,7 @@ const AlcoholAPI = {
     const data = new FormData();
     data.append('cateNo', cateNo.toString());
     data.append('pageNo', (pageNo || 0).toString());
-    if (cateNm === 'all') {
+    if (cateNm === '전체') {
       data.delete('cateNo');
     }
     return requestAxios({ method: 'post', url: `/selectAlcList`, data });
