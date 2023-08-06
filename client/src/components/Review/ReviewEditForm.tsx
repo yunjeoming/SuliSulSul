@@ -84,6 +84,7 @@ const ReviewEditForm: FC<Props> = ({ review, updateInitState, openOneBtnModal })
     mutationFn: () => {
       const data = new FormData();
       data.append('reviewNo', review.reviewNo.toString());
+      data.append('alcNo', review.alcNo.toString());
       return ReviewAPI.deleteReview(data);
     },
     onSuccess: (data) => {
