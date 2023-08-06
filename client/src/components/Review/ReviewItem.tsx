@@ -10,6 +10,7 @@ import ReviewPassword from './ReviewPassword';
 import ReviewEditForm from './ReviewEditForm';
 import { ModalStateType, ModalType } from '../../types/common';
 import ReviewUtil from '../../utils/Review';
+import ReviewContent from './ReviewContent';
 
 type Props = {
   review: Review;
@@ -105,7 +106,7 @@ const ReviewItem: FC<Props> = ({ review, invalidateFn }) => {
       ) : (
         <>
           <div className="font-bold mb-2">{review.title}</div>
-          <div className="text-sm">{review.content}</div>
+          <ReviewContent content={review.content} />
         </>
       )}
       <ReviewPassword isShow={showPasswordInput} checkPassword={checkPassword} ref={passwordRef} />
